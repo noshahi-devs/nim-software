@@ -1,0 +1,182 @@
+/* === Page Container === */
+.staff {
+  padding: 1.5rem;
+  font-family: "Poppins", sans-serif;
+  background-color: #f9fafc;
+  min-height: 100vh;
+}
+
+/* === Header Section === */
+.page-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* === Search Bar === */
+.navbar-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-search input {
+  padding: 0.6rem 2.2rem 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  font-size: 0.9rem;
+  width: 220px;
+  transition: all 0.2s ease;
+}
+
+.navbar-search input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+}
+
+.navbar-search .icon {
+  position: absolute;
+  right: -150px;
+  font-size: 1.1rem;
+  color: #777;
+  pointer-events: none;
+}
+
+/* Prevent disappearance during inspect or resize */
+@media (max-width: 500px) {
+  .navbar-search input {
+    width: 100%;
+  }
+}
+
+/* === Sync Button === */
+.sync-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background 0.2s;
+}
+
+.sync-btn:hover {
+  background-color: #0056b3;
+}
+
+/* === Staff Grid === */
+.staff-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* === Staff Cards === */
+.staff-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.staff-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* === Profile Image === */
+.staff-card img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.6rem;
+}
+
+/* === Name & Role === */
+.staff-card h4 {
+  font-size: 0.85rem !important; /* Force smaller font size */
+  margin: 0.2rem 0 !important;
+  font-weight: 600 !important;
+  color: #333 !important;
+  line-height: 1.2 !important;
+}
+
+
+.staff-card p {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.6rem;
+}
+
+/* === Card Actions === */
+.card-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  background: #f1f3f5;
+  border: none;
+  border-radius: 50%;
+  padding: 0.4rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.action-btn:hover {
+  background: #e0e4e7;
+}
+
+/* Color-coded buttons */
+.action-btn.view { color: #007bff; }
+.action-btn.edit { color: #ffc107; }
+.action-btn.delete { color: #dc3545; }
+
+/* === Add New Staff Card === */
+.add-card {
+  border: 2px dashed #bbb;
+  border-radius: 12px;
+  background: #fdfdfd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-card:hover {
+  background: #f1f3f5;
+  border-color: #007bff;
+}
+
+.add-card iconify-icon {
+  font-size: 2rem;
+  color: #007bff;
+}
+
+.add-card p {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  color: #333;
+}

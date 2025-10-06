@@ -1,0 +1,53 @@
+
+<div class="staff">
+
+  
+<div class="page-header">
+
+
+  <div class="header-actions">
+    <form class="navbar-search">
+      <input 
+        type="text" 
+        placeholder="Search your staff..."
+        [(ngModel)]="searchText"
+        (input)="filterStaff()"
+        name="search"
+      />
+      <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
+    </form>
+
+    <button class="sync-btn" (click)="syncStaff()">
+      <iconify-icon icon="mdi:sync"></iconify-icon> Sync
+    </button>
+  </div>
+</div>
+
+<!-- Staff Cards -->
+<div class="staff-container">
+  <div class="staff-card" *ngFor="let staff of filteredStaff">
+    <img [src]="staff.image || 'assets/default-avatar.png'" alt="Profile" />
+    <h4>{{ staff.name }}</h4>
+    <p>{{ staff.role }}</p>
+
+    <div class="card-actions">
+      <button class="action-btn view" (click)="viewStaff(staff)">
+        <iconify-icon icon="mdi:eye-outline"></iconify-icon>
+      </button>
+      <button class="action-btn edit" (click)="editStaff(staff)">
+        <iconify-icon icon="mdi:pencil-outline"></iconify-icon>
+      </button>
+      <button class="action-btn delete" (click)="deleteStaff(staff)">
+        <iconify-icon icon="mdi:delete-outline"></iconify-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Add New Staff -->
+  <div class="add-card" (click)="addNewStaff()">
+    <iconify-icon icon="mdi:plus-circle-outline"></iconify-icon>
+    <p>Add New Staff</p>
+  </div>
+</div>
+</div>
+
