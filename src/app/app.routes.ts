@@ -98,6 +98,7 @@ import { StaffJobLetterComponent } from './staff-job-letter/staff-job-letter.com
 import { StaffManageLoginComponent } from './staff-manage-login/staff-manage-login.component';
 import { StaffViewProfileComponent } from './staff-view-profile/staff-view-profile.component';
 import { StaffEditProfileComponent } from './staff-edit-profile/staff-edit-profile.component';
+import { NewClassComponent } from './newclass/newclass.component';
 
 export const routes: Routes = [
     {
@@ -193,13 +194,14 @@ export const routes: Routes = [
             { path: 'video-generator', component: VideoGeneratorComponent },
             { path: 'videos', component: VideosComponent },
             { path: 'view-profile', component: ViewProfileComponent },
-            { path: 'staff-view-profile', component: StaffViewProfileComponent },
-            { path: 'staff-edit-profile', component: StaffEditProfileComponent },
+            { path: 'staff-view-profile/:id', component: StaffViewProfileComponent },
+            { path: 'staff-edit-profile/:id', component: StaffEditProfileComponent },
             { path: 'voice-generator', component: VoiceGeneratorComponent },
             { path: 'wallet', component: WalletComponent },
             { path: 'widgets', component: WidgetsComponent },
             { path: 'wizard', component: WizardComponent },
             { path: 'error', component: ErrorComponent },
+            { path: 'newclass', component: NewClassComponent },
             
         ]
     },

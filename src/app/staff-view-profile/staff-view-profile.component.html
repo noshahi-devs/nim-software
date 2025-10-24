@@ -56,18 +56,18 @@
       style="max-width: 1200px; width: 100%;"
     >
       <img
-        src="assets/images/user-grid/user-grid-bg1.png"
+        [src]="staffData?.bg || 'assets/images/user-grid/user-grid-bg1.png'"
         alt=""
         class="w-100 object-fit-cover"
       />
-      <div class="pb-24 ms-16 mb-24 me-16 mt--100">
+      <div class="pb-24 ms-16 mb-24 me-16 mt--100" *ngIf="staffData">
         <div
           class="text-center border border-top-0 border-start-0 border-end-0"
         >
           <img
-            src="assets/images/user-grid/user-grid-img14.png" alt="Ayesha.png"/>
-          <h6 class="mb-0 mt-16">Ayesha Khan</h6>
-          <span class="text-secondary-light mb-16">ayesha.khan&#64;school.edu.pk</span>
+            [src]="staffData.profile" [alt]="staffData.name" class="border br-white border-width-2-px w-200-px h-200-px rounded-circle object-fit-cover"/>
+          <h6 class="mb-0 mt-16">{{ staffData.name }}</h6>
+          <span class="text-secondary-light mb-16">{{ staffData.email }}</span>
         </div>
 
         <div class="mt-24">
@@ -75,43 +75,60 @@
           <ul>
             <li class="d-flex align-items-center gap-1 mb-12">
               <span class="w-30 text-md fw-semibold text-primary-light">Full Name</span>
-              <span class="w-70 text-secondary-light fw-medium">: Ayesha Khan</span>
+              <span class="w-70 text-secondary-light fw-medium">: {{ staffData.name }}</span>
             </li>
             <li class="d-flex align-items-center gap-1 mb-12">
               <span class="w-30 text-md fw-semibold text-primary-light">Email</span>
-              <span class="w-70 text-secondary-light fw-medium">: ayesha.khan&#64;school.edu.pk</span>
+              <span class="w-70 text-secondary-light fw-medium">: {{ staffData.email }}</span>
             </li>
             <li class="d-flex align-items-center gap-1 mb-12">
               <span class="w-30 text-md fw-semibold text-primary-light">Phone</span>
-              <span class="w-70 text-secondary-light fw-medium">: +92 312 4567890</span>
+              <span class="w-70 text-secondary-light fw-medium">: {{ staffData.phone }}</span>
             </li>
             <li class="d-flex align-items-center gap-1 mb-12">
-              <span class="w-30 text-md fw-semibold text-primary-light">Department</span>
-              <span class="w-70 text-secondary-light fw-medium">: Science Department</span>
+              <span class="w-30 text-md fw-semibold text-primary-light">CNIC</span>
+              <span class="w-70 text-secondary-light fw-medium">: {{ staffData.cnic }}</span>
             </li>
             <li class="d-flex align-items-center gap-1 mb-12">
-              <span class="w-30 text-md fw-semibold text-primary-light">Designation</span>
-              <span class="w-70 text-secondary-light fw-medium">: Senior Physics Teacher</span>
+              <span class="w-30 text-md fw-semibold text-primary-light">Role</span>
+              <span class="w-70 text-secondary-light fw-medium">: {{ staffData.role || staffData.designation }}</span>
+            </li>
+            <li class="d-flex align-items-center gap-1 mb-12">
+              <span class="w-30 text-md fw-semibold text-primary-light">Section</span>
+              <span class="w-70 text-secondary-light fw-medium">: {{ staffData.section }}</span>
             </li>
             <li class="d-flex align-items-center gap-1 mb-12">
               <span class="w-30 text-md fw-semibold text-primary-light">Gender</span>
-              <span class="w-70 text-secondary-light fw-medium">: Female</span>
+              <span class="w-70 text-secondary-light fw-medium">: {{ staffData.gender }}</span>
+            </li>
+            <li class="d-flex align-items-center gap-1 mb-12">
+              <span class="w-30 text-md fw-semibold text-primary-light">Date of Birth</span>
+              <span class="w-70 text-secondary-light fw-medium">: {{ staffData.dob }}</span>
+            </li>
+            <li class="d-flex align-items-center gap-1 mb-12">
+              <span class="w-30 text-md fw-semibold text-primary-light">Qualification</span>
+              <span class="w-70 text-secondary-light fw-medium">: {{ staffData.qualification }}</span>
+            </li>
+            <li class="d-flex align-items-center gap-1 mb-12">
+              <span class="w-30 text-md fw-semibold text-primary-light">Address</span>
+              <span class="w-70 text-secondary-light fw-medium">: {{ staffData.address }}</span>
             </li>
             <li class="d-flex align-items-center gap-1 mb-12">
               <span class="w-30 text-md fw-semibold text-primary-light">Joining Date</span>
-              <span class="w-70 text-secondary-light fw-medium">: 10th March, 2021</span>
+              <span class="w-70 text-secondary-light fw-medium">: {{ staffData.joiningDate }}</span>
             </li>
             <li class="d-flex align-items-center gap-1 mb-12">
               <span class="w-30 text-md fw-semibold text-primary-light">Status</span>
-              <span class="w-70 text-secondary-light fw-medium">: Active</span>
-            </li>
-            <li class="d-flex align-items-center gap-1">
-              <span class="w-30 text-md fw-semibold text-primary-light">Bio</span>
-              <span class="w-70 text-secondary-light fw-medium">
-                : Dedicated and passionate educator with over 5 years of experience in teaching Physics and mentoring students.
-              </span>
+              <span class="w-70 fw-medium" [ngClass]="staffData.status === 'Active' ? 'text-success' : 'text-danger'">: {{ staffData.status }}</span>
             </li>
           </ul>
+          <!-- Back Button -->
+          <div class="mt-24 text-center">
+            <button type="button" (click)="goBack()" class="btn btn-primary text-md px-56 py-12 radius-8">
+              <iconify-icon icon="solar:arrow-left-linear" class="icon text-lg me-2"></iconify-icon>
+              Back to Staff List
+            </button>
+          </div>
         </div>
       </div>
     </div>

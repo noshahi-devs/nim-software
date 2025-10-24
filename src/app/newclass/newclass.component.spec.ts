@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StaffListComponent } from './staff-list.component';
+import { NewClassComponent } from './newclass.component';
 
-describe('StaffListComponent', () => {
-  let component: StaffListComponent;
-  let fixture: ComponentFixture<StaffListComponent>;
+describe('NewClassComponent', () => {
+  let component: NewClassComponent;
+  let fixture: ComponentFixture<NewClassComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StaffListComponent]
+      imports: [NewClassComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(StaffListComponent);
+    fixture = TestBed.createComponent(NewClassComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -21,6 +21,3 @@ describe('StaffListComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
-
-

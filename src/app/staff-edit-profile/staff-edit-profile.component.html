@@ -42,69 +42,89 @@
                                 </div>
                             </div>
                             <!-- Upload Image End -->
-                            <form action="#">
+                            <form action="#" *ngIf="staffData">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="mb-20">
                                             <label for="name" class="form-label fw-semibold text-primary-light text-sm mb-8">Full Name <span class="text-danger-600">*</span></label>
-                                            <input type="text" class="form-control radius-8" id="name" placeholder="Enter Full Name">
+                                            <input type="text" class="form-control radius-8" id="name" [(ngModel)]="staffData.name" name="name" placeholder="Enter Full Name">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-20">
                                             <label for="email" class="form-label fw-semibold text-primary-light text-sm mb-8">Email <span class="text-danger-600">*</span></label>
-                                            <input type="email" class="form-control radius-8" id="email" placeholder="Enter email address">
+                                            <input type="email" class="form-control radius-8" id="email" [(ngModel)]="staffData.email" name="email" placeholder="Enter email address">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-20">
-                                            <label for="number" class="form-label fw-semibold text-primary-light text-sm mb-8">Phone</label>
-                                            <input type="email" class="form-control radius-8" id="number" placeholder="Enter phone number">
+                                            <label for="phone" class="form-label fw-semibold text-primary-light text-sm mb-8">Phone</label>
+                                            <input type="text" class="form-control radius-8" id="phone" [(ngModel)]="staffData.phone" name="phone" placeholder="Enter phone number">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-20">
-                                            <label for="depart" class="form-label fw-semibold text-primary-light text-sm mb-8">Department <span class="text-danger-600">*</span> </label>
-                                            <select class="form-control radius-8 form-select" id="depart">
-                                                <option>Enter Event Title </option>
-                                                <option>Enter Event Title One </option>
-                                                <option>Enter Event Title Two</option>
+                                            <label for="cnic" class="form-label fw-semibold text-primary-light text-sm mb-8">CNIC <span class="text-danger-600">*</span></label>
+                                            <input type="text" class="form-control radius-8" id="cnic" [(ngModel)]="staffData.cnic" name="cnic" placeholder="Enter CNIC">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mb-20">
+                                            <label for="section" class="form-label fw-semibold text-primary-light text-sm mb-8">Section <span class="text-danger-600">*</span> </label>
+                                            <input type="text" class="form-control radius-8" id="section" [(ngModel)]="staffData.section" name="section" placeholder="Enter Section">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mb-20">
+                                            <label for="role" class="form-label fw-semibold text-primary-light text-sm mb-8">Role <span class="text-danger-600">*</span> </label>
+                                            <select class="form-control radius-8 form-select" id="role" [(ngModel)]="staffData.role" name="role">
+                                                <option value="">Select Role</option>
+                                                <option value="Teacher">Teacher</option>
+                                                <option value="Principal">Principal</option>
+                                                <option value="Admin">Admin</option>
+                                                <option value="Accountant">Accountant</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-20">
-                                            <label for="desig" class="form-label fw-semibold text-primary-light text-sm mb-8">Designation <span class="text-danger-600">*</span> </label>
-                                            <select class="form-control radius-8 form-select" id="desig">
-                                                <option>Enter Designation Title </option>
-                                                <option>Enter Designation Title One </option>
-                                                <option>Enter Designation Title Two</option>
+                                            <label for="qualification" class="form-label fw-semibold text-primary-light text-sm mb-8">Qualification <span class="text-danger-600">*</span> </label>
+                                            <input type="text" class="form-control radius-8" id="qualification" [(ngModel)]="staffData.qualification" name="qualification" placeholder="Enter Qualification">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mb-20">
+                                            <label for="gender" class="form-label fw-semibold text-primary-light text-sm mb-8">Gender <span class="text-danger-600">*</span> </label>
+                                            <select class="form-control radius-8 form-select" id="gender" [(ngModel)]="staffData.gender" name="gender">
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-20">
-                                            <label for="Language" class="form-label fw-semibold text-primary-light text-sm mb-8">Language <span class="text-danger-600">*</span> </label>
-                                            <select class="form-control radius-8 form-select" id="Language">
-                                                <option> English</option>
-                                                <option> Bangla </option>
-                                                <option> Hindi</option>
-                                                <option> Arabic</option>
-                                            </select>
+                                            <label for="dob" class="form-label fw-semibold text-primary-light text-sm mb-8">Date of Birth</label>
+                                            <input type="date" class="form-control radius-8" id="dob" [(ngModel)]="staffData.dob" name="dob">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mb-20">
+                                            <label for="joiningDate" class="form-label fw-semibold text-primary-light text-sm mb-8">Joining Date</label>
+                                            <input type="date" class="form-control radius-8" id="joiningDate" [(ngModel)]="staffData.joiningDate" name="joiningDate">
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="mb-20">
-                                            <label for="desc" class="form-label fw-semibold text-primary-light text-sm mb-8">Description</label>
-                                            <textarea name="#0" class="form-control radius-8" id="desc" placeholder="Write description..."></textarea>
+                                            <label for="address" class="form-label fw-semibold text-primary-light text-sm mb-8">Address</label>
+                                            <textarea class="form-control radius-8" id="address" [(ngModel)]="staffData.address" name="address" placeholder="Enter address..."></textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center gap-3">
-                                    <button type="button" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8"> 
+                                    <button type="button" (click)="cancel()" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8"> 
                                         Cancel
                                     </button>
-                                    <button type="button" class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8"> 
+                                    <button type="button" (click)="saveStaff()" class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8"> 
                                         Save
                                     </button>
                                 </div>

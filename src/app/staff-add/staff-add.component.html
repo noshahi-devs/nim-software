@@ -1,148 +1,108 @@
 <div class="dashboard-main-body">
-  <app-breadcrumb [title]="'Staff - Add Staff'" [main-title]="'Add Staff'"></app-breadcrumb>
+    <app-breadcrumb [title]="title"></app-breadcrumb>
 
+    <div class="card h-100 p-0 radius-12">
+        <div class="card-body p-24">
+            <div class="row justify-content-center">
+                <div class="col-xxl-6 col-xl-8 col-lg-10">
+                    <div class="card border">
+                        <div class="card-body">
+                            <h6 class="text-md text-primary-light mb-16">Profile Image</h6>
 
-    <div class="card h-100 p-0 radius-12 overflow-hidden">
-        <div class="card-body p-40">
-            <form action="#">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="mb-20">
-                            <label for="name" class="form-label fw-semibold text-primary-light text-sm mb-8">Full Name
-                                <span class="text-danger-600">*</span></label>
-                            <input type="text" class="form-control radius-8" id="name" placeholder="Enter Full Name">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-20">
-                            <label for="email" class="form-label fw-semibold text-primary-light text-sm mb-8">Email
-                                <span class="text-danger-600">*</span></label>
-                            <input type="email" class="form-control radius-8" id="email"
-                                placeholder="Enter email address">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-20">
-                            <label for="number" class="form-label fw-semibold text-primary-light text-sm mb-8">Phone
-                                Number</label>
-                            <input type="email" class="form-control radius-8" id="number"
-                                placeholder="Enter phone number">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-20">
-                            <label for="number" class="form-label fw-semibold text-primary-light text-sm mb-8">Expereince</label>
-                            <input type="email" class="form-control radius-8" id="number"
-                                placeholder="Enter Experience">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-20">
-                            <label for="Website" class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                Website</label>
-                            <input type="url" class="form-control radius-8" id="Website" placeholder="Website URL">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-20">
-                            <label for="country" class="form-label fw-semibold text-primary-light text-sm mb-8">Country
-                                <span class="text-danger-600">*</span> </label>
-                            <select class="form-control radius-8 form-select" id="country">
-                                <option selected disabled>Select Country</option>
-                                <option>USA</option>
-                                <option>Bangladesh</option>
-                                <option>Pakistan</option>
-                                <option>India</option>
-                                <option>Canada</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-20">
-                            <label for="country" class="form-label fw-semibold text-primary-light text-sm mb-8">Gender
-                                <span class="text-danger-600">*</span> </label>
-                            <select class="form-control radius-8 form-select" id="country">
-                                <option selected disabled>Select Gender</option>
-                                <option>  Male</option>
-                                <option>Female</option>
-                                <option>Other / Prefer not to say</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-20">
-                            <label for="name" class="form-label fw-semibold text-primary-light text-sm mb-8">Education
-                                <span class="text-danger-600">*</span></label>
-                            <input type="text" class="form-control radius-8" id="name" placeholder="Enter ">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-20">
-                            <label for="country" class="form-label fw-semibold text-primary-light text-sm mb-8">Role
-                                <span class="text-danger-600">*</span> </label>
-                            <select class="form-control radius-8 form-select" id="country">
-                                <option selected disabled>Select Role</option>
-                                <option>  Accountant</option>
-                                <option>Principal</option>
-                                <option>Teacher</option>
-                                <option>Admin</option>
-                            </select>
-                        </div>
-                    </div>
+                            <!-- Upload Image Start -->
+                            <div class="mb-24 mt-16">
+                                <div class="avatar-upload">
+                                    <div
+                                        class="avatar-edit position-absolute bottom-0 end-0 me-24 mt-16 z-1 cursor-pointer">
+                                        <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" hidden>
+                                        <label for="imageUpload"
+                                            class="w-32-px h-32-px d-flex justify-content-center align-items-center bg-primary-50 text-primary-600 border border-primary-600 bg-hover-primary-100 text-lg rounded-circle">
+                                            <iconify-icon icon="solar:camera-outline" class="icon"></iconify-icon>
+                                        </label>
+                                    </div>
+                                    <div class="avatar-preview">
+                                        <div id="imagePreview"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Upload Image End -->
 
-                    <div class="col-sm-6">
-                        <div class="mb-20">
-                            <label for="city" class="form-label fw-semibold text-primary-light text-sm mb-8">City <span
-                                    class="text-danger-600">*</span> </label>
-                            <select class="form-control radius-8 form-select" id="city">
-                                <option selected disabled>Select City</option>
-                                <option>Washington</option>
-                                <option>Dhaka</option>
-                                <option>Lahor</option>
-                                <option>Panjab</option>
-                            </select>
+                            <form (ngSubmit)="addStaff()">
+                                <div class="row">
+                                    <div class="col-md-6 mb-20">
+                                        <label for="name" class="form-label fw-semibold text-primary-light text-sm mb-8">Staff Name <span class="text-danger-600">*</span></label>
+                                        <input type="text" class="form-control radius-8" id="name" [(ngModel)]="newStaff.name" name="name" placeholder="Enter Staff Name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <label for="cnic" class="form-label fw-semibold text-primary-light text-sm mb-8">CNIC <span class="text-danger-600">*</span></label>
+                                        <input type="text" class="form-control radius-8" id="cnic" [(ngModel)]="newStaff.cnic" name="cnic" placeholder="Enter CNIC (e.g., 35202-1234567-8)" required>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <label for="gender" class="form-label fw-semibold text-primary-light text-sm mb-8">Gender <span class="text-danger-600">*</span></label>
+                                        <select class="form-control radius-8 form-select" id="gender" [(ngModel)]="newStaff.gender" name="gender" required>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <label for="dob" class="form-label fw-semibold text-primary-light text-sm mb-8">Date Of Birth <span class="text-danger-600">*</span></label>
+                                        <input type="date" class="form-control radius-8" id="dob" [(ngModel)]="newStaff.dob" name="dob" required>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <label for="phone" class="form-label fw-semibold text-primary-light text-sm mb-8">Phone <span class="text-danger-600">*</span></label>
+                                        <input type="text" class="form-control radius-8" id="phone" [(ngModel)]="newStaff.phone" name="phone" placeholder="Enter phone number (e.g., 0312-1234567)" required>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <label for="email" class="form-label fw-semibold text-primary-light text-sm mb-8">Email</label>
+                                        <input type="email" class="form-control radius-8" id="email" [(ngModel)]="newStaff.email" name="email" placeholder="Enter email address">
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <label for="qualification" class="form-label fw-semibold text-primary-light text-sm mb-8">Qualification</label>
+                                        <input type="text" class="form-control radius-8" id="qualification" [(ngModel)]="newStaff.qualification" name="qualification" placeholder="Enter Qualification (e.g., MBA, BS IT)">
+                                    </div>
+                                  
+                                    <div class="col-md-6 mb-20">
+                                        <label for="role" class="form-label fw-semibold text-primary-light text-sm mb-8">Role</label>
+                                        <select class="form-control radius-8 form-select" id="role" [(ngModel)]="newStaff.role" name="role">
+                                            <option value="">Select Role</option>
+                                            <option value="Teacher">Teacher</option>
+                                            <option value="Principal">Principal</option>
+                                            <option value="Admin">Admin</option>
+                                            <option value="Accountant">Accountant</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <label for="joiningDate" class="form-label fw-semibold text-primary-light text-sm mb-8">Joining Date <span class="text-danger-600">*</span></label>
+                                        <input type="date" class="form-control radius-8" id="joiningDate" [(ngModel)]="newStaff.joiningDate" name="joiningDate" required>
+                                    </div>
+                                    <div class="col-md-6 mb-20">
+                                        <label for="status" class="form-label fw-semibold text-primary-light text-sm mb-8">Status <span class="text-danger-600">*</span></label>
+                                        <select class="form-control radius-8 form-select" id="status" [(ngModel)]="newStaff.status" name="status" required>
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                            <option value="On Leave">On Leave</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 mb-20">
+                                        <label for="address" class="form-label fw-semibold text-primary-light text-sm mb-8">Address <span class="text-danger-600">*</span></label>
+                                        <textarea class="form-control radius-8" id="address" [(ngModel)]="newStaff.address" name="address" placeholder="Enter complete address" rows="3" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center gap-3">
+                                    <button type="button" (click)="cancel()"
+                                        class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8">
+                                        Cancel
+                                    </button>
+                                    <button type="submit"
+                                        class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
+                                        Save
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-20">
-                            <label for="state" class="form-label fw-semibold text-primary-light text-sm mb-8">State
-                                <span class="text-danger-600">*</span> </label>
-                            <select class="form-control radius-8 form-select" id="state">
-                                <option selected disabled>Select State</option>
-                                <option>Washington</option>
-                                <option>Dhaka</option>
-                                <option>Lahor</option>
-                                <option>Panjab</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-20">
-                            <label for="zip" class="form-label fw-semibold text-primary-light text-sm mb-8"> Zip Code
-                                <span class="text-danger-600">*</span></label>
-                            <input type="text" class="form-control radius-8" id="zip" placeholder="Zip Code">
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="mb-20">
-                            <label for="address" class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                Address* <span class="text-danger-600">*</span></label>
-                            <input type="text" class="form-control radius-8" id="address"
-                                placeholder="Enter Your Address">
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center gap-3 mt-24">
-                        <button type="reset"
-                            class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-40 py-11 radius-8">
-                            Reset
-                        </button>
-                        <button type="submit"
-                            class="btn btn-primary border border-primary-600 text-md px-24 py-12 radius-8">
-                            Save Change
-                        </button>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

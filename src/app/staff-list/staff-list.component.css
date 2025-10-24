@@ -2,7 +2,7 @@
 .staff {
   padding: 1.5rem;
   font-family: "Poppins", sans-serif;
-  background-color: #f9fafc;
+  /* background-color: #f9fafc; */
   min-height: 100vh;
 }
 
@@ -179,4 +179,58 @@
   font-size: 0.9rem;
   margin-top: 0.5rem;
   color: #333;
+}
+
+/* === Compact Staff Cards === */
+.user-grid-card .position-relative {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #fff;
+  min-height: auto;
+}
+
+.user-grid-card .position-relative:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Line clamp for text overflow */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Compact card sizing */
+.user-grid-card .p-16 {
+  padding: 1rem;
+}
+
+.user-grid-card .w-70-px {
+  width: 70px;
+}
+
+.user-grid-card .h-70-px {
+  height: 70px;
+}
+
+.user-grid-card .mb-12 {
+  margin-bottom: 0.75rem;
+}
+
+.user-grid-card .mb-4 {
+  margin-bottom: 0.25rem;
+}
+
+.user-grid-card .mb-8 {
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .user-grid-card .w-70-px,
+  .user-grid-card .h-70-px {
+    width: 60px;
+    height: 60px;
+  }
 }
