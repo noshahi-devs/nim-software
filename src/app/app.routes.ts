@@ -99,13 +99,14 @@ import { StaffManageLoginComponent } from './staff-manage-login/staff-manage-log
 import { StaffViewProfileComponent } from './staff-view-profile/staff-view-profile.component';
 import { StaffEditProfileComponent } from './staff-edit-profile/staff-edit-profile.component';
 import { NewClassComponent } from './newclass/newclass.component';
+import { ClassManagementComponent } from './class-management/class-management.component';
 
 export const routes: Routes = [
     {
         path: '',
         component: SideNavComponent,
         children: [
-            { path: '', redirectTo: 'class', pathMatch: 'full' },
+            { path: '', redirectTo: 'widgets', pathMatch: 'full' },
             { path: 'class', component: ClassComponent },
             { path: 'add-blog', component: AddBlogComponent },
             { path: 'add-user', component: AddUserComponent },
@@ -202,16 +203,17 @@ export const routes: Routes = [
             { path: 'wizard', component: WizardComponent },
             { path: 'error', component: ErrorComponent },
             { path: 'newclass', component: NewClassComponent },
+            { path: 'class-management', component: ClassManagementComponent },
             
         ]
-    },
+    },  
     { path: 'coming-soon', component: ComingSoonComponent },
     { path: 'maintenance', component: MaintenanceComponent },
     { path: 'sign-in', component: SignInComponent },
     { path: 'sign-up', component: SignUpComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
 
-    { path: '', redirectTo: 'class', pathMatch: 'full' },
+    { path: '', redirectTo: 'widgets', pathMatch: 'full' },
     { path: '**', redirectTo : 'error', pathMatch: 'full'}
 ];
 

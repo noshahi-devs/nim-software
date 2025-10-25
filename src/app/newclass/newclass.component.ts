@@ -1,5 +1,9 @@
 import { AfterViewInit } from '@angular/core';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 declare var $: any;
 import {
   NgApexchartsModule,
@@ -13,17 +17,32 @@ import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './newclass.component.html',
   styleUrl: './newclass.component.css',
-  imports: [NgApexchartsModule, BreadcrumbComponent]
+  imports: [NgApexchartsModule, BreadcrumbComponent, CommonModule, FormsModule]
 })
 export class NewClassComponent implements AfterViewInit {
-  title = 'Home';
+  title = 'Add New Class';
+
+  classData = {
+    className: '',
+    monthlyFees: 0,
+    teacherId: ''
+  };
+
+  teachers = [
+    { id: 1, name: 'Mr. Ahmed Khan' },
+    { id: 2, name: 'Mr. Ali Raza' },
+    { id: 3, name: 'Ms. Sara Ahmed' },
+    { id: 4, name: 'Ms. Fatima Noor' },
+    { id: 5, name: 'Mr. Hassan Ali' },
+    { id: 6, name: 'Ms. Ayesha Malik' }
+  ];
 
   @ViewChild("chart") chart: ChartComponent;
   chartOptions;
   barChartOptions;
   donutChartOptions;
   paymentStatusChartOptions;
-  constructor() {
+  constructor(private router: Router) {
     this.chartOptions = {
       series: [
         {
@@ -327,6 +346,55 @@ export class NewClassComponent implements AfterViewInit {
 
 
   }
+  createClass(): void {
+    if (!this.classData.className || !this.classData.monthlyFees || !this.classData.teacherId) {
+      Swal.fire({ 
+        icon: 'error', 
+        title: 'Error', 
+        text: 'Please fill all required fields', 
+        toast: true, 
+        position: 'top-end', 
+        showConfirmButton: false, 
+        timer: 3000 
+      });
+      return;
+    }
+
+    // Save to localStorage
+    const classes = JSON.parse(localStorage.getItem('classes') || '[]');
+    classes.push({
+      ...this.classData,
+      id: classes.length + 1,
+      createdOn: new Date().toISOString().split('T')[0]
+    });
+    localStorage.setItem('classes', JSON.stringify(classes));
+
+    Swal.fire({ 
+      icon: 'success', 
+      title: 'Success', 
+      text: 'Class created successfully!', 
+      toast: true, 
+      position: 'top-end', 
+      showConfirmButton: false, 
+      timer: 3000 
+    });
+
+    this.resetForm();
+    
+    // Redirect to all classes page after 1 second
+    setTimeout(() => {
+      this.router.navigate(['/class']);
+    }, 1000);
+  }
+
+  resetForm(): void {
+    this.classData = {
+      className: '',
+      monthlyFees: 0,
+      teacherId: ''
+    };
+  }
+
   ngAfterViewInit(): void {
     $('#world-map').vectorMap(
       {
