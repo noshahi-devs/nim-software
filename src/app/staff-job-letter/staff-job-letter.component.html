@@ -1,59 +1,5 @@
 <div class="dashboard-main-body">
   <app-breadcrumb [title]="'Staff Job Letter'"></app-breadcrumb>
-<!-- 
-  <div class="card mb-24">
-    <div class="card-body p-16">
-      <h5 class="mb-20 fw-bold">Search Staff Member</h5>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <div class="position-relative">
-            <input 
-              type="text" 
-              class="form-control radius-8 h-56-px ps-48 text-md" 
-              [(ngModel)]="searchTerm" 
-              (input)="searchStaff()" 
-              (keyup)="searchStaff()"
-              placeholder="Search by Name, Email, CNIC, or Phone"
-              style="font-size: 16px; padding-left: 48px;"
-            />
-            <iconify-icon icon="ion:search-outline" class="position-absolute top-50 translate-middle-y start-0 ms-16 text-secondary-light text-xl"></iconify-icon>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <button type="button" class="btn btn-primary h-56-px w-100 radius-8 d-flex align-items-center justify-content-center gap-2" (click)="scanCNIC()">
-            <iconify-icon icon="mdi:qrcode-scan" class="text-xl"></iconify-icon>
-            Scan
-          </button>
-        </div>
-      </div>
-      
-      <div *ngIf="filteredStaffList.length > 0 && searchTerm" class="mt-16 border radius-12 bg-base shadow-sm" style="max-height: 400px; overflow-y: auto;">
-        <div 
-          *ngFor="let staff of filteredStaffList" 
-          (click)="selectStaff(staff)"
-          class="p-16 border-bottom cursor-pointer"
-          style="cursor: pointer; transition: background 0.2s;"
-          onmouseover="this.style.backgroundColor='#f8f9fa'"
-          onmouseout="this.style.backgroundColor='white'"
-        >
-          <div class="d-flex align-items-center gap-16">
-            <img [src]="staff.profile" class="w-56-px h-56-px rounded-circle object-fit-cover border" />
-            <div class="flex-grow-1">
-              <h6 class="mb-4 text-md fw-bold">{{ staff.name }}</h6>
-              <p class="mb-2 text-sm text-secondary-light"><strong>Role:</strong> {{ staff.role || staff.designation }}</p>
-              <p class="mb-0 text-sm text-secondary-light"><strong>CNIC:</strong> {{ staff.cnic }}</p>
-            </div>
-            <iconify-icon icon="solar:arrow-right-linear" class="text-xl text-primary-600"></iconify-icon>
-          </div>
-        </div>
-      </div>
-      
-      <div *ngIf="filteredStaffList.length === 0 && searchTerm" class="mt-16 p-24 text-center border radius-12 bg-neutral-50">
-        <iconify-icon icon="mdi:account-search-outline" class="text-xxl text-secondary-light mb-8"></iconify-icon>
-        <p class="mb-0 text-md text-secondary-light">No staff found matching "<strong>{{ searchTerm }}</strong>"</p>
-      </div>
-    </div>
-  </div> -->
 <div class="card mb-24">
   <div class="card-body p-16">
     <div class="row align-items-end g-3 py-28">

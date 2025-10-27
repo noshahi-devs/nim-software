@@ -19,56 +19,54 @@ export class StaffViewProfileComponent implements OnInit, AfterViewInit {
 
   // Sample staff data - replace with actual service call
   staffList = this.loadStaffFromStorage() || [
-    {
-      id: 1,
-      name: 'Ayesha Khan',
-      cnic: '35202-1234567-8',
-      gender: 'Female',
-      dob: '1995-08-15',
-      phone: '0312-1234567',
-      email: 'ayesha.khan@noshahi.edu.pk',
-      qualification: 'MBA',
-      section: 'Administration',
-      address: 'Lahore, Pakistan',
-      joiningDate: '2021-02-12',
-      profile: 'assets/images/user-grid/user-grid-img2.png',
-      status: 'Active',
-      bg: 'assets/images/user-grid/user-grid-bg2.png',
-      designation: 'Office Assistant'
+    {id: 1,
+        name: 'Ayesha Khan',
+        cnic: '35202-1234567-8',
+        gender: 'Female',
+        dob: '1995-08-15',
+        phone: '0312-1234567',
+        email: 'ayesha.khan@noshahi.edu.pk',
+        qualification: 'MBA',
+        address: 'Lahore, Pakistan',
+        joiningDate: '2021-02-12',
+        profile: 'assets/images/user-grid/user-grid-img2.png',
+        status: 'Active',
+        bg: 'assets/images/user-grid/user-grid-bg2.png',
+        role: 'Teacher',
+        experience: '2 years'
+    },
+    {        id: 2,
+        name: 'Bilal Ahmad',
+        cnic: '35201-7654321-9',
+        gender: 'Male',
+        dob: '1990-03-12',
+        phone: '0321-9876543',
+        email: 'bilal.ahmad@noshahi.edu.pk',
+        qualification: 'B.Com',
+        address: 'Faisalabad, Pakistan',
+        joiningDate: '2019-06-01',
+        profile: 'assets/images/user-grid/user-grid-img3.png',
+        status: 'Active',
+        bg: 'assets/images/user-grid/user-grid-bg3.png',
+        role: 'Principal',
+        experience: '2 years'
     },
     {
-      id: 2,
-      name: 'Bilal Ahmad',
-      cnic: '35201-7654321-9',
-      gender: 'Male',
-      dob: '1990-03-12',
-      phone: '0321-9876543',
-      email: 'bilal.ahmad@noshahi.edu.pk',
-      qualification: 'B.Com',
-      section: 'Accounts',
-      address: 'Faisalabad, Pakistan',
-      joiningDate: '2019-06-01',
-      profile: 'assets/images/user-grid/user-grid-img3.png',
-      status: 'Active',
-      bg: 'assets/images/user-grid/user-grid-bg3.png',
-      designation: 'Finance Officer'
-    },
-    {
-      id: 3,
-      name: 'Hamza Tariq',
-      cnic: '35203-2222333-4',
-      gender: 'Male',
-      dob: '1997-01-10',
-      phone: '0301-2223344',
-      email: 'hamza.tariq@noshahi.edu.pk',
-      qualification: 'BS IT',
-      section: 'IT Support',
-      address: 'Multan, Pakistan',
-      joiningDate: '2020-09-10',
-      profile: 'assets/images/user-grid/user-grid-img4.png',
-      status: 'Active',
-      bg: 'assets/images/user-grid/user-grid-bg4.png',
-      designation: 'System Technician'
+             id: 3,
+        name: 'Hamza Tariq',
+        cnic: '35203-2222333-4',
+        gender: 'Male',
+        dob: '1997-01-10',
+        phone: '0301-2223344',
+        email: 'hamza.tariq@noshahi.edu.pk',
+        qualification: 'BS IT',
+        address: 'Multan, Pakistan',
+        joiningDate: '2020-09-10',
+        profile: 'assets/images/user-grid/user-grid-img4.png',
+        status: 'Active',
+        bg: 'assets/images/user-grid/user-grid-bg4.png',
+        role: 'Accountant',
+        experience: '2 years'
     }
   ];
 
@@ -88,17 +86,30 @@ export class StaffViewProfileComponent implements OnInit, AfterViewInit {
     return data ? JSON.parse(data) : null;
   }
 
-  loadStaffData() {
-    // Reload from localStorage to get latest data
-    this.staffList = this.loadStaffFromStorage() || this.staffList;
-    // Find staff by ID
-    this.staffData = this.staffList.find(staff => staff.id === this.staffId);
-    if (!this.staffData) {
-      console.error('Staff not found with ID:', this.staffId);
-    } else {
-      console.log('Staff data loaded:', this.staffData);
-    }
+ loadStaffData() {
+  // Reload from localStorage or default list
+  let loadedList = this.loadStaffFromStorage();
+  
+  // If localStorage data exists but doesn't have role field, clear it and use default
+  if (loadedList && loadedList.length > 0 && !loadedList[0].hasOwnProperty('role')) {
+    console.warn('localStorage data missing role field, using default data');
+    localStorage.removeItem(this.STORAGE_KEY);
+    loadedList = null;
   }
+  
+  this.staffList = loadedList || this.staffList;
+
+  // Convert to number and find matching staff
+  this.staffData = this.staffList.find(staff => +staff.id === +this.staffId);
+
+  if (!this.staffData) {
+    console.error('Staff not found with ID:', this.staffId);
+  } else {
+    console.log('Staff data loaded:', this.staffData);
+    console.log('Role:', this.staffData.role);
+  }
+}
+
 
   goBack() {
     // Navigate back to staff list
@@ -137,4 +148,7 @@ export class StaffViewProfileComponent implements OnInit, AfterViewInit {
         reader.readAsDataURL(input.files[0]);
       }
     }
+    editStaff(id: number) {
+  this.router.navigate(['/staff-edit', id]);
+}
 }
