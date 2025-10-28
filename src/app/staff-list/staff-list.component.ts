@@ -1,32 +1,3 @@
-// import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-// declare var $: any;
-// import {
-//   NgApexchartsModule,
-//   ChartComponent
-// } from 'ng-apexcharts';
-// import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-// import { Router, RouterLink } from '@angular/router';
-// @Component({
-//   selector: 'app-staff-list',
-//   standalone: true,
-//   imports: [NgApexchartsModule, CommonModule,
-//     FormsModule, RouterLink],
-//   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-//   templateUrl: './staff-list.component.html',
-//   styleUrl: './staff-list.component.css'
-// })
-// export class StaffListComponent implements AfterViewInit {
-//   title = 'Users List';
-//   constructor() { }
-
-//   ngAfterViewInit() {
-//     $('.delete-btn').on('click', function () {
-//       $(this).closest('.user-grid-card').addClass('d-none')
-//     });
-
-//   }
-
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -58,13 +29,13 @@ export class StaffListComponent implements OnInit, AfterViewInit {
       phone: '0312-1234567',
       email: 'ayesha.khan@noshahi.edu.pk',
       qualification: 'MBA',
-      section: 'Administration',
       address: 'Lahore, Pakistan',
       joiningDate: '2021-02-12',
       profile: 'assets/images/user-grid/user-grid-img2.png',
       status: 'Active',
       bg: 'assets/images/user-grid/user-grid-bg2.png',
-      designation: 'Office Assistant'
+      role: 'Teacher',
+      experience: '2 years',
     },
     {
       id: 2,
@@ -75,13 +46,13 @@ export class StaffListComponent implements OnInit, AfterViewInit {
       phone: '0321-9876543',
       email: 'bilal.ahmad@noshahi.edu.pk',
       qualification: 'B.Com',
-      section: 'Accounts',
       address: 'Faisalabad, Pakistan',
       joiningDate: '2019-06-01',
       profile: 'assets/images/user-grid/user-grid-img3.png',
       status: 'Active',
       bg: 'assets/images/user-grid/user-grid-bg3.png',
-      designation: 'Finance Officer'
+      role: 'Principal',
+      experience: '2 years'
     },
     {
       id: 3,
@@ -92,12 +63,13 @@ export class StaffListComponent implements OnInit, AfterViewInit {
       phone: '0301-2223344',
       email: 'hamza.tariq@noshahi.edu.pk',
       qualification: 'BS IT',
-      section: 'IT Support',
       address: 'Multan, Pakistan',
       joiningDate: '2020-09-10',
       profile: 'assets/images/user-grid/user-grid-img4.png',
       status: 'Active',
       bg: 'assets/images/user-grid/user-grid-bg4.png',
+      role: 'Accountant',
+      experience: '2 years',
     }
   ];
 
@@ -111,7 +83,6 @@ export class StaffListComponent implements OnInit, AfterViewInit {
     return this.staffList.filter(staff => 
       staff.name.toLowerCase().includes(search) ||
       staff.email.toLowerCase().includes(search) ||
-      staff.designation.toLowerCase().includes(search) ||
       staff.section.toLowerCase().includes(search) ||
       staff.phone.includes(search)
     );
