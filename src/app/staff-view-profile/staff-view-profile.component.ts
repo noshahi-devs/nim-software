@@ -63,7 +63,7 @@ export class StaffViewProfileComponent implements OnInit, AfterViewInit {
         address: 'Multan, Pakistan',
         joiningDate: '2020-09-10',
         profile: 'assets/images/user-grid/user-grid-img4.png',
-        status: 'Active',
+        status: 'active',
         bg: 'assets/images/user-grid/user-grid-bg4.png',
         role: 'Accountant',
         experience: '2 years'

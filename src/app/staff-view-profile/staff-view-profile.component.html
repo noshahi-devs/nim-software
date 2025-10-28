@@ -18,8 +18,8 @@
               <span 
                 class="position-absolute bottom-0 end-0 badge rounded-pill"
                 [ngClass]="{
-                  'bg-success': staffData.status === 'Active',
-                  'bg-danger': staffData.status === 'Inactive'
+                  'bg-success': staffData.status === 'active',
+                  'bg-danger': staffData.status === 'inactive'
                 }"
                 style="padding: 8px 12px; font-size: 11px;">
                 {{ staffData.status }}
@@ -138,7 +138,8 @@
               <div class="col-md-6">
                 <div class="info-item py-3 px-4 border-bottom">
                   <div class="field-label text-muted small mb-1">Role</div>
-                  <div class="field-value fw-semibold text-dark">{{ staffData?.role }}</div>
+                  <div class="field-value fw-semibold text-dark">{{ staffData?.role || 'No Role Data' }}</div>
+                  <!-- Debug: {{ staffData | json }} -->
                 </div>
               </div>
 
