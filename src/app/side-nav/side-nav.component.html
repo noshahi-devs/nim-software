@@ -18,7 +18,7 @@
 
         
         <li>
-          <a routerLink="/widgets">
+          <a routerLink="/dashboard">
            <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
             <span>Dashboard</span>
           </a>
@@ -66,21 +66,10 @@
           </ul> 
           
         </li> -->
-<!-- Class -->
-<li class="dropdown">
-  <a href="javascript:void(0)">
-    <iconify-icon icon="mdi:google-classroom" class="menu-icon"></iconify-icon>
-    <span>Class</span>
-  </a>
-  <ul class="sidebar-submenu">
-    <li><a routerLink="/class"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> All Classes</a></li>
-    <li><a routerLink="/newclass"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Add New Class</a></li>
-    <li><a routerLink="/class-management"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Class Manage</a></li>
-  </ul>
-</li>
+
 
 <!-- Section -->
-<li class="dropdown">
+<!-- <li class="dropdown">
   <a href="javascript:void(0)">
     <iconify-icon icon="mdi:view-list" class="menu-icon"></iconify-icon>
     <span>Section</span>
@@ -89,10 +78,10 @@
     <li><a routerLink="/section"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Create</a></li>
     <li><a routerLink="/section"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> View</a></li>
   </ul>
-</li>
+</li> -->
 
 <!-- Student -->
-<li class="dropdown">
+<!-- <li class="dropdown">
   <a href="javascript:void(0)">
     <iconify-icon icon="mdi:account-school" class="menu-icon"></iconify-icon>
     <span>Student</span>
@@ -101,7 +90,7 @@
     <li><a routerLink="/student"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Add</a></li>
     <li><a routerLink="/student"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> List</a></li>
   </ul>
-</li>
+</li> -->
 
 <!-- Staff -->
 <li class="dropdown">
@@ -133,9 +122,20 @@
   </ul>
 </li>
 
-
-<!-- Subject -->
+<!-- Class -->
 <li class="dropdown">
+  <a href="javascript:void(0)">
+    <iconify-icon icon="mdi:google-classroom" class="menu-icon"></iconify-icon>
+    <span>Class</span>
+  </a>
+  <ul class="sidebar-submenu">
+    <li><a routerLink="/newclass"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Add New Class</a></li>
+    <!-- <li><a routerLink="/newclass"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Add New Class</a></li> -->
+    <li><a routerLink="/class-management"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Class Manage</a></li>
+  </ul>
+</li>
+<!-- Subject -->
+<!-- <li class="dropdown">
   <a href="javascript:void(0)">
     <iconify-icon icon="mdi:book-open-variant" class="menu-icon"></iconify-icon>
     <span>Subject</span>
@@ -144,10 +144,10 @@
     <li><a routerLink="/subject"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Add</a></li>
     <li><a routerLink="/subject"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> List</a></li>
   </ul>
-</li>
+</li> -->
 
 <!-- Fee -->
-<li class="dropdown">
+<!-- <li class="dropdown">
   <a href="javascript:void(0)">
     <iconify-icon icon="hugeicons:invoice-03" class="menu-icon"></iconify-icon>
     <span>Fee</span>
@@ -156,10 +156,10 @@
     <li><a routerLink="/fee"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Generate</a></li>
     <li><a routerLink="/fee"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> History</a></li>
   </ul>
-</li>
+</li> -->
 
 <!-- Salary -->
-<li class="dropdown">
+<!-- <li class="dropdown">
   <a href="javascript:void(0)">
     <iconify-icon icon="mdi:cash-multiple" class="menu-icon"></iconify-icon>
     <span>Salary</span>
@@ -168,10 +168,10 @@
     <li><a routerLink="/salary"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Pay</a></li>
     <li><a routerLink="/salary"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> History</a></li>
   </ul>
-</li>
+</li> -->
 
 <!-- Attendance -->
-<li class="dropdown">
+<!-- <li class="dropdown">
   <a href="javascript:void(0)">
     <iconify-icon icon="mdi:calendar-check" class="menu-icon"></iconify-icon>
     <span>Attendance</span>
@@ -180,10 +180,10 @@
     <li><a routerLink="/attendance"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Student</a></li>
     <li><a routerLink="/attendance"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Staff</a></li>
   </ul>
-</li>
+</li> -->
 
 <!-- Leave -->
-<li class="dropdown">
+<!-- <li class="dropdown">
   <a href="javascript:void(0)">
     <iconify-icon icon="mdi:calendar-month" class="menu-icon"></iconify-icon>
     <span>Leave</span>
@@ -192,10 +192,10 @@
     <li><a routerLink="/leave"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Apply</a></li>
     <li><a routerLink="/leave"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Manage</a></li>
   </ul>
-</li>
+</li> -->
 
 <!-- Exam -->
-<li class="dropdown">
+<!-- <li class="dropdown">
   <a href="javascript:void(0)">
     <iconify-icon icon="mdi:school-outline" class="menu-icon"></iconify-icon>
     <span>Exam</span>
@@ -204,10 +204,10 @@
     <li><a routerLink="/exam"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Create</a></li>
     <li><a routerLink="/exam"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Results</a></li>
   </ul>
-</li>
+</li> -->
 
 <!-- Report -->
-<li class="dropdown">
+<!-- <li class="dropdown">
   <a href="javascript:void(0)">
     <iconify-icon icon="mdi:file-chart" class="menu-icon"></iconify-icon>
     <span>Report</span>
@@ -217,10 +217,10 @@
     <li><a routerLink="/report"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Staff</a></li>
     <li><a routerLink="/report"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Finance</a></li>
   </ul>
-</li>
+</li> -->
 
 <!-- Settings -->
-<li class="dropdown">
+<!-- <li class="dropdown">
   <a href="javascript:void(0)">
     <iconify-icon icon="mdi:cog" class="menu-icon"></iconify-icon>
     <span>Settings</span>
@@ -229,14 +229,14 @@
     <li><a routerLink="/settings"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> General</a></li>
     <li><a routerLink="/settings"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Notifications</a></li>
   </ul>
-</li>
+</li> -->
 
 
 
 
 
 
-        <li class="sidebar-menu-group-title">Application</li>
+        <!-- <li class="sidebar-menu-group-title">Application</li>
         <li>
           <a routerLink="/email">
             <iconify-icon icon="mage:email" class="menu-icon"></iconify-icon>
@@ -261,11 +261,11 @@
             <span>Kanban</span>
           </a>
         </li>
+ -->
 
 
 
-
-
+<!-- 
         
         <li class="dropdown">
           <a href="javascript:void(0)">
@@ -646,7 +646,7 @@
               <a routerLink="/payment-gateway"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> Payment Gateway</a>
             </li>
           </ul>
-        </li>
+        </li> -->
         
       </ul>
     </div>
@@ -1059,7 +1059,7 @@
           </p>
         </div>
         <div class="col-auto">
-          <p class="mb-0">Made by <span class="text-primary-600">Laiba Noshahi
+          <p class="mb-0">Made by <span class="text-primary-600">Noshahi Developer's INC.
 
           </span></p>
         </div>

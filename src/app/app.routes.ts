@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { ClassComponent } from './class/class.component';
 import { AddBlogComponent } from './add-blog/add-blog.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { AlertComponent } from './alert/alert.component';
@@ -100,14 +99,15 @@ import { StaffViewProfileComponent } from './staff-view-profile/staff-view-profi
 import { StaffEditProfileComponent } from './staff-edit-profile/staff-edit-profile.component';
 import { NewClassComponent } from './newclass/newclass.component';
 import { ClassManagementComponent } from './class-management/class-management.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const routes: Routes = [
     {
         path: '',
         component: SideNavComponent,
         children: [
-            { path: '', redirectTo: 'widgets', pathMatch: 'full' },
-            { path: 'class', component: ClassComponent },
+            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+            { path: 'dashboard', component: DashboardComponent },
             { path: 'add-blog', component: AddBlogComponent },
             { path: 'add-user', component: AddUserComponent },
             { path: 'alert', component: AlertComponent },
@@ -213,7 +213,7 @@ export const routes: Routes = [
     { path: 'sign-up', component: SignUpComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
 
-    { path: '', redirectTo: 'widgets', pathMatch: 'full' },
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: '**', redirectTo : 'error', pathMatch: 'full'}
 ];
 

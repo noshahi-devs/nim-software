@@ -11,12 +11,12 @@ import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
   selector: 'app-home',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './class.component.html',
-  styleUrl: './class.component.css',
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css',
   imports: [NgApexchartsModule, BreadcrumbComponent]
 })
-export class ClassComponent implements AfterViewInit {
-  title = 'Home';
+export class DashboardComponent implements AfterViewInit {
+  title = 'School Dashboard';
 
   @ViewChild("chart") chart: ChartComponent;
   chartOptions;
@@ -27,8 +27,8 @@ export class ClassComponent implements AfterViewInit {
     this.chartOptions = {
       series: [
         {
-          name: 'This month',
-          data: [10, 20, 12, 30, 14, 35, 16, 32, 14, 25, 13, 28],
+          name: 'Fee Collection (in thousands)',
+          data: [10, 12, 11, 15, 13, 18, 16, 20, 17, 22, 19, 25],
         },
       ],
       chart: {
@@ -140,7 +140,7 @@ export class ClassComponent implements AfterViewInit {
     // bar chart 
     this.barChartOptions = {
       series: [{
-        name: "Sales",
+        name: "New Admissions",
         data: [{
           x: 'Sun',
           y: 15,
@@ -219,8 +219,8 @@ export class ClassComponent implements AfterViewInit {
     };
 
     this.donutChartOptions = {
-      series: [500, 500, 500],
-      colors: ['#FF9F29', '#487FFF', '#E4F1FF'],
+      series: [1165, 85, 1250],
+      colors: ['#487FFF', '#FF9F29', '#E4F1FF'],
       labels: ['Active', 'New', 'Total'] ,
       legend: {
           show: false 
@@ -275,11 +275,11 @@ export class ClassComponent implements AfterViewInit {
     };
     this.paymentStatusChartOptions = {
       series: [{
-        name: 'Net Profit',
-        data: [20000, 16000, 14000, 25000, 45000, 18000, 28000, 11000, 26000, 48000, 18000, 22000]
+        name: 'Fee Collection',
+        data: [20000, 22000, 21000, 25000, 28000, 26000, 30000, 27000, 29000, 32000, 30000, 35000]
       },{
-        name: 'Revenue',
-        data: [15000, 18000, 19000, 20000, 35000, 20000, 18000, 13000, 18000, 38000, 14000, 16000]
+        name: 'Expenses',
+        data: [15000, 16000, 17000, 18000, 19000, 18500, 20000, 19000, 21000, 22000, 21000, 23000]
       }],
       colors: ['#487FFF', '#FF9F29'],
       labels: ['Active', 'New', 'Total'],
