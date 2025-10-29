@@ -47,10 +47,15 @@ export class StaffAddComponent implements AfterViewInit {
     this.setDefaultValues();
   }
 
-  // Set default values (only for optional fields)
+  // Set default values
   setDefaultValues(): void {
-    // Set default for optional field only
+    // Set defaults for fields
     this.newStaff.experience = '1+';
+    this.newStaff.gender = 'Male';
+    this.newStaff.status = 'Active';
+    this.newStaff.role = 'Teacher';
+    this.newStaff.qualification = 'bachelors';
+    this.newStaff.subject = 'bsEnglish';
   }
 
   // Email validation
