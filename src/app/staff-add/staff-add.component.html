@@ -118,10 +118,10 @@
                 [ngClass]="{ 'is-invalid': role.invalid && role.touched }"
               >
                 <option value="">Select Role</option>
-                <option value="Teacher">Teacher</option>
-                <option value="Principal">Principal</option>
-                <option value="Admin">Admin</option>
-                <option value="Accountant">Accountant</option>
+                <option value="teacher">Teacher</option>
+                <option value="principal">Principal</option>
+                <option value="admin">Admin</option>
+                <option value="accountant">Accountant</option>
               </select>
               <small *ngIf="role.invalid && role.touched" class="text-danger">
                 This field is required
@@ -145,7 +145,7 @@
                 name="experience"
               >
                 <option value="">Select Experience</option>
-                <option value="Fresh">Fresh</option>
+                <option value="fresh">Fresh</option>
                 <option value="1+">1+ Year</option>
                 <option value="2+">2+ Year</option>
                 <option value="3+">3+ Year</option>
@@ -178,8 +178,8 @@
                 [ngClass]="{ 'is-invalid': gender.invalid && gender.touched }"
               >
                 <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </select>
               <small *ngIf="gender.invalid && gender.touched" class="text-danger">
                 This field is required
@@ -423,8 +423,8 @@
                 [ngClass]="{ 'is-invalid': status.invalid && status.touched }"
               >
                 <option value="">Select Status</option>
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
               </select>
               <small *ngIf="status.invalid && status.touched" class="text-danger">
                 This field is required
