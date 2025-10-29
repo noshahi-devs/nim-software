@@ -92,7 +92,6 @@ export class StaffViewProfileComponent implements OnInit, AfterViewInit {
   
   // If localStorage data exists but doesn't have role field, clear it and use default
   if (loadedList && loadedList.length > 0 && !loadedList[0].hasOwnProperty('role')) {
-    console.warn('localStorage data missing role field, using default data');
     localStorage.removeItem(this.STORAGE_KEY);
     loadedList = null;
   }
@@ -101,13 +100,6 @@ export class StaffViewProfileComponent implements OnInit, AfterViewInit {
 
   // Convert to number and find matching staff
   this.staffData = this.staffList.find(staff => +staff.id === +this.staffId);
-
-  if (!this.staffData) {
-    console.error('Staff not found with ID:', this.staffId);
-  } else {
-    console.log('Staff data loaded:', this.staffData);
-    console.log('Role:', this.staffData.role);
-  }
 }
 
 

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 
+declare var bootstrap: any;
+
 interface Login {
   id: number;
   name: string;
@@ -35,6 +37,11 @@ export class StaffManageLoginComponent implements OnInit {
   showDialog: boolean = false;
   isEditMode: boolean = false;
 
+  // Modal states
+  modalMessage: string = '';
+  modalType: 'success' | 'error' | 'confirm' = 'success';
+  deleteTarget: Login | null = null;
+
   // Form Data
   loginForm: Login = this.getEmptyForm();
   confirmPassword: string = '';
@@ -62,47 +69,54 @@ export class StaffManageLoginComponent implements OnInit {
     this.loadStaffData();
   }
 
+  // Show modal by ID
+  showModal(id: string) {
+    const modalEl = document.getElementById(id);
+    if (modalEl) {
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+    }
+  }
+
+  // Hide modal by ID
+  hideModal(id: string) {
+    const modalEl = document.getElementById(id);
+    if (modalEl) {
+      const modal = bootstrap.Modal.getInstance(modalEl);
+      if (modal) {
+        modal.hide();
+      }
+    }
+  }
+
   loadStaffData(): void {
-    console.log('Loading staff data...');
-    
     // Load from localStorage
     const savedLogins = localStorage.getItem('staffLogins');
-    console.log('Saved logins:', savedLogins);
     
     if (savedLogins) {
       this.logins = JSON.parse(savedLogins);
-      console.log('Loaded from staffLogins:', this.logins);
     } else {
       // Load staff data from staff list
       const staffData = localStorage.getItem('staffList');
-      console.log('Staff data from staffList:', staffData);
       
       if (staffData) {
         const staffList = JSON.parse(staffData);
-        console.log('Parsed staff list:', staffList);
-        console.log('Staff list length:', staffList.length);
         
-        this.logins = staffList.map((staff: any, index: number) => {
-          const login = {
-            id: index + 1,
-            name: staff.name,
-            email: staff.email || `${staff.name.toLowerCase().replace(/\s+/g, '.')}@noshahi.edu.pk`,
-            password: 'password123', // Default password
-            role: staff.role || staff.designation || 'Teacher',
-            campus: 'Main Campus', // Default campus
-            phone: staff.phone || staff.cnic || 'N/A',
-            status: staff.status || 'Active',
-            createdOn: staff.joiningDate || new Date().toISOString().split('T')[0]
-          };
-          console.log(`Mapped staff ${index + 1}:`, login);
-          return login;
-        });
+        this.logins = staffList.map((staff: any, index: number) => ({
+          id: index + 1,
+          name: staff.name,
+          email: staff.email || `${staff.name.toLowerCase().replace(/\s+/g, '.')}@noshahi.edu.pk`,
+          password: 'password123', // Default password
+          role: staff.role || staff.designation || 'Teacher',
+          campus: 'Main Campus', // Default campus
+          phone: staff.phone || staff.cnic || 'N/A',
+          status: staff.status || 'Active',
+          createdOn: staff.joiningDate || new Date().toISOString().split('T')[0]
+        }));
         
-        console.log('Total logins created:', this.logins.length);
         // Save to staffLogins for future use
         this.saveToLocalStorage();
       } else {
-        console.log('No staff data found, using mock data');
         // Default mock data if no staff exists
         this.logins = [
           { id: 1, name: 'Ali Khan', email: 'ali@noshahi.edu.pk', role: 'Teacher', campus: 'Main Campus', phone: '0300-1234567', status: 'Active', createdOn: '2023-02-10' },
@@ -112,8 +126,6 @@ export class StaffManageLoginComponent implements OnInit {
     }
     
     this.filteredLogins = [...this.logins];
-    console.log('Final logins:', this.logins);
-    console.log('Filtered logins:', this.filteredLogins);
   }
 
   saveToLocalStorage(): void {
@@ -159,17 +171,23 @@ export class StaffManageLoginComponent implements OnInit {
   saveLogin(): void {
     // Validation
     if (!this.loginForm.name || !this.loginForm.email || !this.loginForm.role || !this.loginForm.campus || !this.loginForm.phone) {
-      alert('Please fill all required fields');
+      this.modalMessage = 'Please fill all required fields';
+      this.modalType = 'error';
+      this.showModal('messageModal');
       return;
     }
 
     if (!this.isEditMode) {
       if (!this.loginForm.password || !this.confirmPassword) {
-        alert('Please enter password');
+        this.modalMessage = 'Please enter password';
+        this.modalType = 'error';
+        this.showModal('messageModal');
         return;
       }
       if (this.loginForm.password !== this.confirmPassword) {
-        alert('Passwords do not match');
+        this.modalMessage = 'Passwords do not match';
+        this.modalType = 'error';
+        this.showModal('messageModal');
         return;
       }
     }
@@ -180,25 +198,44 @@ export class StaffManageLoginComponent implements OnInit {
       if (index !== -1) {
         this.logins[index] = { ...this.loginForm };
         this.saveToLocalStorage();
-        alert('Login updated successfully');
+        this.modalMessage = 'Login updated successfully';
+        this.modalType = 'success';
+        this.showModal('messageModal');
       }
     } else {
       // Add new
       this.loginForm.id = this.logins.length > 0 ? Math.max(...this.logins.map(l => l.id)) + 1 : 1;
       this.logins.push({ ...this.loginForm });
       this.saveToLocalStorage();
-      alert('Login added successfully');
+      this.modalMessage = 'Login added successfully';
+      this.modalType = 'success';
+      this.showModal('messageModal');
     }
 
     this.searchLogins();
     this.closeDialog();
   }
 
-  deleteLogin(login: Login): void {
-    if (confirm(`Are you sure you want to delete ${login.name}?`)) {
-    this.logins = this.logins.filter(l => l.id !== login.id);
-    this.saveToLocalStorage();  // Saves to localStorage
-      alert('Login deleted successfully');
+  // Open delete confirmation modal
+  confirmDelete(login: Login): void {
+    this.deleteTarget = login;
+    this.modalMessage = `Are you sure you want to delete ${login.name}?`;
+    this.showModal('confirmModal');
+  }
+
+  // Execute delete after confirmation
+  deleteLogin(): void {
+    if (this.deleteTarget) {
+      this.logins = this.logins.filter(l => l.id !== this.deleteTarget!.id);
+      this.saveToLocalStorage();
+      this.searchLogins();
+      this.hideModal('confirmModal');
+      
+      this.modalMessage = 'Login deleted successfully';
+      this.modalType = 'success';
+      this.showModal('messageModal');
+      
+      this.deleteTarget = null;
     }
   }
 

@@ -5,7 +5,8 @@
     color: rgb(43, 130, 243);
     padding-top: 20px;
     padding-bottom: 5px;
-    font-size: 14px;
+    font-size: 18px !important;
+    font-weight: 600 !important;
 }
 
 /* Popup Alert Styling */

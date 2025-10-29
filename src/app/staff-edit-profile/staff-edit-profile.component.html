@@ -187,5 +187,32 @@
         </div>
 </div>
 
+<!-- Success Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content radius-12 p-3">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-semibold" id="messageModalLabel" [ngClass]="{
+          'text-success': modalType === 'success',
+          'text-danger': modalType === 'error'
+        }">
+          {{ modalType === 'success' ? 'Success!' : 'Error!' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        {{ modalMessage }}
+      </div>
+      <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn px-4" data-bs-dismiss="modal" [ngClass]="{
+          'btn-success': modalType === 'success',
+          'btn-danger': modalType === 'error'
+        }">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </div>

@@ -3,7 +3,9 @@ import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 declare var $: any;
+declare var bootstrap: any;
 @Component({
   selector: 'app-staff-edit-profile',
   standalone: true,
@@ -17,6 +19,10 @@ export class StaffEditProfileComponent implements OnInit, AfterViewInit {
   staffId: number = 0;
   staffData: any = null;
   private readonly STORAGE_KEY = 'staffList';
+
+  // Modal state
+  modalMessage: string = '';
+  modalType: 'success' | 'error' = 'success';
 
   // Sample staff data - replace with actual service call
   staffList = this.loadStaffFromStorage() || [
@@ -97,21 +103,24 @@ export class StaffEditProfileComponent implements OnInit, AfterViewInit {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.staffList));
   }
 
+  // Show modal by ID
+  showModal(id: string) {
+    const modalEl = document.getElementById(id);
+    if (modalEl) {
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+    }
+  }
+
   loadStaffData() {
     // Reload from localStorage to get latest data
     this.staffList = this.loadStaffFromStorage() || this.staffList;
     // Find staff by ID
     this.staffData = this.staffList.find(staff => staff.id === this.staffId);
-    if (!this.staffData) {
-      console.error('Staff not found with ID:', this.staffId);
-    }
   }
 
   saveStaff() {
     if (this.staffData) {
-      // Here you would normally call a service to save the data
-      console.log('Saving staff data:', this.staffData);
-      
       // Update the staff in the list
       const index = this.staffList.findIndex(s => s.id === this.staffId);
       if (index !== -1) {
@@ -121,11 +130,13 @@ export class StaffEditProfileComponent implements OnInit, AfterViewInit {
       // Save to localStorage
       this.saveStaffToStorage();
       
-      // Show success message (you can add a toast/alert here)
-      alert('Staff information updated successfully!');
+      // Show success modal
+      this.modalMessage = 'Staff information updated successfully!';
+      this.modalType = 'success';
+      this.showModal('messageModal');
       
-      // Navigate back to staff list
-      this.router.navigate(['/staff-list']);
+      // Navigate back to staff list after delay
+      setTimeout(() => this.router.navigate(['/staff-list']), 1200);
     }
   }
 

@@ -1,129 +1,3 @@
-<!-- <div class="dashboard-main-body">
-  <app-breadcrumb [title]="title"></app-breadcrumb>
-
-  <div class="card h-100 p-0 radius-12">
-    <div
-      class="card-header border-bottom bg-base py-16 px-24 d-flex align-items-center flex-wrap gap-3 justify-content-between"
-    >
-      <form (ngSubmit)="addStaff()" class="staff-form">
-        <div class="form-section mb-4">
-          <h6 class="section-title">
-            <span class="number">①</span> Basic Information
-          </h6>
-          <hr />
-
-          <div class="row g-3 p-12">
-            <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">Staff Name <span class="text-danger">*</span></label>
-              <input type="text" class="form-control radius-8" [(ngModel)]="newStaff.name" name="name" placeholder="Enter Name" required />
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">Phone <span class="text-danger">*</span></label>
-              <input type="text" class="form-control radius-8" [(ngModel)]="newStaff.phone" name="phone" placeholder="Enter Phone" required />
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">Profile Image</label>
-              <input type="file" class="form-control radius-8" id="imageUpload" accept=".png, .jpg, .jpeg" />
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">Joining Date <span class="text-danger">*</span></label>
-              <input type="date" class="form-control radius-8" [(ngModel)]="newStaff.joiningDate" name="joiningDate" required />
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">CNIC</label>
-              <input type="text" class="form-control radius-8" [(ngModel)]="newStaff.cnic" name="cnic" placeholder="Enter CNIC" />
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">Role <span class="text-danger">*</span></label>
-              <select class="form-control radius-8 form-select" [(ngModel)]="newStaff.role" name="role" required>
-                <option value="">Select Role</option>
-                <option value="teacher">Teacher</option>
-                <option value="principal">Principal</option>
-                <option value="admin">Admin</option>
-                <option value="accountant">Accountant</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <h6 class="section-title"><span class="number">②</span> Other Information</h6>
-          <hr />
-
-          <div class="row g-3 p-12">
-            <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">Experience</label>
-              <input type="text" class="form-control radius-8" [(ngModel)]="newStaff.experience" name="experience" placeholder="Enter Experience" />
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">Gender <span class="text-danger">*</span></label>
-              <select class="form-control radius-8 form-select" [(ngModel)]="newStaff.gender" name="gender" required>
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
-              <input type="date" class="form-control radius-8" [(ngModel)]="newStaff.dob" name="dob" required />
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">Qualification <span class="text-danger">*</span></label>
-              <select class="form-control radius-8 form-select" [(ngModel)]="newStaff.qualification" name="qualification" required>
-                <option value="">Select Qualification</option>
-                <option value="Masters">Masters</option>
-                <option value="bs">BS</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="diploma">Diploma</option>
-                <option value="icom">ICom</option>
-                <option value="bcom">BCom</option>
-              </select>
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">Email</label>
-              <input type="email" class="form-control radius-8" [(ngModel)]="newStaff.email" name="email" placeholder="Enter Email" />
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">Status <span class="text-danger">*</span></label>
-              <select class="form-control radius-8 form-select" [(ngModel)]="newStaff.status" name="status" required>
-                <option value="">Select Status</option>
-                <option value="active">Active</option>
-                <option value="inActive">Inactive</option>
-              </select>
-            </div>
-
-            <div class="col-12">
-              <label class="form-label">Address <span class="text-danger">*</span></label>
-              <textarea class="form-control radius-8" [(ngModel)]="newStaff.address" name="address" placeholder="Enter Address" rows="3" required></textarea>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex align-items-center justify-content-center gap-3 mt-3">
-          <button type="button" (click)="cancel()" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8">
-                                        Cancel
-           </button>
-          <button type="submit" class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
-                                        Save
-          </button>
-
-        </div>
-      </form>
-    </div>
-  </div>
-</div> -->
-
-
 <div class="dashboard-main-body">
   <app-breadcrumb [title]="title"></app-breadcrumb>
 
@@ -135,7 +9,6 @@
         novalidate
         class="staff-form"
       >
-        <!-- Section 1: Basic Information -->
         <div class="form-section mb-4">
           <h5 class="section-title fw-semibold mb-2">
             <span class="number">①</span> Basic Information
@@ -143,7 +16,6 @@
           <hr />
 
           <div class="row g-3 p-12">
-            <!-- Staff Name -->
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">
                 Staff Name <span class="text-danger">*</span>
@@ -159,14 +31,13 @@
                 [ngClass]="{ 'is-invalid': name.invalid && name.touched }"
               />
               <small *ngIf="name.invalid && name.touched" class="text-danger">
-                Name is required
+                This field is required
               </small>
             </div>
 
-            <!-- Phone -->
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">
-                Phone <span class="text-danger">*</span>
+                Mobile No <span class="text-danger">*</span>
               </label>
               <input
                 type="text"
@@ -180,16 +51,15 @@
                 [ngClass]="{ 'is-invalid': phone.invalid && phone.touched }"
               />
               <small *ngIf="phone.errors?.['required'] && phone.touched" class="text-danger">
-                Phone is required
+                This field is required
               </small>
               <small *ngIf="phone.errors?.['pattern'] && phone.touched" class="text-danger">
-                Invalid phone format (0300-1234567)
+                Invalid format
               </small>
             </div>
 
-            <!-- Profile Image -->
             <div class="col-12 col-sm-6 col-md-4">
-              <label class="form-label">Profile Image</label>
+              <label class="form-label">Add Picture</label>
               <input
                 type="file"
                 class="form-control radius-8"
@@ -198,7 +68,6 @@
               />
             </div>
 
-            <!-- Joining Date -->
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">
                 Joining Date <span class="text-danger">*</span>
@@ -218,17 +87,16 @@
                 *ngIf="joiningDate.errors?.['required'] && joiningDate.touched"
                 class="text-danger"
               >
-                Joining date is required
+                This field is required
               </small>
               <small
                 *ngIf="joiningDate.errors?.['pattern'] && joiningDate.touched"
                 class="text-danger"
               >
-                Invalid date format (DD-MM-YYYY)
+                Invalid format
               </small>
             </div>
 
-            <!-- CNIC -->
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">CNIC</label>
               <input
@@ -242,11 +110,10 @@
                 [ngClass]="{ 'is-invalid': cnic.invalid && cnic.touched }"
               />
               <small *ngIf="cnic.errors?.['pattern'] && cnic.touched" class="text-danger">
-                Invalid CNIC format (33301-1234567-1)
+                Invalid format
               </small>
             </div>
 
-            <!-- Role -->
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">
                 Role <span class="text-danger">*</span>
@@ -260,19 +127,18 @@
                 [ngClass]="{ 'is-invalid': role.invalid && role.touched }"
               >
                 <option value="">Select Role</option>
-                <option value="teacher">Teacher</option>
-                <option value="principal">Principal</option>
-                <option value="admin">Admin</option>
-                <option value="accountant">Accountant</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Principal">Principal</option>
+                <option value="Admin">Admin</option>
+                <option value="Accountant">Accountant</option>
               </select>
               <small *ngIf="role.invalid && role.touched" class="text-danger">
-                Role is required
+                This field is required
               </small>
             </div>
           </div>
         </div>
 
-        <!-- Section 2: Other Information -->
         <div class="form-section">
           <h5 class="section-title fw-semibold mb-2">
             <span class="number">②</span> Other Information
@@ -280,7 +146,6 @@
           <hr />
 
           <div class="row g-3 p-12">
-            <!-- Experience -->
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">Experience</label>
               <select
@@ -290,12 +155,12 @@
               >
                 <option value="">Select Experience</option>
                 <option value="Fresh">Fresh</option>
-                <option value="1+ Years">1+ Years</option>
-                <option value="2+ Years">2+ Years</option>
-                <option value="3+ Years">3+ Years</option>
-                <option value="4+ Years">4+ Years</option>
-                <option value="5+ Years">5+ Years</option>
-                <option value="10+ Years">10+ Years</option>
+                <option value="1+">1+</option>
+                <option value="2+">2+</option>
+                <option value="3+">3+</option>
+                <option value="4+">4+</option>
+                <option value="5+">5+</option>
+                <option value="10+">10+</option>
                 <option value="Other">Other</option>
               </select>
 
@@ -309,7 +174,6 @@
               />
             </div>
 
-            <!-- Gender -->
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">
                 Gender <span class="text-danger">*</span>
@@ -327,11 +191,10 @@
                 <option value="Female">Female</option>
               </select>
               <small *ngIf="gender.invalid && gender.touched" class="text-danger">
-                Gender is required
+                This field is required
               </small>
             </div>
 
-            <!-- Date of Birth -->
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">
                 Date of Birth <span class="text-danger">*</span>
@@ -346,11 +209,10 @@
                 [ngClass]="{ 'is-invalid': dob.invalid && dob.touched }"
               />
               <small *ngIf="dob.invalid && dob.touched" class="text-danger">
-                Date of birth is required
+                This field is required
               </small>
             </div>
 
-            <!-- Qualification -->
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">
                 Qualification <span class="text-danger">*</span>
@@ -377,35 +239,33 @@
                 *ngIf="qualification.invalid && qualification.touched"
                 class="text-danger"
               >
-                Qualification is required
+                This field is required
               </small>
             </div>
 
-            <!-- Email -->
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">Email</label>
               <input
                 type="email"
                 class="form-control radius-8"
                 name="email"
-                placeholder="Enter Email"
+                placeholder="user@example.com"
                 [(ngModel)]="newStaff.email"
                 #email="ngModel"
                 [ngClass]="{ 'is-invalid': email.invalid && email.touched }"
               />
               <small *ngIf="email.errors?.['email'] && email.touched" class="text-danger">
-                Invalid email format
+                Invalid format
               </small>
             </div>
 
-            <!-- Status -->
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">
                 Status <span class="text-danger">*</span>
               </label>
               <select
                 class="form-control radius-8 form-select"
-                name="status"
+                  name="status"
                 [(ngModel)]="newStaff.status"
                 #status="ngModel"
                 required
@@ -416,11 +276,10 @@
                 <option value="Inactive">Inactive</option>
               </select>
               <small *ngIf="status.invalid && status.touched" class="text-danger">
-                Status is required
+                This field is required
               </small>
             </div>
 
-            <!-- Address -->
             <div class="col-12">
               <label class="form-label">
                 Address <span class="text-danger">*</span>
@@ -429,20 +288,19 @@
                 class="form-control radius-8"
                 rows="3"
                 name="address"
-                placeholder="Enter Address"
+                placeholder="Village 97 JB, Gojra, Toba Tek Singh"
                 [(ngModel)]="newStaff.address"
                 #address="ngModel"
                 required
                 [ngClass]="{ 'is-invalid': address.invalid && address.touched }"
               ></textarea>
               <small *ngIf="address.invalid && address.touched" class="text-danger">
-                Address is required
+                This field is required
               </small>
             </div>
           </div>
         </div>
 
-        <!-- Buttons -->
         <div class="d-flex align-items-center justify-content-center gap-3 mt-4">
           <button
             type="button"
@@ -463,7 +321,6 @@
     </div>
   </div>
 
-  <!-- Validation Popup Modal -->
   <div
     class="modal fade"
     id="validationModal"
@@ -500,7 +357,6 @@
     </div>
   </div>
 
-  <!-- Success Popup Modal -->
   <div
     class="modal fade"
     id="successModal"
