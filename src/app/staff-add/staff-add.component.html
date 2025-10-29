@@ -83,17 +83,8 @@
                   'is-invalid': joiningDate.invalid && joiningDate.touched
                 }"
               />
-              <small
-                *ngIf="joiningDate.errors?.['required'] && joiningDate.touched"
-                class="text-danger"
-              >
+              <small *ngIf="joiningDate.invalid && joiningDate.touched" class="text-danger">
                 This field is required
-              </small>
-              <small
-                *ngIf="joiningDate.errors?.['pattern'] && joiningDate.touched"
-                class="text-danger"
-              >
-                Invalid format
               </small>
             </div>
 
@@ -109,8 +100,8 @@
                 #cnic="ngModel"
                 [ngClass]="{ 'is-invalid': cnic.invalid && cnic.touched }"
               />
-              <small *ngIf="cnic.errors?.['pattern'] && cnic.touched" class="text-danger">
-                Invalid format
+              <small *ngIf="cnic.invalid && cnic.touched" class="text-danger">
+                This field is required
               </small>
             </div>
 
@@ -155,12 +146,12 @@
               >
                 <option value="">Select Experience</option>
                 <option value="Fresh">Fresh</option>
-                <option value="1+">1+</option>
-                <option value="2+">2+</option>
-                <option value="3+">3+</option>
-                <option value="4+">4+</option>
-                <option value="5+">5+</option>
-                <option value="10+">10+</option>
+                <option value="1+">1+Year</option>
+                <option value="2+">2+Year</option>
+                <option value="3+">3+Year</option>
+                <option value="4+">4+Year</option>
+                <option value="5+">5+Year</option>
+                <option value="10+">10+Year</option>
                 <option value="Other">Other</option>
               </select>
 
@@ -245,17 +236,37 @@
 
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">Email</label>
-              <input
-                type="email"
-                class="form-control radius-8"
-                name="email"
-                placeholder="user@example.com"
-                [(ngModel)]="newStaff.email"
-                #email="ngModel"
-                [ngClass]="{ 'is-invalid': email.invalid && email.touched }"
-              />
-              <small *ngIf="email.errors?.['email'] && email.touched" class="text-danger">
-                Invalid format
+              <div class="position-relative">
+                <input
+                  type="email"
+                  class="form-control radius-8 email-input-with-icon"
+                  name="email"
+                  placeholder="user@example.com"
+                  [(ngModel)]="newStaff.email"
+                  (keyup)="validateEmail()"
+                  #email="ngModel"
+                  [ngClass]="{ 
+                    'is-invalid': email.invalid && email.touched,
+                    'email-valid': validateEmail().isValid,
+                    'email-invalid': !validateEmail().isValid && newStaff.email !== ''
+                  }"
+                />
+                <iconify-icon 
+                  *ngIf="validateEmail().isValid"
+                  icon="mdi:check-circle"
+                  class="email-icon email-icon-valid"
+                ></iconify-icon>
+                <iconify-icon 
+                  *ngIf="!validateEmail().isValid && newStaff.email !== ''"
+                  icon="mdi:close-circle"
+                  class="email-icon email-icon-invalid"
+                ></iconify-icon>
+              </div>
+              <small 
+                *ngIf="!validateEmail().isValid && newStaff.email !== ''"
+                class="text-danger d-block mt-1"
+              >
+                Please enter valid email address
               </small>
             </div>
 

@@ -17,6 +17,7 @@ declare var bootstrap: any;
 export class StaffAddComponent implements AfterViewInit {
   title = 'Add Staff';
   private readonly STORAGE_KEY = 'staffList';
+  formSubmitted = false;
 
   // New staff object
   newStaff = {
@@ -43,29 +44,26 @@ export class StaffAddComponent implements AfterViewInit {
     this.setDefaultValues();
   }
 
-  // Set default values
+  // Set default values (only for optional fields)
   setDefaultValues(): void {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const yyyy = today.getFullYear();
-    const todayFormatted = `${dd}-${mm}-${yyyy}`;
-
-    // Calculate DOB (22 years ago)
-    const dob = new Date();
-    dob.setFullYear(dob.getFullYear() - 22);
-    const dobDD = String(dob.getDate()).padStart(2, '0');
-    const dobMM = String(dob.getMonth() + 1).padStart(2, '0');
-    const dobYYYY = dob.getFullYear();
-    const dobFormatted = `${dobDD}-${dobMM}-${dobYYYY}`;
-
-    this.newStaff.role = 'Teacher';
-    this.newStaff.joiningDate = todayFormatted;
+    // Set default for optional field only
     this.newStaff.experience = '1+';
-    this.newStaff.gender = 'Male';
-    this.newStaff.dob = dobFormatted;
-    this.newStaff.qualification = 'BS';
-    this.newStaff.status = 'Active';
+  }
+
+  // Email validation
+  validateEmail(): { isValid: boolean; message: string; color: string } {
+    const email = this.newStaff.email;
+    const pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+    if (email === '') {
+      return { isValid: false, message: '', color: '' };
+    }
+
+    if (email.match(pattern)) {
+      return { isValid: true, message: 'Valid email address', color: '#198754' };
+    } else {
+      return { isValid: false, message: 'Please enter valid email address', color: '#dc3545' };
+    }
   }
 
   // Load from local storage
@@ -102,11 +100,12 @@ export class StaffAddComponent implements AfterViewInit {
 
   // ✅ Called when form is submitted
   onSubmit(form: NgForm): void {
+    this.formSubmitted = true;
+    
+    // Mark form as submitted
+    form.form.markAllAsTouched();
+    
     if (form.invalid) {
-      // Mark all controls as touched to trigger red borders
-      Object.values(form.controls).forEach(control => {
-        control.markAsTouched();
-      });
       // Show validation popup
       this.showPopup('validationModal');
       return;

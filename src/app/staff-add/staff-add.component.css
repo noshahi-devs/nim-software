@@ -93,3 +93,51 @@ html {
     min-width: 4px;
   }
 }
+
+/* Email validation styles */
+.form-control.email-valid {
+  border: 1px solid #198754 !important;
+  padding-right: 40px !important;
+}
+
+.form-control.email-invalid {
+  border: 1px solid #dc3545 !important;
+  padding-right: 40px !important;
+}
+
+.email-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 22px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.email-icon-valid {
+  color: #198754;
+}
+
+.email-icon-invalid {
+  color: #dc3545;
+}
+
+#form {
+  position: relative;
+}
+
+#form #email {
+  width: 300px;
+  background: #292929;
+  outline: none;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  color: #fff;
+  font-style: 18px;
+}
+
+#form .input-box {
+  position: relative;
+}
