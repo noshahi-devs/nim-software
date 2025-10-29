@@ -30,7 +30,10 @@ export class StaffAddComponent implements AfterViewInit {
     cnic: '',
     experience: '',
     customExperience: '', // ✅ add this line
+    programDuration: '', // 👈 for associate degree 2-year / 4-year
     gender: '',
+    subject: '', // ✅ add this line for qualification subject
+    customSubject: '', // ✅ add this line for custom subject
     dob: '',
     email: '',
     qualification: '',

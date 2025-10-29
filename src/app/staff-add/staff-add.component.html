@@ -146,12 +146,12 @@
               >
                 <option value="">Select Experience</option>
                 <option value="Fresh">Fresh</option>
-                <option value="1+">1+Year</option>
-                <option value="2+">2+Year</option>
-                <option value="3+">3+Year</option>
-                <option value="4+">4+Year</option>
-                <option value="5+">5+Year</option>
-                <option value="10+">10+Year</option>
+                <option value="1+">1+ Year</option>
+                <option value="2+">2+ Year</option>
+                <option value="3+">3+ Year</option>
+                <option value="4+">4+ Year</option>
+                <option value="5+">5+ Year</option>
+                <option value="10+">10+ Year</option>
                 <option value="Other">Other</option>
               </select>
 
@@ -203,7 +203,7 @@
                 This field is required
               </small>
             </div>
-
+<!-- 
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">
                 Qualification <span class="text-danger">*</span>
@@ -219,12 +219,15 @@
                 }"
               >
                 <option value="">Select Qualification</option>
-                <option value="Masters">Masters</option>
-                <option value="BS">BS</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Diploma">Diploma</option>
-                <option value="ICom">ICom</option>
-                <option value="BCom">BCom</option>
+                <option value="masters">Masters</option>
+                <option value="bachelors">Bachelors</option>
+                <option value="associateDegree">Associate Degree</option>
+                <option value="diploma">DAE</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="matriculation">Matriculation</option>
+                <option value="middle">Middle</option>
+                <option value="primary">Primary</option>
+                <option value="na">N/A</option>
               </select>
               <small
                 *ngIf="qualification.invalid && qualification.touched"
@@ -232,7 +235,144 @@
               >
                 This field is required
               </small>
-            </div>
+            </div> -->
+
+            <!-- Qualification -->
+<div class="col-12 col-sm-6 col-md-4">
+  <label class="form-label">
+    Qualification <span class="text-danger">*</span>
+  </label>
+  <select
+    class="form-control radius-8 form-select"
+    name="qualification"
+    [(ngModel)]="newStaff.qualification"
+    #qualification="ngModel"
+    required
+    [ngClass]="{
+      'is-invalid': qualification.invalid && qualification.touched
+    }"
+  >
+    <option value="">Select Qualification</option>
+    <option value="masters">Masters</option>
+    <option value="bachelors">Bachelors</option>
+    <option value="associateDegree">Associate Degree</option>
+    <option value="diploma">DAE</option>
+    <option value="intermediate">Intermediate</option>
+    <option value="matriculation">Matriculation</option>
+    <option value="middle">Middle</option>
+    <option value="primary">Primary</option>
+    <option value="na">N/A</option>
+  </select>
+  <small
+    *ngIf="qualification.invalid && qualification.touched"
+    class="text-danger"
+  >
+    This field is required
+  </small>
+</div>
+
+<!-- Associate Degree Duration -->
+<div
+  class="col-12 col-sm-6 col-md-4"
+  *ngIf="newStaff.qualification === 'associateDegree'"
+>
+  <label class="form-label">
+    Program Duration <span class="text-danger">*</span>
+  </label>
+  <select
+    class="form-control radius-8 form-select"
+    [(ngModel)]="newStaff.programDuration"
+    name="programDuration"
+    #programDuration="ngModel"
+    required
+    [ngClass]="{
+      'is-invalid': programDuration.invalid && programDuration.touched
+    }"
+  >
+    <option value="">Select Duration</option>
+    <option value="2-year">2-Year Program</option>
+    <option value="4-year">4-Year Program</option>
+  </select>
+  <small
+    *ngIf="programDuration.invalid && programDuration.touched"
+    class="text-danger"
+  >
+    This field is required
+  </small>
+</div>
+
+<!-- Subject Dropdown (Associate/Bachelors) -->
+<div
+  class="col-12 col-sm-6 col-md-4"
+  *ngIf="newStaff.qualification === 'bachelors' || newStaff.qualification === 'associateDegree'"
+>
+  <label class="form-label">
+    Subject <span class="text-danger">*</span>
+  </label>
+  <select
+    class="form-control radius-8 form-select"
+    [(ngModel)]="newStaff.subject"
+    name="subject"
+    #subject="ngModel"
+    required
+    [ngClass]="{
+      'is-invalid': subject.invalid && subject.touched
+    }"
+  >
+    <option value="">Select Subject</option>
+
+    <!-- Associate Degree Subjects -->
+    <ng-container *ngIf="newStaff.qualification === 'associateDegree'">
+      <option value="arts">Arts</option>
+      <option value="science">Science</option>
+      <option value="commerce">Commerce</option>
+      <option value="computerScience">Computer Science</option>
+    </ng-container>
+
+    <!-- Bachelors Subjects -->
+    <ng-container *ngIf="newStaff.qualification === 'bachelors'">
+      <option value="bsComputerScience">BS Computer Science</option>
+      <option value="bsEnglish">BS English</option>
+      <option value="bsMath">BS Mathematics</option>
+      <option value="bsPhysics">BS Physics</option>
+      <option value="bsChemistry">BS Chemistry</option>
+      <option value="bsEconomics">BS Economics</option>
+      <option value="bsEducation">BS Education</option>
+      <option value="bsIslamicStudies">BS Islamic Studies</option>
+    </ng-container>
+
+    <option value="other">Other</option>
+  </select>
+  <small *ngIf="subject.invalid && subject.touched" class="text-danger">
+    This field is required
+  </small>
+</div>
+
+<!-- Custom Subject Input (Editable field) -->
+<div
+  class="col-12 col-sm-6 col-md-4"
+  *ngIf="newStaff.subject === 'other'"
+>
+  <label class="form-label">Other Subject <span class="text-danger">*</span></label>
+  <input
+    type="text"
+    class="form-control radius-8"
+    name="customSubject"
+    placeholder="Enter subject name"
+    [(ngModel)]="newStaff.customSubject"
+    #customSubject="ngModel"
+    required
+    [ngClass]="{
+      'is-invalid': customSubject.invalid && customSubject.touched
+    }"
+  />
+  <small
+    *ngIf="customSubject.invalid && customSubject.touched"
+    class="text-danger"
+  >
+    This field is required
+  </small>
+</div>
 
             <div class="col-12 col-sm-6 col-md-4">
               <label class="form-label">Email</label>
