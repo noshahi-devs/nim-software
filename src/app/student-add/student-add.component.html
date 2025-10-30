@@ -1,0 +1,424 @@
+<div class="dashboard-main-body">
+  <app-breadcrumb [title]="title"></app-breadcrumb>
+
+  <div class="card h-100 p-0 radius-12">
+    <div class="card-header border-bottom bg-base py-16 px-24">
+      <form
+        #StudentForm="ngForm"
+        (ngSubmit)="onSubmit(StudentForm)"
+        novalidate
+        class="Student-form"
+      >
+        <!-- Section ① – Basic Info -->
+        <div class="form-section mb-4">
+          <h5 class="section-title fw-semibold mb-2">
+            <span class="number">①</span> Basic Info
+          </h5>
+          <hr />
+
+          <div class="row g-3 p-12">
+            <!-- Student Name -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">
+                Student Name <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control radius-8"
+                name="name"
+                placeholder="Enter Student Name"
+                [(ngModel)]="newStudent.name"
+                #name="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': name.invalid && name.touched }"
+              />
+              <small *ngIf="name.invalid && name.touched" class="text-danger">
+                This field is required
+              </small>
+            </div>
+
+            <!-- Roll No -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">
+                Roll No <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control radius-8"
+                name="rollNo"
+                placeholder="Enter Roll Number"
+                [(ngModel)]="newStudent.rollNo"
+                #rollNo="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': rollNo.invalid && rollNo.touched }"
+              />
+              <small *ngIf="rollNo.invalid && rollNo.touched" class="text-danger">
+                This field is required
+              </small>
+            </div>
+
+            <!-- Gender -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">
+                Gender <span class="text-danger">*</span>
+              </label>
+              <select
+                class="form-control radius-8 form-select"
+                name="gender"
+                [(ngModel)]="newStudent.gender"
+                #gender="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': gender.invalid && gender.touched }"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+              <small *ngIf="gender.invalid && gender.touched" class="text-danger">
+                This field is required
+              </small>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">
+                Date of Birth <span class="text-danger">*</span>
+              </label>
+              <input
+                type="date"
+                class="form-control radius-8"
+                name="dob"
+                [(ngModel)]="newStudent.dob"
+                #dob="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': dob.invalid && dob.touched }"
+              />
+              <small *ngIf="dob.invalid && dob.touched" class="text-danger">
+                This field is required
+              </small>
+            </div>
+
+            <!-- Class -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">
+                Class <span class="text-danger">*</span>
+              </label>
+              <select
+                class="form-control radius-8 form-select"
+                name="class"
+                [(ngModel)]="newStudent.class"
+                #class="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': class.invalid && class.touched }"
+              >
+                <option value="">Select Class</option>
+                <option value="1">Class 1</option>
+                <option value="2">Class 2</option>
+                <option value="3">Class 3</option>
+                <option value="4">Class 4</option>
+                <option value="5">Class 5</option>
+                <option value="6">Class 6</option>
+                <option value="7">Class 7</option>
+                <option value="8">Class 8</option>
+                <option value="9">Class 9</option>
+                <option value="10">Class 10</option>
+              </select>
+              <small *ngIf="class.invalid && class.touched" class="text-danger">
+                This field is required
+              </small>
+            </div>
+
+            <!-- Section -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">
+                Section <span class="text-danger">*</span>
+              </label>
+              <select
+                class="form-control radius-8 form-select"
+                name="section"
+                [(ngModel)]="newStudent.section"
+                #section="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': section.invalid && section.touched }"
+              >
+                <option value="">Select Section</option>
+                <option value="A">Section A</option>
+                <option value="B">Section B</option>
+                <option value="C">Section C</option>
+                <option value="D">Section D</option>
+              </select>
+              <small *ngIf="section.invalid && section.touched" class="text-danger">
+                This field is required
+              </small>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">Profile Picture</label>
+              <input
+                type="file"
+                class="form-control radius-8"
+                id="imageUpload"
+                (change)="onImageSelected($event)"
+                accept=".png, .jpg, .jpeg"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Section ② – Academic Info -->
+        <div class="form-section mb-4">
+          <h5 class="section-title fw-semibold mb-2">
+            <span class="number">②</span> Academic Info
+          </h5>
+          <hr />
+
+          <div class="row g-3 p-12">
+            <!-- Admission Date -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">
+                Admission Date <span class="text-danger">*</span>
+              </label>
+              <input
+                type="date"
+                class="form-control radius-8"
+                name="admissionDate"
+                [(ngModel)]="newStudent.admissionDate"
+                #admissionDate="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': admissionDate.invalid && admissionDate.touched }"
+              />
+              <small *ngIf="admissionDate.invalid && admissionDate.touched" class="text-danger">
+                This field is required
+              </small>
+            </div>
+
+            <!-- Previous School -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">Previous School</label>
+              <input
+                type="text"
+                class="form-control radius-8"
+                name="previousSchool"
+                placeholder="Enter Previous School Name"
+                [(ngModel)]="newStudent.previousSchool"
+                #previousSchool="ngModel"
+              />
+            </div>
+
+            <!-- Status -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">
+                Status <span class="text-danger">*</span>
+              </label>
+              <select
+                class="form-control radius-8 form-select"
+                name="status"
+                [(ngModel)]="newStudent.status"
+                #status="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': status.invalid && status.touched }"
+              >
+                <option value="">Select Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              <small *ngIf="status.invalid && status.touched" class="text-danger">
+                This field is required
+              </small>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Section ③ – Contact Info -->
+        <div class="form-section mb-4">
+          <h5 class="section-title fw-semibold mb-2">
+            <span class="number">③</span> Contact Info
+          </h5>
+          <hr />
+
+          <div class="row g-3 p-12">
+            <!-- Phone -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">
+                Phone <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control radius-8"
+                name="phone"
+                placeholder="0300-1234567"
+                [(ngModel)]="newStudent.phone"
+                pattern="^03\d{2}-\d{7}$"
+                #phone="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': phone.invalid && phone.touched }"
+              />
+              <small *ngIf="phone.errors?.['required'] && phone.touched" class="text-danger">
+                This field is required
+              </small>
+              <small *ngIf="phone.errors?.['pattern'] && phone.touched" class="text-danger">
+                Invalid format
+              </small>
+            </div>
+
+            <!-- Guardian Name -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">
+                Guardian Name <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control radius-8"
+                name="guardianName"
+                placeholder="Enter Guardian Name"
+                [(ngModel)]="newStudent.guardianName"
+                #guardianName="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': guardianName.invalid && guardianName.touched }"
+              />
+              <small *ngIf="guardianName.invalid && guardianName.touched" class="text-danger">
+                This field is required
+              </small>
+            </div>
+
+            <!-- Guardian Phone -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <label class="form-label">
+                Guardian Phone <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control radius-8"
+                name="guardianPhone"
+                placeholder="0300-1234567"
+                [(ngModel)]="newStudent.guardianPhone"
+                pattern="^03\d{2}-\d{7}$"
+                #guardianPhone="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': guardianPhone.invalid && guardianPhone.touched }"
+              />
+              <small *ngIf="guardianPhone.errors?.['required'] && guardianPhone.touched" class="text-danger">
+                This field is required
+              </small>
+              <small *ngIf="guardianPhone.errors?.['pattern'] && guardianPhone.touched" class="text-danger">
+                Invalid format
+              </small>
+            </div>
+
+            <!-- Address -->
+            <div class="col-12">
+              <label class="form-label">
+                Address <span class="text-danger">*</span>
+              </label>
+              <textarea
+                class="form-control radius-8"
+                rows="3"
+                name="address"
+                placeholder="Enter complete address"
+                [(ngModel)]="newStudent.address"
+                #address="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': address.invalid && address.touched }"
+              ></textarea>
+              <small *ngIf="address.invalid && address.touched" class="text-danger">
+                This field is required
+              </small>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="d-flex align-items-center justify-content-center gap-3 mt-4">
+          <button
+            type="button"
+            (click)="cancel()"
+            class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="validationModal"
+    tabindex="-1"
+    aria-labelledby="validationModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content radius-12 p-3">
+        <div class="modal-header border-0">
+          <h5 class="modal-title text-danger fw-semibold" id="validationModalLabel">
+            Form Incomplete
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body text-center">
+          Please fill in all required fields (marked with *)
+        </div>
+        <div class="modal-footer border-0 justify-content-center">
+          <button
+            type="button"
+            class="btn btn-primary px-4"
+            data-bs-dismiss="modal"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="successModal"
+    tabindex="-1"
+    aria-labelledby="successModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content radius-12 p-3">
+        <div class="modal-header border-0">
+          <h5 class="modal-title text-success fw-semibold" id="successModalLabel">
+            Success!
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body text-center">
+          Student added successfully!
+        </div>
+        <div class="modal-footer border-0 justify-content-center">
+          <button
+            type="button"
+            class="btn btn-success px-4"
+            data-bs-dismiss="modal"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

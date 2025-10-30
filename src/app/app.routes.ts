@@ -35,7 +35,7 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { ReportComponent } from './report/report.component';
 import { SectionComponent } from './section/section.component';
 import { StaffListComponent } from './staff-list/staff-list.component';
-import { StudentComponent } from './student/student.component';
+import { StudentAddComponent } from './student-add/student-add.component';
 import { SubjectComponent } from './subject/subject.component';
 import { FeeComponent } from './fee/fee.component';
 import { SalaryComponent } from './salary/salary.component';
@@ -100,7 +100,9 @@ import { StaffEditProfileComponent } from './staff-edit-profile/staff-edit-profi
 import { NewClassComponent } from './newclass/newclass.component';
 import { ClassManagementComponent } from './class-management/class-management.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-
+import { StudentViewComponent } from './student-view/student-view.component';
+import { StudentEditComponent } from './student-edit/student-edit.component';
+import { StudentListComponent } from './student-list/student-list.component';
 export const routes: Routes = [
     {
         path: '',
@@ -148,7 +150,8 @@ export const routes: Routes = [
             { path: 'staff-add', component: StaffAddComponent },
             { path: 'staff-job-letter', component: StaffJobLetterComponent },
             { path: 'staff-manage-login', component: StaffManageLoginComponent },
-            { path: 'student', component: StudentComponent },
+            { path: 'student-add', component: StudentAddComponent },
+            { path: 'student-list', component: StudentListComponent },
             { path: 'subject', component: SubjectComponent },
             { path: 'fee', component: FeeComponent },
             { path: 'salary', component: SalaryComponent },
@@ -204,6 +207,10 @@ export const routes: Routes = [
             { path: 'error', component: ErrorComponent },
             { path: 'newclass', component: NewClassComponent },
             { path: 'class-management', component: ClassManagementComponent },
+            { path: 'student-view/:id', component: StudentViewComponent },
+            { path: 'student-edit/:id', component: StudentEditComponent },
+            { path: 'student-list', component: StudentListComponent },
+            
             
         ]
     },  

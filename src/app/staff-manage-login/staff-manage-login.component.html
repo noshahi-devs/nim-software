@@ -11,7 +11,7 @@
           <option [value]="50">50</option>
         </select>
         <form class="navbar-search">
-          <input type="text" class="bg-base h-40-px w-auto" [(ngModel)]="searchTerm" (input)="searchLogins()" name="search" placeholder="Search by name, email, role..." />
+          <input type="text" class="bg-base h-40-px w-auto" [(ngModel)]="searchTerm" (input)="searchLogins()" name="search" placeholder="Search by Name, Email, Role..." />
           <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
         </form>
       </div>
@@ -119,22 +119,22 @@
           <div class="row">
             <div class="col-md-6 mb-20">
               <label class="form-label fw-semibold text-primary-light text-sm mb-8">Full Name <span class="text-danger-600">*</span></label>
-              <input type="text" class="form-control radius-8" [(ngModel)]="loginForm.name" name="name" placeholder="Enter full name" required />
+              <input type="text" class="form-control radius-8" [(ngModel)]="loginForm.name" name="name" placeholder="Enter Name" required />
             </div>
 
             <div class="col-md-6 mb-20">
               <label class="form-label fw-semibold text-primary-light text-sm mb-8">Username / Email <span class="text-danger-600">*</span></label>
-              <input type="email" class="form-control radius-8" [(ngModel)]="loginForm.email" name="email" placeholder="Enter email address" required />
+              <input type="email" class="form-control radius-8" [(ngModel)]="loginForm.email" name="email" placeholder="Enter Email Address" required />
             </div>
 
             <div class="col-md-6 mb-20" *ngIf="!isEditMode">
               <label class="form-label fw-semibold text-primary-light text-sm mb-8">Password <span class="text-danger-600">*</span></label>
-              <input type="password" class="form-control radius-8" [(ngModel)]="loginForm.password" name="password" placeholder="Enter password" />
+              <input type="password" class="form-control radius-8" [(ngModel)]="loginForm.password" name="password" placeholder="Enter Password" />
             </div>
 
             <div class="col-md-6 mb-20" *ngIf="!isEditMode">
               <label class="form-label fw-semibold text-primary-light text-sm mb-8">Confirm Password <span class="text-danger-600">*</span></label>
-              <input type="password" class="form-control radius-8" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm password" />
+              <input type="password" class="form-control radius-8" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm Password" />
             </div>
 
             <div class="col-md-6 mb-20">
@@ -155,7 +155,7 @@
 
             <div class="col-md-6 mb-20">
               <label class="form-label fw-semibold text-primary-light text-sm mb-8">Phone <span class="text-danger-600">*</span></label>
-              <input type="text" class="form-control radius-8" [(ngModel)]="loginForm.phone" name="phone" placeholder="Enter phone number" required />
+              <input type="text" class="form-control radius-8" [(ngModel)]="loginForm.phone" name="phone" placeholder="Enter Phone Number" required />
             </div>
 
             <div class="col-md-6 mb-20">
