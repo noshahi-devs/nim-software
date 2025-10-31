@@ -103,6 +103,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { StudentViewComponent } from './student-view/student-view.component';
 import { StudentEditComponent } from './student-edit/student-edit.component';
 import { StudentListComponent } from './student-list/student-list.component';
+import { StudentPromoteComponent } from './student-promote/student-promote.component';
 export const routes: Routes = [
     {
         path: '',
@@ -210,7 +211,8 @@ export const routes: Routes = [
             { path: 'student-view/:id', component: StudentViewComponent },
             { path: 'student-edit/:id', component: StudentEditComponent },
             { path: 'student-list', component: StudentListComponent },
-            
+            { path: 'student-promote', component: StudentPromoteComponent }
+
             
         ]
     },  
