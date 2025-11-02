@@ -6,19 +6,24 @@ import Swal from 'sweetalert2';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 
 @Component({
-  selector: 'app-class',
+  selector: 'app-section-add',
   standalone: true,
   imports: [CommonModule, FormsModule, BreadcrumbComponent],
-  templateUrl: './newclass.component.html',
-  styleUrls: ['./newclass.component.css']
+  templateUrl: './section-add.component.html',
+  styleUrls: ['./section-add.component.css']
 })
-export class NewClassComponent implements OnInit {
-  title = 'Add Class';
+export class SectionAddComponent implements OnInit {
+  title = 'Add Section';
   teachers: any[] = [];
-  newClass = {
-    className: '',
-    tuitionFee: '',
-    teacher: ''
+  classes = ['9', '10', '11', '12'];
+  
+  newSection = {
+    sectionName: '',
+    class: '',
+    section: '',
+    teacher: '',
+    roomNo: '',
+    capacity: ''
   };
 
   constructor(private router: Router) {}
@@ -31,7 +36,7 @@ export class NewClassComponent implements OnInit {
       Swal.fire({
         icon: 'warning',
         title: 'No Teachers Found',
-        text: 'Please add a teacher in the Staff Module before creating a class.',
+        text: 'Please add a teacher in the Staff Module before creating a section.',
         confirmButtonText: 'OK'
       });
     }
@@ -50,7 +55,7 @@ export class NewClassComponent implements OnInit {
 
     const confirmResult = await Swal.fire({
       title: 'Confirm Save',
-      text: 'Are you sure you want to save this class?',
+      text: 'Are you sure you want to save this section?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Yes, Save',
@@ -60,21 +65,30 @@ export class NewClassComponent implements OnInit {
     });
 
     if (confirmResult.isConfirmed) {
+      // Generate section name
+      this.newSection.sectionName = `Section ${this.newSection.section} - Class ${this.newSection.class}`;
+      
       // Save to localStorage
-      const savedClasses = JSON.parse(localStorage.getItem('classList') || '[]');
-      savedClasses.push(this.newClass);
-      localStorage.setItem('classList', JSON.stringify(savedClasses));
+      const savedSections = JSON.parse(localStorage.getItem('sectionList') || '[]');
+      const newSectionData = {
+        id: savedSections.length + 1,
+        ...this.newSection,
+        totalStudents: 0,
+        image: 'assets/images/user-grid/user-grid-img2.png'
+      };
+      savedSections.push(newSectionData);
+      localStorage.setItem('sectionList', JSON.stringify(savedSections));
 
       await Swal.fire({
         icon: 'success',
-        title: 'Class Added Successfully!',
-        text: 'Redirecting to class list...',
+        title: 'Section Added Successfully!',
+        text: 'Redirecting to section list...',
         showConfirmButton: false,
         timer: 1800
       });
 
       // Redirect after short delay
-      this.router.navigate(['/class-list']);
+      this.router.navigate(['/section-list']);
     }
   }
 

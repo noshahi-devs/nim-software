@@ -274,38 +274,34 @@
                      min="0" />
             </div>
 
-            <!-- Subjects Assigned -->
-            <div class="col-12 mb-20">
+            <!-- Assign Subject -->
+            <div class="col-md-6 mb-20">
               <label class="form-label fw-semibold text-primary-light text-sm mb-8">
-                Subjects Assigned
+                Assign Subject
               </label>
               <select class="form-select radius-8" 
                       [(ngModel)]="classForm.subjects" 
-                      name="subjects" 
-                      multiple 
-                      size="4">
+                      name="subjects">
+                <option value="">Select Subject</option>
                 <option *ngFor="let subject of subjects" [value]="subject.name">
                   {{ subject.name }}
                 </option>
               </select>
-              <small class="text-muted">Hold Ctrl/Cmd to select multiple</small>
             </div>
 
-            <!-- Sections Linked -->
-            <div class="col-12 mb-20">
+            <!-- Link Section -->
+            <div class="col-md-6 mb-20">
               <label class="form-label fw-semibold text-primary-light text-sm mb-8">
-                Sections Linked
+                Link Section
               </label>
               <select class="form-select radius-8" 
                       [(ngModel)]="classForm.sections" 
-                      name="sections" 
-                      multiple 
-                      size="4">
+                      name="sections">
+                <option value="">Select Section</option>
                 <option *ngFor="let section of sections" [value]="section.name">
                   {{ section.name }}
                 </option>
               </select>
-              <small class="text-muted">Hold Ctrl/Cmd to select multiple</small>
             </div>
 
             <!-- Remarks -->

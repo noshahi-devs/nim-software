@@ -1,10 +1,10 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import Swal from 'sweetalert2';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 
 interface ClassData {
+  createdOn?: any;
   id: number;
   className: string;
   classCode: string;
@@ -13,214 +13,232 @@ interface ClassData {
   level: string;
   sectionsCount: number;
   studentsCount: number;
-  subjects: string[];
-  sections: string[];
   roomNo?: string;
   totalCapacity?: number;
+  subjects: string[];
+  sections: string[];
   remarks?: string;
-  status: string;
-  createdOn: string;
+  status: 'Active' | 'Inactive';
 }
 
 @Component({
   selector: 'app-class-management',
   standalone: true,
   imports: [CommonModule, FormsModule, BreadcrumbComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './class-management.component.html',
-  styleUrls: ['./class-management.component.css']
+  styleUrls: ['./class-management.component.css'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ClassManagementComponent implements OnInit {
   title = 'Class Management';
+
+  // ✅ Main data lists
   classes: ClassData[] = [];
   filteredClasses: ClassData[] = [];
-  selectedClass: ClassData | null = null;
-  showAddEditDialog = false;
-  showViewDialog = false;
-  isEditMode = false;
-  classForm: ClassData = this.getEmptyForm();
+  paginatedClasses: ClassData[] = [];
+
+  // ✅ Pagination + Search
   searchTerm = '';
   rowsPerPage = 10;
   currentPage = 1;
-  Math = Math;
+  totalPages = 1;
 
+  // ✅ Form / Dialog state
+  showAddEditDialog = false;
+  showViewDialog = false;
+  isEditMode = false;
+  selectedClass: ClassData | null = null;
+
+  // ✅ Form model
+  classForm: any = {
+    id: 0,
+    className: '',
+    classCode: '',
+    teacherId: 0,
+    teacherName: '',
+    level: '',
+    roomNo: '',
+    totalCapacity: 0,
+    studentsCount: 0,
+    sectionsCount: 0,
+    subjects: '',
+    sections: '',
+    remarks: '',
+    status: 'Active'
+  };
+
+  // ✅ Dropdown data
   teachers = [
-    { id: 1, name: 'Mr. Ahmed Khan' },
-    { id: 2, name: 'Mr. Ali Raza' },
-    { id: 3, name: 'Ms. Sara Ahmed' },
-    { id: 4, name: 'Ms. Fatima Noor' },
-    { id: 5, name: 'Mr. Hassan Ali' },
-    { id: 6, name: 'Ms. Ayesha Malik' }
-  ];
-
-  sections = [
-    { id: 'A', name: 'Section A' },
-    { id: 'B', name: 'Section B' },
-    { id: 'C', name: 'Section C' },
-    { id: 'D', name: 'Section D' }
-  ];
-
-  subjects = [
-    { id: 'math', name: 'Mathematics' },
-    { id: 'physics', name: 'Physics' },
-    { id: 'chemistry', name: 'Chemistry' },
-    { id: 'biology', name: 'Biology' },
-    { id: 'english', name: 'English' },
-    { id: 'urdu', name: 'Urdu' },
-    { id: 'islamiat', name: 'Islamiat' },
-    { id: 'computer', name: 'Computer Science' }
+    { id: 1, name: 'Ali Khan' },
+    { id: 2, name: 'Sara Ahmed' },
+    { id: 3, name: 'Bilal Hussain' },
   ];
 
   classLevels = [
     { label: 'Primary', value: 'Primary' },
     { label: 'Middle', value: 'Middle' },
     { label: 'Secondary', value: 'Secondary' },
-    { label: 'Higher Secondary', value: 'Higher Secondary' }
   ];
 
-  constructor() {}
+  subjects = [
+    { name: 'English' },
+    { name: 'Math' },
+    { name: 'Science' },
+    { name: 'Urdu' },
+  ];
 
-  ngOnInit(): void {
+  sections = [
+    { name: 'Section A' },
+    { name: 'Section B' },
+    { name: 'Section C' },
+  ];
+
+  // Expose Math to template
+  Math = Math;
+
+  ngOnInit() {
     this.loadClasses();
   }
 
-  loadClasses(): void {
-    const saved = localStorage.getItem('classManagement');
-    if (saved) {
-      this.classes = JSON.parse(saved);
-    } else {
-      this.classes = [
-        {
-          id: 1, className: '10th', classCode: 'C10', teacherId: 2, teacherName: 'Mr. Ali Raza',
-          level: 'Secondary', sectionsCount: 3, studentsCount: 90,
-          subjects: ['Mathematics', 'Physics', 'Chemistry', 'English'],
-          sections: ['Section A', 'Section B', 'Section C'],
-          roomNo: 'R-201', totalCapacity: 100, remarks: 'Science group',
-          status: 'Active', createdOn: '2024-03-01'
-        },
-        {
-          id: 2, className: '9th', classCode: 'C09', teacherId: 3, teacherName: 'Ms. Sara Ahmed',
-          level: 'Secondary', sectionsCount: 2, studentsCount: 70,
-          subjects: ['English', 'Biology', 'Urdu'],
-          sections: ['Section A', 'Section B'],
-          roomNo: 'R-105', totalCapacity: 80, status: 'Active', createdOn: '2023-08-12'
-        }
-      ];
-      this.saveToLocalStorage();
-    }
+  // ✅ Load Data (Mocked for now — replace with API later)
+  loadClasses() {
+    this.classes = [
+      {
+        id: 1,
+        className: '10',
+        classCode: 'C10',
+        teacherId: 1,
+        teacherName: 'Ali Khan',
+        level: 'Secondary',
+        sectionsCount: 3,
+        studentsCount: 75,
+        subjects: ['English', 'Math', 'Science'],
+        sections: ['Section A', 'Section B', 'Section C'],
+        remarks: 'Science Stream',
+        status: 'Active'
+      },
+      {
+        id: 2,
+        className: '8',
+        classCode: 'C08',
+        teacherId: 2,
+        teacherName: 'Sara Ahmed',
+        level: 'Middle',
+        sectionsCount: 2,
+        studentsCount: 60,
+        subjects: ['Urdu', 'Math', 'Science'],
+        sections: ['Section A', 'Section B'],
+        status: 'Inactive'
+      }
+    ];
+
     this.filteredClasses = [...this.classes];
+    this.updatePagination();
   }
 
-  saveToLocalStorage(): void {
-    localStorage.setItem('classManagement', JSON.stringify(this.classes));
+  // ✅ Search
+  searchClasses() {
+    const term = this.searchTerm.toLowerCase();
+    this.filteredClasses = this.classes.filter(c =>
+      c.className.toLowerCase().includes(term) ||
+      c.classCode.toLowerCase().includes(term) ||
+      c.teacherName.toLowerCase().includes(term)
+    );
+    this.currentPage = 1;
+    this.updatePagination();
   }
 
-  getEmptyForm(): ClassData {
-    return {
-      id: 0, className: '', classCode: '', teacherId: 0, teacherName: '',
-      level: '', sectionsCount: 0, studentsCount: 0, subjects: [], sections: [],
-      roomNo: '', totalCapacity: 0, remarks: '', status: 'Active',
-      createdOn: new Date().toISOString().split('T')[0]
-    };
+  // ✅ Pagination logic
+  updatePagination() {
+    this.totalPages = Math.ceil(this.filteredClasses.length / this.rowsPerPage) || 1;
+    const start = (this.currentPage - 1) * this.rowsPerPage;
+    const end = start + this.rowsPerPage;
+    this.paginatedClasses = this.filteredClasses.slice(start, end);
   }
 
-  openAddDialog(): void {
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+    }
+  }
+
+  // ✅ Dialog controls
+  openAddDialog() {
+    this.resetForm();
     this.isEditMode = false;
-    this.classForm = this.getEmptyForm();
     this.showAddEditDialog = true;
   }
 
-  openEditDialog(classData: ClassData): void {
+  openEditDialog(classItem: ClassData) {
+    this.classForm = { ...classItem };
     this.isEditMode = true;
-    this.classForm = { ...classData };
     this.showAddEditDialog = true;
   }
 
-  openViewDialog(classData: ClassData): void {
-    this.selectedClass = classData;
+  openViewDialog(classItem: ClassData) {
+    this.selectedClass = classItem;
     this.showViewDialog = true;
   }
 
-  closeDialog(): void {
+  closeDialog() {
     this.showAddEditDialog = false;
     this.showViewDialog = false;
-    this.classForm = this.getEmptyForm();
     this.selectedClass = null;
   }
 
-  saveClass(): void {
-    if (!this.classForm.className || !this.classForm.classCode || !this.classForm.teacherId || !this.classForm.level) {
-      Swal.fire({ icon: 'error', title: 'Error', text: 'Fill required fields', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
-      return;
-    }
-
-    const isDuplicate = this.classes.some(c => c.classCode === this.classForm.classCode && c.id !== this.classForm.id);
-    if (isDuplicate) {
-      Swal.fire({ icon: 'error', title: 'Error', text: 'Class code exists', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
-      return;
-    }
-
-    const teacher = this.teachers.find(t => t.id === this.classForm.teacherId);
-    if (teacher) this.classForm.teacherName = teacher.name;
-    this.classForm.sectionsCount = this.classForm.sections.length;
-
+  // ✅ Save / Update
+  saveClass() {
     if (this.isEditMode) {
       const index = this.classes.findIndex(c => c.id === this.classForm.id);
       if (index !== -1) {
+        const teacher = this.teachers.find(t => t.id === this.classForm.teacherId);
+        this.classForm.teacherName = teacher ? teacher.name : '';
         this.classes[index] = { ...this.classForm };
-        Swal.fire({ icon: 'success', title: 'Success', text: 'Class updated', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
       }
     } else {
-      this.classForm.id = this.classes.length > 0 ? Math.max(...this.classes.map(c => c.id)) + 1 : 1;
+      const teacher = this.teachers.find(t => t.id === this.classForm.teacherId);
+      this.classForm.teacherName = teacher ? teacher.name : '';
+      this.classForm.id = this.classes.length + 1;
       this.classes.push({ ...this.classForm });
-      Swal.fire({ icon: 'success', title: 'Success', text: 'Class added', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
     }
 
-    this.saveToLocalStorage();
-    this.searchClasses();
+    this.filteredClasses = [...this.classes];
+    this.updatePagination();
     this.closeDialog();
   }
 
-  deleteClass(classData: ClassData): void {
-    if (confirm(`Delete ${classData.className}?`)) {
-      this.classes = this.classes.filter(c => c.id !== classData.id);
-      this.saveToLocalStorage();
-      this.searchClasses();
-      Swal.fire({ icon: 'success', title: 'Success', text: 'Class deleted', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
-    }
-  }
-
-  searchClasses(): void {
-    if (!this.searchTerm.trim()) {
+  // ✅ Delete
+  deleteClass(classItem: ClassData) {
+    if (confirm(`Are you sure you want to delete "${classItem.className}"?`)) {
+      this.classes = this.classes.filter(c => c.id !== classItem.id);
       this.filteredClasses = [...this.classes];
-      this.currentPage = 1;
-      return;
+      this.updatePagination();
     }
-    const search = this.searchTerm.toLowerCase();
-    this.filteredClasses = this.classes.filter(c =>
-      c.className.toLowerCase().includes(search) ||
-      c.classCode.toLowerCase().includes(search) ||
-      c.teacherName.toLowerCase().includes(search)
-    );
-    this.currentPage = 1;
   }
 
-  refreshData(): void {
+  // ✅ Refresh
+  refreshData() {
     this.loadClasses();
-    this.searchTerm = '';
-    Swal.fire({ icon: 'info', title: 'Refreshed', text: 'Data reloaded', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
   }
 
-  get paginatedClasses(): ClassData[] {
-    const start = (this.currentPage - 1) * this.rowsPerPage;
-    return this.filteredClasses.slice(start, start + this.rowsPerPage);
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.filteredClasses.length / this.rowsPerPage);
-  }
-
-  changePage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) this.currentPage = page;
+  // ✅ Reset form
+  resetForm() {
+    this.classForm = {
+      id: 0,
+      className: '',
+      classCode: '',
+      teacherId: 0,
+      teacherName: '',
+      level: '',
+      roomNo: '',
+      totalCapacity: 0,
+      studentsCount: 0,
+      sectionsCount: 0,
+      subjects: '',
+      sections: '',
+      remarks: '',
+      status: 'Active'
+    };
   }
 }

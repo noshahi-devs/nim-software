@@ -33,10 +33,12 @@ import { FormValidationComponent } from './form-validation/form-validation.compo
 import { FormComponent } from './form/form.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { ReportComponent } from './report/report.component';
-import { SectionComponent } from './section/section.component';
+import { SectionAddComponent } from './section-add/section-add.component';
 import { StaffListComponent } from './staff-list/staff-list.component';
 import { StudentAddComponent } from './student-add/student-add.component';
 import { SubjectComponent } from './subject/subject.component';
+import { SubjectAddComponent } from './subject-add/subject-add.component';
+import { SubjectListComponent } from './subject-list/subject-list.component';
 import { FeeComponent } from './fee/fee.component';
 import { SalaryComponent } from './salary/salary.component';
 import { AttendanceComponent } from './attendance/attendance.component';
@@ -104,6 +106,8 @@ import { StudentViewComponent } from './student-view/student-view.component';
 import { StudentEditComponent } from './student-edit/student-edit.component';
 import { StudentListComponent } from './student-list/student-list.component';
 import { StudentPromoteComponent } from './student-promote/student-promote.component';
+import { ClassListComponent } from './class-list/class-list.component';
+import { SectionListComponent } from './section-list/section-list.component';
 export const routes: Routes = [
     {
         path: '',
@@ -146,7 +150,8 @@ export const routes: Routes = [
             { path: 'image-upload', component: ImageUploadComponent },
             { path: 'report', component: ReportComponent },
             { path: 'exam', component: ExamComponent },
-            { path: 'section', component: SectionComponent },
+            { path: 'section-list', component: SectionListComponent },
+            { path: 'section-add', component: SectionAddComponent },
             { path: 'staff-list', component: StaffListComponent },
             { path: 'staff-add', component: StaffAddComponent },
             { path: 'staff-job-letter', component: StaffJobLetterComponent },
@@ -154,6 +159,8 @@ export const routes: Routes = [
             { path: 'student-add', component: StudentAddComponent },
             { path: 'student-list', component: StudentListComponent },
             { path: 'subject', component: SubjectComponent },
+            { path: 'subject-add', component: SubjectAddComponent },
+            { path: 'subject-list', component: SubjectListComponent },
             { path: 'fee', component: FeeComponent },
             { path: 'salary', component: SalaryComponent },
             { path: 'attendance', component: AttendanceComponent },
@@ -211,7 +218,9 @@ export const routes: Routes = [
             { path: 'student-view/:id', component: StudentViewComponent },
             { path: 'student-edit/:id', component: StudentEditComponent },
             { path: 'student-list', component: StudentListComponent },
-            { path: 'student-promote', component: StudentPromoteComponent }
+            { path: 'student-promote', component: StudentPromoteComponent },
+            { path: 'class-list', component: ClassListComponent },
+
 
             
         ]

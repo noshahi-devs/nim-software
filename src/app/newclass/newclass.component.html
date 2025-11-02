@@ -2,78 +2,79 @@
   <app-breadcrumb [title]="title"></app-breadcrumb>
 
   <div class="row justify-content-center">
-    <div class="col-xxl-6 col-xl-8 col-lg-10">
-      <!-- Add New Class Form -->
-      <div class="card radius-20 border border-neutral-200 shadow-sm">
-        <div class="card-header bg-base border-bottom border-neutral-200 py-16 px-24">
-          <h6 class="text-lg fw-semibold mb-0 text-center">Create New Class</h6>
+    <div class="col-md-8 border-20">
+      <div class="card shadow-sm radius-12 mt-4">
+        <div class="card-header bg-base py-16 px-24 border-bottom text-center">
+          <h5 class="fw-semibold mb-0 text-primary-600">Create New Class</h5>
         </div>
-        <div class="card-body p-24">
-          <form (ngSubmit)="createClass()">
-            <div class="row">
-              <!-- Class Name -->
-              <div class="col-12 mb-20">
-                <label class="form-label fw-semibold text-primary-light text-sm mb-8">
-                  Class Name <span class="text-danger-600">*</span>
-                </label>
-                <input 
-                  type="text" 
-                  class="form-control radius-8" 
-                  [(ngModel)]="classData.className"
-                  name="className"
-                  placeholder="Enter class name (e.g., 10th, 9th)"
-                  required />
-              </div>
 
-              <!-- Monthly Tuition Fees -->
-              <div class="col-12 mb-20">
-                <label class="form-label fw-semibold text-primary-light text-sm mb-8">
-                  Monthly Tuition Fees <span class="text-danger-600">*</span>
-                </label>
-                <input 
-                  type="number" 
-                  class="form-control radius-8" 
-                  [(ngModel)]="classData.monthlyFees"
-                  name="monthlyFees"
-                  placeholder="Enter monthly fees"
-                  min="0"
-                  required />
-              </div>
-
-              <!-- Select Class Teacher -->
-              <div class="col-12 mb-20">
-                <label class="form-label fw-semibold text-primary-light text-sm mb-8">
-                  Select Class Teacher <span class="text-danger-600">*</span>
-                </label>
-                <select 
-                  class="form-select radius-8" 
-                  [(ngModel)]="classData.teacherId"
-                  name="teacherId"
-                  required>
-                  <option value="">Select Teacher</option>
-                  <option *ngFor="let teacher of teachers" [value]="teacher.id">
-                    {{ teacher.name }}
-                  </option>
-                </select>
-              </div>
-
-              <!-- Buttons -->
-              <div class="col-12">
-                <div class="d-flex align-items-center justify-content-center gap-3 mt-32">
-                  <button 
-                    type="submit" 
-                    class="btn btn-primary-600 text-white fw-semibold radius-8 px-40 py-12">
-                    Create Class
-                  </button>
-                  <button 
-                    type="button" 
-                    (click)="resetForm()"
-                    class="btn btn-outline-danger-600 text-danger-600 fw-semibold radius-8 px-40 py-12">
-                    Reset
-                  </button>
-                </div>
-              </div>
+        <div class="card-body px-24 py-16">
+          <form #classForm="ngForm" (ngSubmit)="onSubmit(classForm)" novalidate>
+            
+            <!-- 🧱 Class Name -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Class Name <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control radius-8"
+                name="className"
+                [(ngModel)]="newClass.className"
+                required
+                #className="ngModel"
+                [ngClass]="{ 'is-invalid': className.invalid && className.touched }"
+                placeholder="Enter Class Name"
+              />
+              <small *ngIf="className.invalid && className.touched" class="text-danger">
+                This field is required
+              </small>
             </div>
+
+            <!-- 💰 Tuition Fee -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Tuition Fee <span class="text-danger">*</span></label>
+              <input
+                type="number"
+                class="form-control radius-8"
+                name="tuitionFee"
+                [(ngModel)]="newClass.tuitionFee"
+                required
+                #tuitionFee="ngModel"
+                [ngClass]="{ 'is-invalid': tuitionFee.invalid && tuitionFee.touched }"
+                placeholder="Enter Tuition Fee"
+              />
+              <small *ngIf="tuitionFee.invalid && tuitionFee.touched" class="text-danger">
+                This field is required
+              </small>
+            </div>
+
+            <!-- 👨‍🏫 Class Teacher -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Select Class Teacher <span class="text-danger">*</span></label>
+              <select
+                class="form-select radius-8"
+                name="teacher"
+                [(ngModel)]="newClass.teacher"
+                required
+                #teacher="ngModel"
+                [ngClass]="{ 'is-invalid': teacher.invalid && teacher.touched }"
+              >
+                <option value="" disabled selected>Select a Teacher</option>
+                <option *ngFor="let t of teachers" [value]="t.name">{{ t.name }}</option>
+              </select>
+              <small *ngIf="teacher.invalid && teacher.touched" class="text-danger">
+                Please select a teacher
+              </small>
+            </div>
+
+
+        <div class="d-flex align-items-center justify-content-center gap-3 mt-4">
+           <button
+                type="submit"
+                class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8"
+              >
+                Save Class
+              </button>
+        </div>
           </form>
         </div>
       </div>
