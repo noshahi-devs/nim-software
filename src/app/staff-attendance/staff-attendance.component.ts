@@ -1,15 +1,18 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import Swal from 'sweetalert2';
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 
-interface Student {
+declare var bootstrap: any;
+
+interface Staff {
   id: number;
   serialNo: number;
   name: string;
-  rollNo: string;
-  status: 'Present' | 'Absent' | 'Leave' | 'Late' | '';
+  employeeId: string;
+  department: string;
+  status: string;
   remarks: string;
 }
 
@@ -22,31 +25,27 @@ interface AttendanceHistory {
   total: number;
 }
 
-declare var bootstrap: any;
-
 @Component({
-  selector: 'app-attendance',
+  selector: 'app-staff-attendance',
   standalone: true,
   imports: [CommonModule, FormsModule, BreadcrumbComponent],
-  templateUrl: './attendance.component.html',
-  styleUrls: ['./attendance.component.css'],
+  templateUrl: './staff-attendance.component.html',
+  styleUrls: ['./staff-attendance.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AttendanceComponent implements OnInit {
-  title = 'Student Attendance';
+export class StaffAttendanceComponent implements OnInit {
+  title = 'Staff Attendance';
 
   // Filters
-  selectedClass: string = '';
-  selectedSection: string = '';
+  selectedDepartment: string = '';
   selectedDate: string = '';
 
   // Filter Options
-  classes: string[] = [];
-  sections = ['A', 'B', 'C', 'D'];
+  departments = ['Teaching', 'Administration', 'IT', 'Accounts', 'Library', 'Transport'];
 
-  // Student Data
-  students: Student[] = [];
-  studentsLoaded = false;
+  // Staff Data
+  staffMembers: Staff[] = [];
+  staffLoaded = false;
 
   // Pagination & Search
   itemsPerPage: number = 10;
@@ -62,7 +61,6 @@ export class AttendanceComponent implements OnInit {
   statusOptions = ['Present', 'Absent', 'Leave', 'Late'];
 
   ngOnInit(): void {
-    this.loadClasses();
     this.setTodayDate();
     this.generateDummyHistory();
   }
@@ -72,61 +70,51 @@ export class AttendanceComponent implements OnInit {
     this.selectedDate = today.toISOString().split('T')[0];
   }
 
-  loadClasses(): void {
-    const savedClasses = localStorage.getItem('classList');
-    if (savedClasses) {
-      const classList = JSON.parse(savedClasses);
-      this.classes = classList.map((c: any) => c.className);
-    } else {
-      this.classes = ['9', '10', '11', '12'];
-    }
-  }
-
-  loadStudents(): void {
-    if (!this.selectedClass || !this.selectedSection || !this.selectedDate) {
+  loadStaff(): void {
+    if (!this.selectedDepartment || !this.selectedDate) {
       Swal.fire({
         icon: 'warning',
         title: 'Missing Filters',
-        text: 'Please select , Class, Section, and Date before loading students.',
+        text: 'Please select Department and Date before loading staff.',
         confirmButtonColor: '#800020'
       });
       return;
     }
 
-    // Generate dummy students
-    this.students = this.generateDummyStudents();
-    this.studentsLoaded = true;
+    // Generate dummy staff
+    this.staffMembers = this.generateDummyStaff();
+    this.staffLoaded = true;
 
     Swal.fire({
       icon: 'success',
-      title: 'Students Loaded',
-      text: `${this.students.length} students loaded successfully.`,
+      title: 'Staff Loaded',
+      text: `${this.staffMembers.length} staff members loaded successfully.`,
       timer: 1500,
       showConfirmButton: false
     });
   }
 
-  generateDummyStudents(): Student[] {
+  generateDummyStaff(): Staff[] {
     const names = [
-      'Ahmed Ali', 'Fatima Khan', 'Hassan Raza', 'Ayesha Malik',
-      'Bilal Ahmed', 'Zainab Hassan', 'Usman Tariq', 'Maryam Noor',
-      'Abdullah Shah', 'Hira Fatima', 'Hamza Iqbal', 'Sana Riaz',
-      'Arslan Javed', 'Nida Khalid', 'Faisal Mahmood', 'Rabia Akram',
-      'Kamran Ali', 'Amna Yousaf', 'Shahzad Hussain', 'Mahnoor Asif'
+      'Ali Hassan', 'Sara Ahmed', 'Usman Khan', 'Ayesha Malik',
+      'Bilal Raza', 'Fatima Noor', 'Hamza Tariq', 'Zainab Riaz',
+      'Abdullah Iqbal', 'Maryam Khalid', 'Arslan Javed', 'Hira Akram',
+      'Kamran Ali', 'Nida Yousaf', 'Faisal Hussain', 'Amna Asif'
     ];
 
     return names.map((name, index) => ({
       id: index + 1,
       serialNo: index + 1,
       name: name,
-      rollNo: `${this.selectedClass}-${this.selectedSection}-${String(index + 1).padStart(3, '0')}`,
+      employeeId: `EMP-${String(index + 1).padStart(4, '0')}`,
+      department: this.selectedDepartment,
       status: '',
       remarks: ''
     }));
   }
 
   markAllPresent(): void {
-    this.students.forEach(student => student.status = 'Present');
+    this.staffMembers.forEach(staff => staff.status = 'Present');
     Swal.fire({
       icon: 'success',
       title: 'All Marked Present',
@@ -136,7 +124,7 @@ export class AttendanceComponent implements OnInit {
   }
 
   markAllAbsent(): void {
-    this.students.forEach(student => student.status = 'Absent');
+    this.staffMembers.forEach(staff => staff.status = 'Absent');
     Swal.fire({
       icon: 'info',
       title: 'All Marked Absent',
@@ -146,12 +134,12 @@ export class AttendanceComponent implements OnInit {
   }
 
   async saveAttendance(): Promise<void> {
-    const unmarked = this.students.filter(s => !s.status);
+    const unmarked = this.staffMembers.filter(s => !s.status);
     if (unmarked.length > 0) {
       const result = await Swal.fire({
         icon: 'warning',
         title: 'Incomplete Attendance',
-        text: `${unmarked.length} student(s) have no status marked. Continue anyway?`,
+        text: `${unmarked.length} staff member(s) have no status marked. Continue anyway?`,
         showCancelButton: true,
         confirmButtonText: 'Yes, Save',
         cancelButtonText: 'Cancel',
@@ -165,20 +153,19 @@ export class AttendanceComponent implements OnInit {
     // Save to localStorage
     const attendanceData = {
       date: this.selectedDate,
-      class: this.selectedClass,
-      section: this.selectedSection,
-      students: this.students,
+      department: this.selectedDepartment,
+      staff: this.staffMembers,
       savedAt: new Date().toISOString()
     };
 
-    const savedAttendance = JSON.parse(localStorage.getItem('studentAttendance') || '[]');
+    const savedAttendance = JSON.parse(localStorage.getItem('staffAttendance') || '[]');
     savedAttendance.push(attendanceData);
-    localStorage.setItem('studentAttendance', JSON.stringify(savedAttendance));
+    localStorage.setItem('staffAttendance', JSON.stringify(savedAttendance));
 
     await Swal.fire({
       icon: 'success',
       title: 'Attendance Saved!',
-      text: 'Student attendance has been saved successfully.',
+      text: 'Staff attendance has been saved successfully.',
       confirmButtonColor: '#800020'
     });
 
@@ -186,10 +173,9 @@ export class AttendanceComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.students = [];
-    this.studentsLoaded = false;
-    this.selectedClass = '';
-    this.selectedSection = '';
+    this.staffMembers = [];
+    this.staffLoaded = false;
+    this.selectedDepartment = '';
     this.setTodayDate();
   }
 
@@ -206,9 +192,9 @@ export class AttendanceComponent implements OnInit {
       const date = new Date(today);
       date.setDate(date.getDate() - i);
       
-      const total = 20;
-      const present = Math.floor(Math.random() * 5) + 15;
-      const absent = Math.floor(Math.random() * 3);
+      const total = 16;
+      const present = Math.floor(Math.random() * 3) + 13;
+      const absent = Math.floor(Math.random() * 2);
       const leave = Math.floor(Math.random() * 2);
       const late = total - present - absent - leave;
 
@@ -239,25 +225,25 @@ export class AttendanceComponent implements OnInit {
     });
   }
 
-  get filteredStudents(): Student[] {
+  get filteredStaff(): Staff[] {
     if (!this.searchQuery) {
-      return this.students;
+      return this.staffMembers;
     }
     const query = this.searchQuery.toLowerCase();
-    return this.students.filter(s => 
+    return this.staffMembers.filter(s => 
       s.name.toLowerCase().includes(query) || 
-      s.rollNo.toLowerCase().includes(query)
+      s.employeeId.toLowerCase().includes(query)
     );
   }
 
-  get paginatedStudents(): Student[] {
+  get paginatedStaff(): Staff[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
-    return this.filteredStudents.slice(start, end);
+    return this.filteredStaff.slice(start, end);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.filteredStudents.length / this.itemsPerPage);
+    return Math.ceil(this.filteredStaff.length / this.itemsPerPage);
   }
 
   get totalPagesArray(): number[] {
@@ -265,12 +251,12 @@ export class AttendanceComponent implements OnInit {
   }
 
   get paginationStart(): number {
-    return this.filteredStudents.length === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
+    return this.filteredStaff.length === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
   }
 
   get paginationEnd(): number {
     const end = this.currentPage * this.itemsPerPage;
-    return end > this.filteredStudents.length ? this.filteredStudents.length : end;
+    return end > this.filteredStaff.length ? this.filteredStaff.length : end;
   }
 
   changePage(page: number): void {
@@ -280,12 +266,12 @@ export class AttendanceComponent implements OnInit {
   }
 
   get attendanceStats() {
-    const present = this.students.filter(s => s.status === 'Present').length;
-    const absent = this.students.filter(s => s.status === 'Absent').length;
-    const leave = this.students.filter(s => s.status === 'Leave').length;
-    const late = this.students.filter(s => s.status === 'Late').length;
-    const unmarked = this.students.filter(s => !s.status).length;
+    const present = this.staffMembers.filter(s => s.status === 'Present').length;
+    const absent = this.staffMembers.filter(s => s.status === 'Absent').length;
+    const leave = this.staffMembers.filter(s => s.status === 'Leave').length;
+    const late = this.staffMembers.filter(s => s.status === 'Late').length;
+    const unmarked = this.staffMembers.filter(s => !s.status).length;
 
-    return { present, absent, leave, late, unmarked, total: this.students.length };
+    return { present, absent, leave, late, unmarked, total: this.staffMembers.length };
   }
 }

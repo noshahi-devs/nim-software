@@ -42,7 +42,10 @@ import { SubjectListComponent } from './subject-list/subject-list.component';
 import { FeeComponent } from './fee/fee.component';
 import { SalaryComponent } from './salary/salary.component';
 import { AttendanceComponent } from './attendance/attendance.component';
+import { StaffAttendanceComponent } from './staff-attendance/staff-attendance.component';
 import { LeaveComponent } from './leave/leave.component';
+import { ClassWiseReportComponent } from './class-wise-report/class-wise-report.component';
+import { StudentAttendanceReportComponent } from './student-attendance-report/student-attendance-report.component';
 import { ImageGeneratorComponent } from './image-generator/image-generator.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { InvoiceAddComponent } from './invoice-add/invoice-add.component';
@@ -50,6 +53,7 @@ import { InvoiceEditComponent } from './invoice-edit/invoice-edit.component';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { InvoicePreviewComponent } from './invoice-preview/invoice-preview.component';
 import { KanbanComponent } from './kanban/kanban.component';
+import { StaffAttendanceReportComponent } from './staff-attendance-report/staff-attendance-report.component';
 import { LanguageComponent } from './language/language.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
 import { ListComponent } from './list/list.component';
@@ -163,7 +167,12 @@ export const routes: Routes = [
             { path: 'subject-list', component: SubjectListComponent },
             { path: 'fee', component: FeeComponent },
             { path: 'salary', component: SalaryComponent },
+            { path: 'staff-attendance-report', component: StaffAttendanceReportComponent },
             { path: 'attendance', component: AttendanceComponent },
+            { path: 'student-attendance', component: AttendanceComponent },
+            { path: 'staff-attendance', component: StaffAttendanceComponent },
+            { path: 'class-wise-report', component: ClassWiseReportComponent },
+            { path: 'student-attendance-report', component: StudentAttendanceReportComponent },
             { path: 'leave', component: LeaveComponent },
             { path: 'invoice-add', component: InvoiceAddComponent },
             { path: 'invoice-edit', component: InvoiceEditComponent },
