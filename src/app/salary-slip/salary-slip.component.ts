@@ -28,24 +28,26 @@ interface SalaryRecord {
 }
 
 @Component({
-  selector: 'app-salary',
+  selector: 'app-salary-slip',
   standalone: true,
   imports: [CommonModule, FormsModule, BreadcrumbComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './salary.component.html',
-  styleUrl: './salary.component.css'
+  templateUrl: './salary-slip.component.html',
+  styleUrl: './salary-slip.component.css'
 })
-export class SalaryComponent implements OnInit {
-  title = 'Salary Management';
+export class SalarySlipComponent implements OnInit {
+  title = 'Salary Paid Slips';
 
-  // Staff Search
+  // Search
   searchQuery: string = '';
+  selectedMonth: string = '';
+  
+  // Staff List for dropdown
   staffList: StaffMember[] = [];
   filteredStaffList: StaffMember[] = [];
   showDropdown: boolean = false;
-  selectedStaff: StaffMember | null = null;
-
-  // Form Fields
+  
+  // Form Fields (for compatibility with HTML)
   staffId: string = '';
   staffName: string = '';
   staffRole: string = '';
@@ -54,19 +56,29 @@ export class SalaryComponent implements OnInit {
   fixedSalary: number = 0;
   bonus: number = 0;
   deduction: number = 0;
-
+  searchRecordQuery: string = '';
+  
   // Salary Records
   salaryRecords: SalaryRecord[] = [];
   
   // Pagination
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 9;
   currentPage: number = 1;
-  searchRecordQuery: string = '';
+  
+  // Selected slip for printing
+  selectedSlip: SalaryRecord | null = null;
 
   ngOnInit(): void {
+    this.setCurrentMonth();
     this.generateDummyStaff();
-    this.setCurrentMonthDate();
     this.loadSalaryRecords();
+  }
+
+  setCurrentMonth(): void {
+    const today = new Date();
+    this.selectedMonth = today.toISOString().substring(0, 7);
+    this.salaryMonth = today.toISOString().substring(0, 7);
+    this.salaryDate = today.toISOString().split('T')[0];
   }
 
   generateDummyStaff(): void {
@@ -82,12 +94,6 @@ export class SalaryComponent implements OnInit {
       { id: 9, staffId: 'EMP-0009', name: 'Abdullah Iqbal', role: 'Vice Principal', department: 'Administration', fixedSalary: 70000 },
       { id: 10, staffId: 'EMP-0010', name: 'Maryam Khalid', role: 'Teacher', department: 'Teaching', fixedSalary: 49000 }
     ];
-  }
-
-  setCurrentMonthDate(): void {
-    const today = new Date();
-    this.salaryMonth = today.toISOString().substring(0, 7); // YYYY-MM
-    this.salaryDate = today.toISOString().split('T')[0]; // YYYY-MM-DD
   }
 
   onSearchChange(): void {
@@ -107,7 +113,6 @@ export class SalaryComponent implements OnInit {
   }
 
   selectStaff(staff: StaffMember): void {
-    this.selectedStaff = staff;
     this.staffId = staff.staffId;
     this.staffName = staff.name;
     this.staffRole = staff.role;
@@ -160,23 +165,36 @@ export class SalaryComponent implements OnInit {
 
   resetForm(): void {
     this.searchQuery = '';
-    this.selectedStaff = null;
     this.staffId = '';
     this.staffName = '';
     this.staffRole = '';
     this.fixedSalary = 0;
     this.bonus = 0;
     this.deduction = 0;
-    this.setCurrentMonthDate();
+    this.setCurrentMonth();
   }
 
   loadSalaryRecords(): void {
-    // Generate some dummy salary records
+    const staffData = [
+      { staffId: 'EMP-0001', name: 'Ali Hassan', role: 'Teacher', fixedSalary: 50000 },
+      { staffId: 'EMP-0002', name: 'Sara Ahmed', role: 'Principal', fixedSalary: 80000 },
+      { staffId: 'EMP-0003', name: 'Usman Khan', role: 'IT Manager', fixedSalary: 60000 },
+      { staffId: 'EMP-0004', name: 'Ayesha Malik', role: 'Accountant', fixedSalary: 45000 },
+      { staffId: 'EMP-0005', name: 'Bilal Raza', role: 'Teacher', fixedSalary: 48000 },
+      { staffId: 'EMP-0006', name: 'Fatima Noor', role: 'Librarian', fixedSalary: 35000 },
+      { staffId: 'EMP-0007', name: 'Hamza Tariq', role: 'Driver', fixedSalary: 30000 },
+      { staffId: 'EMP-0008', name: 'Zainab Riaz', role: 'Teacher', fixedSalary: 52000 },
+      { staffId: 'EMP-0009', name: 'Abdullah Iqbal', role: 'Vice Principal', fixedSalary: 70000 },
+      { staffId: 'EMP-0010', name: 'Maryam Khalid', role: 'Teacher', fixedSalary: 49000 }
+    ];
+
     const months = ['2024-11', '2024-10', '2024-09'];
     this.salaryRecords = [];
     
-    this.staffList.slice(0, 5).forEach((staff, index) => {
+    staffData.forEach((staff, index) => {
       months.forEach((month, mIndex) => {
+        const bonus = Math.floor(Math.random() * 5000);
+        const deduction = Math.floor(Math.random() * 2000);
         this.salaryRecords.push({
           id: this.salaryRecords.length + 1,
           staffId: staff.staffId,
@@ -185,29 +203,38 @@ export class SalaryComponent implements OnInit {
           month: month,
           date: `${month}-${25 - mIndex}`,
           fixedSalary: staff.fixedSalary,
-          bonus: Math.floor(Math.random() * 5000),
-          deduction: Math.floor(Math.random() * 2000),
-          netSalary: 0,
+          bonus: bonus,
+          deduction: deduction,
+          netSalary: staff.fixedSalary + bonus - deduction,
           status: 'Paid'
         });
       });
     });
-
-    this.salaryRecords.forEach(record => {
-      record.netSalary = record.fixedSalary + record.bonus - record.deduction;
-    });
   }
 
   get filteredRecords(): SalaryRecord[] {
-    if (!this.searchRecordQuery) {
-      return this.salaryRecords;
+    // Show cards only when staff is searched
+    if (this.searchQuery.trim() === '') {
+      return []; // Return empty array when no search query
     }
-    const query = this.searchRecordQuery.toLowerCase();
-    return this.salaryRecords.filter(r =>
+
+    const query = this.searchQuery.toLowerCase();
+    const filtered = this.salaryRecords.filter(r =>
       r.staffName.toLowerCase().includes(query) ||
       r.staffId.toLowerCase().includes(query) ||
-      r.month.includes(query)
+      r.role.toLowerCase().includes(query)
     );
+
+    // Group by staffId and get only the latest record for each staff
+    const latestRecords = new Map<string, SalaryRecord>();
+    filtered.forEach(record => {
+      const existing = latestRecords.get(record.staffId);
+      if (!existing || new Date(record.date) > new Date(existing.date)) {
+        latestRecords.set(record.staffId, record);
+      }
+    });
+
+    return Array.from(latestRecords.values());
   }
 
   get paginatedRecords(): SalaryRecord[] {
@@ -237,6 +264,52 @@ export class SalaryComponent implements OnInit {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
     }
+  }
+
+  getMonthName(monthStr: string): string {
+    const date = new Date(monthStr + '-01');
+    return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  }
+
+  getProfileInitials(name: string): string {
+    const names = name.split(' ');
+    return names.map(n => n[0]).join('').toUpperCase().substring(0, 2);
+  }
+
+  getStaffSalaryHistory(staffId: string): SalaryRecord[] {
+    return this.salaryRecords.filter(r => r.staffId === staffId).sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+  }
+
+  printDetailedReceipt(slip: SalaryRecord): void {
+    this.selectedSlip = slip;
+    setTimeout(() => {
+      const printContent = document.getElementById('detailed-receipt');
+      const originalContent = document.body.innerHTML;
+      
+      if (printContent) {
+        document.body.innerHTML = printContent.innerHTML;
+        window.print();
+        document.body.innerHTML = originalContent;
+        window.location.reload();
+      }
+    }, 100);
+  }
+
+  printThermalReceipt(slip: SalaryRecord): void {
+    this.selectedSlip = slip;
+    setTimeout(() => {
+      const printContent = document.getElementById('thermal-receipt');
+      const originalContent = document.body.innerHTML;
+      
+      if (printContent) {
+        document.body.innerHTML = printContent.innerHTML;
+        window.print();
+        document.body.innerHTML = originalContent;
+        window.location.reload();
+      }
+    }, 100);
   }
 
   deleteSalaryRecord(id: number): void {

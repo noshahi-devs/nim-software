@@ -112,6 +112,7 @@ import { StudentListComponent } from './student-list/student-list.component';
 import { StudentPromoteComponent } from './student-promote/student-promote.component';
 import { ClassListComponent } from './class-list/class-list.component';
 import { SectionListComponent } from './section-list/section-list.component';
+import { SalarySlipComponent } from './salary-slip/salary-slip.component';
 export const routes: Routes = [
     {
         path: '',
@@ -166,6 +167,7 @@ export const routes: Routes = [
             { path: 'subject-add', component: SubjectAddComponent },
             { path: 'subject-list', component: SubjectListComponent },
             { path: 'fee', component: FeeComponent },
+            { path: 'salary-slip', component: SalarySlipComponent },
             { path: 'salary', component: SalaryComponent },
             { path: 'staff-attendance-report', component: StaffAttendanceReportComponent },
             { path: 'attendance', component: AttendanceComponent },
