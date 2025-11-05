@@ -113,6 +113,9 @@ import { StudentPromoteComponent } from './student-promote/student-promote.compo
 import { ClassListComponent } from './class-list/class-list.component';
 import { SectionListComponent } from './section-list/section-list.component';
 import { SalarySlipComponent } from './salary-slip/salary-slip.component';
+import { GenerateFeeInvoiceComponent } from './generate-fee-invoice/generate-fee-invoice.component';
+import { CollectFeeComponent } from './collect-fee/collect-fee.component';
+import { FeeDefaultersComponent } from './fee-defaulters/fee-defaulters.component';
 export const routes: Routes = [
     {
         path: '',
@@ -231,7 +234,10 @@ export const routes: Routes = [
             { path: 'student-list', component: StudentListComponent },
             { path: 'student-promote', component: StudentPromoteComponent },
             { path: 'class-list', component: ClassListComponent },
-
+            { path: 'generate-fee-invoice', component: GenerateFeeInvoiceComponent },
+            { path: 'collect-fee', component: CollectFeeComponent },
+            { path: 'fee-slip/:id', component: FeeComponent },
+            { path: 'fee-defaulters', component: FeeDefaultersComponent },
 
             
         ]

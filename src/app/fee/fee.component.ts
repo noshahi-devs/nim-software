@@ -1,296 +1,177 @@
-import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-declare var $: any;
-import {
-  NgApexchartsModule,
-  ChartComponent
-} from 'ng-apexcharts';
+// import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
-declare var $: any;
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+
+interface Student {
+  id: number;
+  name: string;
+  class: string;
+  section: string;
+}
+
+interface FeeStructure {
+  class: string;
+  totalFee: number;
+  funds: number;
+}
+
+interface FeeRecord {
+  id: number;
+  studentId: number;
+  studentName: string;
+  class: string;
+  section: string;
+  month: string;
+  paymentType: 'Full' | 'Installment' | 'Half';
+  paidAmount: number;
+  remainingFee: number;
+  status: 'Paid' | 'Partial' | 'Unpaid';
+  date: string;
+}
+
 @Component({
   selector: 'app-fee',
   standalone: true,
-  imports: [NgApexchartsModule, BreadcrumbComponent],
+  imports: [CommonModule, FormsModule, BreadcrumbComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './fee.component.html',
-  styleUrl: './fee.component.css'
 })
-export class FeeComponent implements AfterViewInit {
-  title = 'Home 6';
+export class FeeComponent implements OnInit {
+  title = 'Fee Management';
 
-  enrollmentChart;
-  userOverviewDonutChart;
-  paymentStatusChart;
-  constructor() {
-    this.enrollmentChart = this.createChartTwo('#45B369', '#487fff');
-    this.userOverviewDonutChart = {
-      series: [500, 500, 500],
-      colors: ['#FF9F29', '#487FFF', '#E4F1FF'],
-      labels: ['Active', 'New', 'Total'],
-      legend: {
-        show: false
-      },
-      chart: {
-        type: 'donut',
-        height: 270,
-        sparkline: {
-          enabled: true // Remove whitespace
-        },
-        margin: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        },
-        padding: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        }
-      },
-      stroke: {
-        width: 0,
-      },
-      dataLabels: {
-        enabled: false
-      },
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200
-          },
-          legend: {
-            position: 'bottom'
-          }
-        }
-      }],
-      tooltip: {
-        custom: ({ seriesIndex, series, dataPointIndex, w }) => {
-          const donutColor = w.globals.colors[seriesIndex];
-          const label = w.config.labels[seriesIndex];
-          return `
-            <div style="font-size: 12px; padding:5px 10px; background-color: ${donutColor}; color: white; ">
-              ${label}: ${series[seriesIndex]} 
-            </div>
-          `;
-        }
-      }
-    };
-    this.paymentStatusChart = {
-      series: [{
-        name: 'Net Profit',
-        data: [44, 100, 40, 56, 30, 58, 50]
-      }, {
-        name: 'Free Cash',
-        data: [60, 120, 60, 90, 50, 95, 90]
-      }],
-      colors: ['#45B369', '#FF9F29'],
-      labels: ['Active', 'New', 'Total'],
+  // Filters
+  selectedClass: string = '';
+  selectedSection: string = '';
+  searchTerm: string = '';
 
-      legend: {
-        show: false
-      },
-      chart: {
-        type: 'bar',
-        height: 420,
-        toolbar: {
-          show: false
-        },
-      },
-      grid: {
-        show: true,
-        borderColor: '#D1D5DB',
-        strokeDashArray: 4, // Use a number for dashed style
-        position: 'back',
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 4,
-          columnWidth: 8,
-        },
-      },
-      dataLabels: {
-        enabled: false
-      },
-      states: {
-        hover: {
-          filter: {
-            type: 'none'
-          }
-        }
-      },
-      stroke: {
-        show: true,
-        width: 0,
-        colors: ['transparent']
-      },
-      xaxis: {
-        categories: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'],
-      },
-      fill: {
-        opacity: 1,
-        width: 18,
-      },
-    };
+  // Dropdown Data
+  classes = ['Nursery', 'KG', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
+  sections = ['A', 'B', 'C'];
 
-  }
-  ngAfterViewInit(): void {
-    $('svg.radial-progress').each(function( index, value ) { 
-      $(this).find($('circle.complete')).removeAttr( 'style' );
-  });
+  // Student Data (mock)
+  students: Student[] = [
+    { id: 1, name: 'Ayesha Khan', class: 'Five', section: 'A' },
+    { id: 2, name: 'Ali Raza', class: 'Five', section: 'B' },
+    { id: 3, name: 'Fatima Noor', class: 'Six', section: 'A' },
+  ];
 
-  // Activate progress animation on scroll
-    $(window).scroll(function(){
-        $('svg.radial-progress').each(function( index, value ) { 
-            // If svg.radial-progress is approximately 25% vertically into the window when scrolling from the top or the bottom
-            if ( 
-                $(window).scrollTop() > $(this).offset().top - ($(window).height() * 0.75) &&
-                $(window).scrollTop() < $(this).offset().top + $(this).height() - ($(window).height() * 0.25)
-            ) {
-                // Get percentage of progress
-                let percent = $(value).data('percentage');
-                // Get radius of the svg's circle.complete
-               let  radius = $(this).find($('circle.complete')).attr('r');
-                // Get circumference (2πr)
-              let   circumference = 2 * Math.PI * radius;
-                // Get stroke-dashoffset value based on the percentage of the circumference
-               let  strokeDashOffset = circumference - ((percent * circumference) / 100);
-                // Transition progress for 1.25 seconds
-                $(this).find($('circle.complete')).animate({'stroke-dashoffset': strokeDashOffset}, 1250);
-            }
-        });
-    }).trigger('scroll');
+  filteredStudents: Student[] = [];
+
+  // Fee Structures (based on class)
+  feeStructures: FeeStructure[] = [
+    { class: 'Five', totalFee: 5000, funds: 500 },
+    { class: 'Six', totalFee: 5500, funds: 600 },
+  ];
+
+  // Active Student & Fee Info
+  selectedStudent: Student | null = null;
+  selectedFeeStructure: FeeStructure | null = null;
+
+  feeMonth: string = '';
+  paymentType: 'Full' | 'Installment' | 'Half' = 'Full';
+  paidAmount: number = 0;
+  remainingFee: number = 0;
+
+  // Fee Records
+  feeRecords: FeeRecord[] = [];
+
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {}
+
+  // 🔍 Filter students
+  filterStudents() {
+    this.filteredStudents = this.students.filter((s) => {
+      return (
+        (!this.selectedClass || s.class === this.selectedClass) &&
+        (!this.selectedSection || s.section === this.selectedSection) &&
+        (!this.searchTerm ||
+          s.name.toLowerCase().includes(this.searchTerm.toLowerCase()))
+      );
+    });
   }
 
-  createChartTwo(color1, color2) {
-    return {
-      series: [{
-        name: 'series1',
-        data: [48, 35, 55, 32, 48, 30, 55, 50, 57]
-      }, {
-        name: 'series2',
-        data: [12, 20, 15, 26, 22, 60, 40, 48, 25]
-      }],
-      legend: {
-        show: false
-      },
-      chart: {
-        type: 'area',
-        width: '100%',
-        height: 270,
-        toolbar: {
-          show: false
-        },
-        padding: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        curve: 'smooth',
-        width: 3,
-        colors: [color1, color2], // Use two colors for the lines
-        lineCap: 'round'
-      },
-      grid: {
-        show: true,
-        borderColor: '#D1D5DB',
-        strokeDashArray: 1,
-        position: 'back',
-        xaxis: {
-          lines: {
-            show: false
-          }
-        },
-        yaxis: {
-          lines: {
-            show: true
-          }
-        },
-        row: {
-          colors: undefined,
-          opacity: 0.5
-        },
-        column: {
-          colors: undefined,
-          opacity: 0.5
-        },
-        padding: {
-          top: -20,
-          right: 0,
-          bottom: -10,
-          left: 0
-        },
-      },
-      fill: {
-        type: 'gradient',
-        colors: [color1, color2], // Use two colors for the gradient
-        // gradient: {
-        //     shade: 'light',
-        //     type: 'vertical',
-        //     shadeIntensity: 0.5,
-        //     gradientToColors: [`${color1}`, `${color2}00`], // Bottom gradient colors with transparency
-        //     inverseColors: false,
-        //     opacityFrom: .6,
-        //     opacityTo: 0.3,
-        //     stops: [0, 100],
-        // },
-        gradient: {
-          shade: 'light',
-          type: 'vertical',
-          shadeIntensity: 0.5,
-          gradientToColors: [undefined, `${color2}00`], // Apply transparency to both colors
-          inverseColors: false,
-          opacityFrom: [0.4, 0.4], // Starting opacity for both colors
-          opacityTo: [0.3, 0.3], // Ending opacity for both colors
-          stops: [0, 100],
-        },
-      },
-      markers: {
-        colors: [color1, color2], // Use two colors for the markers
-        strokeWidth: 3,
-        size: 0,
-        hover: {
-          size: 10
-        }
-      },
-      xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        tooltip: {
-          enabled: false
-        },
-        labels: {
-          formatter: function (value) {
-            return value;
-          },
-          style: {
-            fontSize: "14px"
-          }
-        }
-      },
-      yaxis: {
-        labels: {
-          formatter: function (value) {
-            return "$" + value + "k";
-          },
-          style: {
-            fontSize: "14px"
-          }
-        },
-      },
-      tooltip: {
-        x: {
-          format: 'dd/MM/yy HH:mm'
-        }
-      }
-    };
+  // 📚 Select student
+  selectStudent(student: Student) {
+    this.selectedStudent = student;
+    this.selectedFeeStructure = this.feeStructures.find(
+      (f) => f.class === student.class
+    ) || null;
+
+    if (this.selectedFeeStructure) {
+      const total = this.selectedFeeStructure.totalFee + this.selectedFeeStructure.funds;
+      this.remainingFee = total;
+      this.paidAmount = 0;
+    }
   }
 
+  // 💰 Auto-calc remaining fee
+  updateRemaining() {
+    if (this.selectedFeeStructure) {
+      const total = this.selectedFeeStructure.totalFee + this.selectedFeeStructure.funds;
+      this.remainingFee = total - this.paidAmount;
+    }
+  }
 
+  // 💾 Save Fee Record
+  saveFee() {
+    if (!this.selectedStudent || !this.selectedFeeStructure || !this.feeMonth) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Missing Information',
+        text: 'Please select a student and fill all required fields.',
+      });
+      return;
+    }
+
+    const total = this.selectedFeeStructure.totalFee + this.selectedFeeStructure.funds;
+    const status =
+      this.paidAmount === total
+        ? 'Paid'
+        : this.paidAmount === 0
+        ? 'Unpaid'
+        : 'Partial';
+
+    const record: FeeRecord = {
+      id: this.feeRecords.length + 1,
+      studentId: this.selectedStudent.id,
+      studentName: this.selectedStudent.name,
+      class: this.selectedStudent.class,
+      section: this.selectedStudent.section,
+      month: this.feeMonth,
+      paymentType: this.paymentType,
+      paidAmount: this.paidAmount,
+      remainingFee: this.remainingFee,
+      status,
+      date: new Date().toISOString().split('T')[0],
+    };
+
+    this.feeRecords.push(record);
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Fee Saved Successfully',
+      text: `${this.selectedStudent.name}'s fee has been recorded.`,
+      timer: 2000,
+      showConfirmButton: false,
+    }).then(() => {
+      // redirect to fee paid summary page
+      this.router.navigate(['/fee-paid']);
+    });
+
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.selectedStudent = null;
+    this.selectedFeeStructure = null;
+    this.feeMonth = '';
+    this.paymentType = 'Full';
+    this.paidAmount = 0;
+    this.remainingFee = 0;
+  }
 }
