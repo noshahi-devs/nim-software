@@ -1,372 +1,117 @@
-import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-declare var $: any;
-import {
-  NgApexchartsModule,
-  ChartComponent
-} from 'ng-apexcharts';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
+import { RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
+
+interface LeaveApplication {
+  id: number;
+  employeeName: string;
+  leaveType: string;
+  fromDate: string;
+  toDate: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  reason: string;
+  appliedOn: string;
+}
+
 @Component({
   selector: 'app-leave',
   standalone: true,
-  imports: [NgApexchartsModule, BreadcrumbComponent],
+  imports: [CommonModule, FormsModule, BreadcrumbComponent, RouterModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './leave.component.html',
   styleUrl: './leave.component.css'
 })
-export class LeaveComponent implements AfterViewInit {
-  title = 'Analytics';
-  userOverviewDonutChart;
-  revenueChart;
-  barChart;
-  constructor() {
+export class LeaveComponent implements OnInit {
+  title = 'Leave Dashboard';
+  Math = Math;
 
-    this.revenueChart = this.createChartTwo('#CD20F9', '#6593FF');
+  // Stats
+  totalLeaves = 0;
+  pendingLeaves = 0;
+  approvedLeaves = 0;
+  rejectedLeaves = 0;
 
-    this.barChart = {
-      series: [{
-        name: "Sales",
-        data: [{
-          x: 'Sun',
-          y: 15,
-        }, {
-          x: 'Mon',
-          y: 12,
-        }, {
-          x: 'Tue',
-          y: 18,
-        }, {
-          x: 'Wed',
-          y: 20,
-        }, {
-          x: 'Thu',
-          y: 13,
-        }, {
-          x: 'Fri',
-          y: 16,
-        }, {
-          x: 'Sat',
-          y: 6,
-        }]
-      }],
-      chart: {
-        type: 'bar',
-        height: 400,
-        toolbar: {
-          show: false
-        },
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 6,
-          horizontal: false,
-          columnWidth: 24,
-          endingShape: 'rounded',
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      fill: {
-        type: 'gradient',
-        colors: ['#dae5ff'], // Set the starting color (top color) here
-        gradient: {
-          shade: 'light', // Gradient shading type
-          type: 'vertical',  // Gradient direction (vertical)
-          shadeIntensity: 0.5, // Intensity of the gradient shading
-          gradientToColors: ['#dae5ff'], // Bottom gradient color (with transparency)
-          inverseColors: false, // Do not invert colors
-          opacityFrom: 1, // Starting opacity
-          opacityTo: 1,  // Ending opacity
-          stops: [0, 100],
-        },
-      },
-      grid: {
-        show: false,
-        borderColor: '#D1D5DB',
-        strokeDashArray: 4, // Use a number for dashed style
-        position: 'back',
-        padding: {
-          top: -10,
-          right: -10,
-          bottom: -10,
-          left: -10
-        }
-      },
-      xaxis: {
-        type: 'category',
-        categories: ['2hr', '4hr', '6hr', '8hr', '10hr', '12hr', '14hr']
-      },
-      yaxis: {
-        show: false,
-      },
-    };
+  // Recent applications
+  recentApplications: LeaveApplication[] = [];
+  filteredApplications: LeaveApplication[] = [];
 
-   this.userOverviewDonutChart = {
-      series: [500, 500, 500],
-      colors: ['#FF9F29', '#487FFF', '#45B369'],
-      labels: ['Active', 'New', 'Total'],
-      legend: {
-        show: false
-      },
-      chart: {
-        type: 'donut',
-        height: 270,
-        sparkline: {
-          enabled: true // Remove whitespace
-        },
-        margin: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        },
-        padding: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        }
-      },
-      stroke: {
-        width: 0,
-      },
-      dataLabels: {
-        enabled: false
-      },
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200
-          },
-          legend: {
-            position: 'bottom'
-          }
-        }
-      }],
-      tooltip: {
-        custom: ({ seriesIndex, series, dataPointIndex, w }) => {
-          const donutColor = w.globals.colors[seriesIndex];
-          const label = w.config.labels[seriesIndex];
-          return `
-            <div style="font-size: 12px; padding:5px 10px; background-color: ${donutColor}; color: white; ">
-              ${label}: ${series[seriesIndex]}
-            </div>
-          `;
-        }
-      }
-    };
+  // Pagination
+  rowsPerPage = 10;
+  currentPage = 1;
 
-  }
-  ngAfterViewInit(): void {
-    $('#world-map').vectorMap(
-      {
-        map: 'world_mill_en',
-        backgroundColor: 'transparent',
-        borderColor: '#fff',
-        borderOpacity: 0.25,
-        borderWidth: 0,
-        color: '#000000',
-        regionStyle: {
-          initial: {
-            fill: '#D1D5DB'
-          }
-        },
-        markerStyle: {
-          initial: {
-            r: 5,
-            'fill': '#fff',
-            'fill-opacity': 1,
-            'stroke': '#000',
-            'stroke-width': 1,
-            'stroke-opacity': 0.4
-          },
-        },
-        markers: [{
-          latLng: [35.8617, 104.1954],
-          name: 'China : 250'
-        },
-
-        {
-          latLng: [25.2744, 133.7751],
-          name: 'AustrCalia : 250'
-        },
-
-        {
-          latLng: [36.77, -119.41],
-          name: 'USA : 82%'
-        },
-
-        {
-          latLng: [55.37, -3.41],
-          name: 'UK   : 250'
-        },
-
-        {
-          latLng: [25.20, 55.27],
-          name: 'UAE : 250'
-        }],
-
-        series: {
-          regions: [{
-            values: {
-              "US": '#487FFF ',
-              "SA": '#487FFF',
-              "AU": '#487FFF',
-              "CN": '#487FFF',
-              "GB": '#487FFF',
-            },
-            attribute: 'fill'
-          }]
-        },
-        hoverOpacity: null,
-        normalizeFunction: 'linear',
-        zoomOnScroll: false,
-        scaleColors: ['#000000', '#000000'],
-        selectedColor: '#000000',
-        selectedRegions: [],
-        enableZoom: false,
-        hoverColor: '#fff',
-      });
+  ngOnInit(): void {
+    this.loadLeaveData();
+    this.calculateStats();
   }
 
-  createChartTwo(color1, color2) {
-    return {
-      series: [{
-        name: 'series1',
-        data: [6, 20, 15, 48, 28, 55, 28, 52, 25, 32, 15, 25]
-      }, {
-        name: 'series2',
-        data: [0, 8, 4, 36, 16, 42, 16, 40, 12, 24, 4, 12]
-      }],
-      legend: {
-        show: false
-      },
-      chart: {
-        type: 'area',
-        width: '100%',
-        height: 150,
-        toolbar: {
-          show: false
-        },
-        padding: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        curve: 'smooth',
-        width: 3,
-        colors: [color1, color2], // Use two colors for the lines
-        lineCap: 'round'
-      },
-      grid: {
-        show: true,
-        borderColor: '#D1D5DB',
-        strokeDashArray: 1,
-        position: 'back',
-        xaxis: {
-          lines: {
-            show: false
-          }
-        },
-        yaxis: {
-          lines: {
-            show: true
-          }
-        },
-        row: {
-          colors: undefined,
-          opacity: 0.5
-        },
-        column: {
-          colors: undefined,
-          opacity: 0.5
-        },
-        padding: {
-          top: -20,
-          right: 0,
-          bottom: -10,
-          left: 0
-        },
-      },
-      fill: {
-        type: 'gradient',
-        colors: [color1, color2], // Use two colors for the gradient
-        // gradient: {
-        //     shade: 'light',
-        //     type: 'vertical',
-        //     shadeIntensity: 0.5,
-        //     gradientToColors: [`${color1}`, `${color2}00`], // Bottom gradient colors with transparency
-        //     inverseColors: false,
-        //     opacityFrom: .6,
-        //     opacityTo: 0.3,
-        //     stops: [0, 100],
-        // },
-        gradient: {
-          shade: 'light',
-          type: 'vertical',
-          shadeIntensity: 0.5,
-          gradientToColors: [undefined, `${color2}00`], // Apply transparency to both colors
-          inverseColors: false,
-          opacityFrom: [0.4, 0.6], // Starting opacity for both colors
-          opacityTo: [0.3, 0.3], // Ending opacity for both colors
-          stops: [0, 100],
-        },
-      },
-      // markers: {
-      //     colors: [color1, color2], // Use two colors for the markers
-      //     strokeWidth: 3,
-      //     size: 0,
-      //     hover: {
-      //         size: 10
-      //     }
-      // },
+  loadLeaveData(): void {
+    const savedLeaves = localStorage.getItem('leaveApplications');
+    
+    if (savedLeaves) {
+      this.recentApplications = JSON.parse(savedLeaves);
+    } else {
+      this.recentApplications = [
+        { id: 1, employeeName: 'Ali Hassan', leaveType: 'Sick Leave', fromDate: '2024-11-15', toDate: '2024-11-17', status: 'Pending', reason: 'Medical checkup', appliedOn: '2024-11-10' },
+        { id: 2, employeeName: 'Sara Ahmed', leaveType: 'Casual Leave', fromDate: '2024-11-20', toDate: '2024-11-22', status: 'Approved', reason: 'Family function', appliedOn: '2024-11-08' },
+        { id: 3, employeeName: 'Usman Khan', leaveType: 'Annual Leave', fromDate: '2024-11-25', toDate: '2024-11-30', status: 'Pending', reason: 'Personal work', appliedOn: '2024-11-09' },
+        { id: 4, employeeName: 'Ayesha Malik', leaveType: 'Sick Leave', fromDate: '2024-11-12', toDate: '2024-11-13', status: 'Rejected', reason: 'Fever', appliedOn: '2024-11-11' },
+        { id: 5, employeeName: 'Bilal Raza', leaveType: 'Casual Leave', fromDate: '2024-11-18', toDate: '2024-11-19', status: 'Approved', reason: 'Personal emergency', appliedOn: '2024-11-07' },
+        { id: 6, employeeName: 'Fatima Noor', leaveType: 'Annual Leave', fromDate: '2024-12-01', toDate: '2024-12-05', status: 'Pending', reason: 'Vacation', appliedOn: '2024-11-09' },
+        { id: 7, employeeName: 'Hamza Tariq', leaveType: 'Sick Leave', fromDate: '2024-11-14', toDate: '2024-11-15', status: 'Approved', reason: 'Doctor appointment', appliedOn: '2024-11-12' }
+      ];
+      localStorage.setItem('leaveApplications', JSON.stringify(this.recentApplications));
+    }
 
-      markers: {
-        colors: [color1, color2],
-        strokeWidth: 2,
-        size: 0,
-        hover: {
-          size: 8
-        }
-      },
-
-      xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        tooltip: {
-          enabled: false
-        },
-        labels: {
-          formatter: function (value) {
-            return value;
-          },
-          style: {
-            fontSize: "14px"
-          }
-        }
-      },
-      yaxis: {
-        labels: {
-          formatter: function (value) {
-            return "$" + value + "k";
-          },
-          style: {
-            fontSize: "14px"
-          }
-        },
-      },
-      tooltip: {
-        x: {
-          format: 'dd/MM/yy HH:mm'
-        }
-      }
-    };
+    this.filteredApplications = [...this.recentApplications];
   }
 
+  calculateStats(): void {
+    this.totalLeaves = this.recentApplications.length;
+    this.pendingLeaves = this.recentApplications.filter(l => l.status === 'Pending').length;
+    this.approvedLeaves = this.recentApplications.filter(l => l.status === 'Approved').length;
+    this.rejectedLeaves = this.recentApplications.filter(l => l.status === 'Rejected').length;
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'Approved': return 'bg-success-600 text-white px-24 py-4 radius-4 fw-medium text-sm';
+      case 'Pending': return 'bg-warning-600 text-white px-24 py-4 radius-4 fw-medium text-sm';
+      case 'Rejected': return 'bg-danger-600 text-white px-24 py-4 radius-4 fw-medium text-sm';
+      default: return 'bg-neutral-200 text-neutral-900 px-24 py-4 radius-4 fw-medium text-sm';
+    }
+  }
+
+  refreshData(): void {
+    this.loadLeaveData();
+    this.calculateStats();
+    Swal.fire({ icon: 'success', title: 'Refreshed!', text: 'Data refreshed successfully.', timer: 1500, showConfirmButton: false });
+  }
+
+  exportData(): void {
+    Swal.fire({ icon: 'info', title: 'Export', text: 'Export functionality will be implemented soon.', confirmButtonColor: '#800020' });
+  }
+
+  viewDetails(leave: LeaveApplication): void {
+    Swal.fire({
+      title: 'Leave Details',
+      html: `<div class="text-start"><p><strong>Employee:</strong> ${leave.employeeName}</p><p><strong>Leave Type:</strong> ${leave.leaveType}</p><p><strong>From:</strong> ${leave.fromDate}</p><p><strong>To:</strong> ${leave.toDate}</p><p><strong>Reason:</strong> ${leave.reason}</p><p><strong>Applied On:</strong> ${leave.appliedOn}</p><p><strong>Status:</strong> <span class="badge ${this.getStatusClass(leave.status)}">${leave.status}</span></p></div>`,
+      confirmButtonColor: '#800020'
+    });
+  }
+
+  get paginatedApplications(): LeaveApplication[] {
+    const start = (this.currentPage - 1) * this.rowsPerPage;
+    return this.filteredApplications.slice(start, start + this.rowsPerPage);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredApplications.length / this.rowsPerPage);
+  }
+
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) this.currentPage = page;
+  }
 }

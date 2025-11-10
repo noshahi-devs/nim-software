@@ -121,6 +121,10 @@ import { ExamScheduleComponent } from './exam-schedule/exam-schedule.component';
 import { MarksEntryComponent } from './marks-entry/marks-entry.component';
 import { AutoGradeCalculationComponent } from './auto-grade-calculation/auto-grade-calculation.component';
 import { ExamAnalyticsComponent } from './exam-analytics/exam-analytics.component';
+import { ApplyLeavesComponent } from './apply-leaves/apply-leaves.component';
+import { MyLeavesComponent } from './my-leaves/my-leaves.component';
+import { LeaveManageComponent } from './leave-manage/leave-manage.component';
+import { LeaveTypeComponent } from './leave-type/leave-type.component';
 export const routes: Routes = [
     {
         path: '',
@@ -247,7 +251,11 @@ export const routes: Routes = [
             { path: 'exam-schedule', component: ExamScheduleComponent},
             { path: 'marks-entry', component: MarksEntryComponent},
             { path: 'auto-grade-calculation', component: AutoGradeCalculationComponent},
-            { path: 'exam-analytics', component: ExamAnalyticsComponent}
+            { path: 'exam-analytics', component: ExamAnalyticsComponent},
+            { path: 'apply-leave', component: ApplyLeavesComponent},
+            { path: 'my-leaves', component: MyLeavesComponent},
+            { path: 'manage-leaves', component: LeaveManageComponent},
+            { path: 'leave-type', component: LeaveTypeComponent},
 
 
 

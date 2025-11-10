@@ -205,16 +205,20 @@
 </li>
 
 <!-- Leave -->
-<!-- <li class="dropdown">
+<li class="dropdown">
   <a href="javascript:void(0)">
-    <iconify-icon icon="mdi:calendar-month" class="menu-icon"></iconify-icon>
+    <iconify-icon icon="mdi:calendar-outline" class="menu-icon"></iconify-icon>
     <span>Leave</span>
   </a>
   <ul class="sidebar-submenu">
-    <li><a routerLink="/leave"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Apply</a></li>
-    <li><a routerLink="/leave"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Manage</a></li>
+    <li><a routerLink="/leave"><i class="ri-circle-fill circle-icon text-primary-600"></i> Dashboard</a></li>
+    <li><a routerLink="/apply-leave"><i class="ri-circle-fill circle-icon text-warning-main"></i> Apply Leave</a></li>
+    <li><a routerLink="/my-leaves"><i class="ri-circle-fill circle-icon text-success-main"></i> My Leaves</a></li>
+    <li><a routerLink="/manage-leaves"><i class="ri-circle-fill circle-icon text-danger-main"></i> Manage Leaves</a></li>
+    <li><a routerLink="/leave-type"><i class="ri-circle-fill circle-icon text-neutral-600"></i> Leave Type Management</a></li>
   </ul>
-</li> -->
+</li>
+
 
 <!-- Exam -->
 <li class="dropdown">
@@ -1105,13 +1109,11 @@
       <div class="row align-items-center justify-content-between">
         <div class="col-auto">
           <p class="mb-0">©
-            {{ currentYear }} Noshahi Institute Manager - All Rights Reserved.
+            {{ currentYear }} Noshahi Institute Manager - All Rights Reserved.
           </p>
         </div>
         <div class="col-auto">
-          <p class="mb-0">Made by <span class="text-primary-600">Made by Noshahi Developers Inc.
-
-          </span></p>
+          <p class="mb-0">Made by <span class="text-primary-600">Noshahi Developers Inc.,</span></p>
         </div>
       </div>
     </footer>
