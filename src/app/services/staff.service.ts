@@ -1,48 +1,70 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// ✅ Model defined inside service
 export interface Staff {
-  id: number;
-  name: string;
-  role?: string;
-  email?: string;
-  phone?: string;
-  profile?: string; // profile image URL
+  staffId?: number;
+  staff?: string;  // POST field
+  staffName?: string;  // returned from GET
+  imagePath?: string | null;
+  imageUpload?: any;
+  uniqueStaffAttendanceNumber?: number;
+  gender: string;
+  dob: string;
+  fatherName?: string | null;
+  motherName?: string | null;
+  temporaryAddress?: string | null;
+  permanentAddress: string;
+  contactNumber1: string;
+  email: string;
+  qualifications: string;
+  joiningDate: string;
+  designation: string;
+  bankAccountName?: string | null;
+  bankAccountNumber?: number | null;
+  bankName?: string | null;
+  bankBranch?: string | null;
+  status: string;
+  departmentId?: number | null;
+  department?: any;
+  staffSalaryId?: number | null;
+  staffSalary?: any;
+  staffExperiences?: any[];
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class StaffService {
-  // ✅ Replace with your actual API endpoint
-  private apiUrl = 'https://visioncollegegojra.com/api/Staffs';
+  private apiUrl = 'https://visioncollegegojra.com/api/Staffs'; // ✅ Live API
 
   constructor(private http: HttpClient) {}
 
-  // ✅ Fetch all staff
+  // Get all staff
   getAllStaff(): Observable<Staff[]> {
     return this.http.get<Staff[]>(this.apiUrl);
   }
 
-  // ✅ Fetch a single staff by ID
-  getStaffById(id: number): Observable<Staff> {
-    return this.http.get<Staff>(`${this.apiUrl}/${id}`);
+  // Get single staff by ID
+getStaffById(staffId: number): Observable<Staff> {
+  return this.http.get<Staff>(`${this.apiUrl}/${staffId}`);
+}
+
+
+  // Add new staff
+  addStaff(staff: Staff): Observable<Staff> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<Staff>(this.apiUrl, staff, { headers });
   }
 
-  // ✅ Add new staff
-  addStaff(staff: Staff): Observable<any> {
-    return this.http.post(this.apiUrl, staff);
+  // Update existing staff
+  updateStaff(staffId: number, staff: Staff): Observable<Staff> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.put<Staff>(`${this.apiUrl}/${staffId}`, staff, { headers });
   }
 
-  // ✅ Update staff
-  updateStaff(id: number, staff: Staff): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, staff);
-  }
-
-  // ✅ Delete staff
-  deleteStaff(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  // Delete staff
+  deleteStaff(staffId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${staffId}`);
   }
 }

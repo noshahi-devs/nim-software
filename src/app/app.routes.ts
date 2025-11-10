@@ -116,6 +116,11 @@ import { SalarySlipComponent } from './salary-slip/salary-slip.component';
 import { GenerateFeeInvoiceComponent } from './generate-fee-invoice/generate-fee-invoice.component';
 import { CollectFeeComponent } from './collect-fee/collect-fee.component';
 import { FeeDefaultersComponent } from './fee-defaulters/fee-defaulters.component';
+import { ExamResultComponent } from './exam-result/exam-result.component';
+import { ExamScheduleComponent } from './exam-schedule/exam-schedule.component';
+import { MarksEntryComponent } from './marks-entry/marks-entry.component';
+import { AutoGradeCalculationComponent } from './auto-grade-calculation/auto-grade-calculation.component';
+import { ExamAnalyticsComponent } from './exam-analytics/exam-analytics.component';
 export const routes: Routes = [
     {
         path: '',
@@ -238,6 +243,14 @@ export const routes: Routes = [
             { path: 'collect-fee', component: CollectFeeComponent },
             { path: 'fee-slip/:id', component: FeeComponent },
             { path: 'fee-defaulters', component: FeeDefaultersComponent },
+            { path: 'exam-result', component: ExamResultComponent},
+            { path: 'exam-schedule', component: ExamScheduleComponent},
+            { path: 'marks-entry', component: MarksEntryComponent},
+            { path: 'auto-grade-calculation', component: AutoGradeCalculationComponent},
+            { path: 'exam-analytics', component: ExamAnalyticsComponent}
+
+
+
 
             
         ]

@@ -1,6 +1,22 @@
 <div class="dashboard-main-body">
   <app-breadcrumb [title]="title"></app-breadcrumb>
 
+  <!-- Info Card -->
+  <div class="card radius-12 mb-24 bg-info-50">
+    <div class="card-body p-24">
+      <div class="d-flex align-items-start gap-3">
+        <iconify-icon icon="mdi:information-outline" class="text-info-600 text-2xl"></iconify-icon>
+        <div>
+          <h6 class="text-md fw-semibold mb-2">About Grade Scale Management</h6>
+          <p class="text-sm text-secondary-light mb-0">
+            Define custom grading scales that will be automatically applied when entering marks. 
+            The system will calculate grades based on percentage ranges you define here.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toolbar -->
   <div class="card radius-12 mb-24">
     <div class="card-body p-24">
@@ -9,7 +25,7 @@
           <button type="button" (click)="openAddDialog()" 
                   class="btn btn-primary-600 radius-8 px-20 py-11 d-flex align-items-center gap-2">
             <iconify-icon icon="ic:baseline-plus" class="text-xl"></iconify-icon>
-            Add Exam
+            Add Grade Scale
           </button>
           
           <button type="button" (click)="refreshData()" 
@@ -23,8 +39,8 @@
           <input type="text" 
                  class="bg-base h-40-px" 
                  [(ngModel)]="searchTerm" 
-                 (input)="searchExams()" 
-                 placeholder="Search Exam..." />
+                 (input)="searchGradeScales()" 
+                 placeholder="Search Grade..." />
           <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
         </div>
       </div>
@@ -34,7 +50,7 @@
   <!-- Table Card -->
   <div class="card h-100 p-0 radius-12">
     <div class="card-header border-bottom bg-base py-16 px-24 d-flex align-items-center justify-content-between">
-      <h6 class="text-lg fw-semibold mb-0">All Exams</h6>
+      <h6 class="text-lg fw-semibold mb-0">Grade Scales</h6>
       <div class="d-flex align-items-center gap-2">
         <span class="text-md fw-medium text-secondary-light">Show</span>
         <select class="form-select form-select-sm w-auto ps-12 py-6 radius-12 h-40-px" 
@@ -59,61 +75,51 @@
           <thead>
             <tr>
               <th scope="col">S.L</th>
-              <th scope="col">Exam Name</th>
-              <th scope="col">Type</th>
-              <th scope="col">Class</th>
-              <th scope="col">Section</th>
-              <th scope="col">Start Date</th>
-              <th scope="col">End Date</th>
-              <th scope="col" class="text-center">Status</th>
+              <th scope="col">Grade</th>
+              <th scope="col">Percentage Range</th>
+              <th scope="col">Grade Point</th>
+              <th scope="col">Remarks</th>
               <th scope="col" class="text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let exam of paginatedExams; let i = index">
+            <tr *ngFor="let gradeScale of paginatedGradeScales; let i = index">
               <td>{{ (currentPage - 1) * rowsPerPage + i + 1 }}</td>
               <td>
-                <span class="fw-semibold text-primary-600">{{ exam.examName }}</span>
+                <span class="px-12 py-4 radius-4 fw-medium text-sm"
+                      [ngClass]="getGradeBadgeClass(gradeScale.grade)">
+                  {{ gradeScale.grade }}
+                </span>
               </td>
               <td>
-                <span class="badge bg-info-50 text-info-600 px-12 py-4 radius-4 fw-medium text-sm">
-                  {{ exam.examType }}
+                <span class="fw-semibold">{{ gradeScale.minPercentage }}% - {{ gradeScale.maxPercentage }}%</span>
+              </td>
+              <td>
+                <span class="badge bg-neutral-200 text-neutral-600 px-12 py-4 radius-4 fw-medium text-sm">
+                  {{ gradeScale.gradePoint }}
                 </span>
               </td>
-              <td>{{ exam.className || getClassName(exam.classId) }}</td>
-              <td>{{ exam.sectionName || getSectionName(exam.sectionId) }}</td>
-              <td>{{ exam.startDate | date: 'dd MMM yyyy' }}</td>
-              <td>{{ exam.endDate | date: 'dd MMM yyyy' }}</td>
-              <td class="text-center">
-                <span *ngIf="exam.status === 'Active'" 
-                      class="bg-success-focus text-success-600 border border-success-main px-24 py-4 radius-4 fw-medium text-sm">
-                  Active
-                </span>
-                <span *ngIf="exam.status === 'Inactive'" 
-                      class="bg-danger-focus text-danger-600 border border-danger-main px-24 py-4 radius-4 fw-medium text-sm">
-                  Inactive
-                </span>
-              </td>
+              <td>{{ gradeScale.remarks || '-' }}</td>
               <td class="text-center">
                 <div class="d-flex align-items-center gap-10 justify-content-center">
-                  <button type="button" (click)="openViewDialog(exam)"
+                  <button type="button" (click)="openViewDialog(gradeScale)"
                           class="bg-info-focus text-info-600 bg-hover-info-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
                     <iconify-icon icon="iconamoon:eye-light" class="icon text-xl"></iconify-icon>
                   </button>
-                  <button type="button" (click)="openEditDialog(exam)"
+                  <button type="button" (click)="openEditDialog(gradeScale)"
                           class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
                     <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
                   </button>
-                  <button type="button" (click)="deleteExam(exam)"
+                  <button type="button" (click)="deleteGradeScale(gradeScale)"
                           class="bg-danger-focus text-danger-600 bg-hover-danger-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
                     <iconify-icon icon="mingcute:delete-2-line" class="menu-icon"></iconify-icon>
                   </button>
                 </div>
               </td>
             </tr>
-            <tr *ngIf="paginatedExams.length === 0">
-              <td colspan="9" class="text-center py-4">
-                <p class="text-secondary-light mb-0">No exams found</p>
+            <tr *ngIf="paginatedGradeScales.length === 0">
+              <td colspan="6" class="text-center py-4">
+                <p class="text-secondary-light mb-0">No grade scales found</p>
               </td>
             </tr>
           </tbody>
@@ -121,11 +127,11 @@
       </div>
 
       <!-- Pagination -->
-      <div *ngIf="!loading && filteredExams.length > 0" class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-24">
+      <div *ngIf="!loading && filteredGradeScales.length > 0" class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-24">
         <span class="text-secondary-light text-sm">
           Showing {{ (currentPage - 1) * rowsPerPage + 1 }} to 
-          {{ Math.min(currentPage * rowsPerPage, filteredExams.length) }} of 
-          {{ filteredExams.length }} entries
+          {{ Math.min(currentPage * rowsPerPage, filteredGradeScales.length) }} of 
+          {{ filteredGradeScales.length }} entries
         </span>
         <ul class="pagination d-flex flex-wrap align-items-center gap-2 justify-content-center">
           <li class="page-item">
@@ -163,70 +169,47 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{ isEditMode ? 'Edit Exam' : 'Add New Exam' }}</h5>
+        <h5 class="modal-title">{{ isEditMode ? 'Edit Grade Scale' : 'Add New Grade Scale' }}</h5>
         <button type="button" class="btn-close" (click)="closeDialog()"></button>
       </div>
       <div class="modal-body">
         <form>
           <div class="row gy-3">
-            <div class="col-12">
-              <label class="form-label">Exam Name <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" [(ngModel)]="examForm.examName" name="examName" 
-                     placeholder="Enter exam name" required />
-            </div>
-            
             <div class="col-md-6">
-              <label class="form-label">Exam Type <span class="text-danger">*</span></label>
-              <select class="form-select" [(ngModel)]="examForm.examType" name="examType" required>
-                <option *ngFor="let type of examTypes" [value]="type.value">{{ type.label }}</option>
-              </select>
+              <label class="form-label">Grade <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" [(ngModel)]="gradeScaleForm.grade" name="grade" 
+                     placeholder="e.g., A+, A, B" required />
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">Class <span class="text-danger">*</span></label>
-              <select class="form-select" [(ngModel)]="examForm.classId" name="classId" required>
-                <option [value]="0" disabled>Select Class</option>
-                <option *ngFor="let cls of classes" [value]="cls.id">{{ cls.name }}</option>
-              </select>
+              <label class="form-label">Grade Point</label>
+              <input type="number" class="form-control" [(ngModel)]="gradeScaleForm.gradePoint" name="gradePoint" 
+                     placeholder="e.g., 4.0" step="0.1" min="0" max="5" />
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">Section <span class="text-danger">*</span></label>
-              <select class="form-select" [(ngModel)]="examForm.sectionId" name="sectionId" required>
-                <option [value]="0" disabled>Select Section</option>
-                <option *ngFor="let sec of sections" [value]="sec.id">{{ sec.name }}</option>
-              </select>
+              <label class="form-label">Min Percentage <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" [(ngModel)]="gradeScaleForm.minPercentage" name="minPercentage" 
+                     placeholder="e.g., 90" min="0" max="100" required />
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">Status</label>
-              <select class="form-select" [(ngModel)]="examForm.status" name="status">
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">Start Date <span class="text-danger">*</span></label>
-              <input type="date" class="form-control" [(ngModel)]="examForm.startDate" name="startDate" required />
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">End Date <span class="text-danger">*</span></label>
-              <input type="date" class="form-control" [(ngModel)]="examForm.endDate" name="endDate" required />
+              <label class="form-label">Max Percentage <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" [(ngModel)]="gradeScaleForm.maxPercentage" name="maxPercentage" 
+                     placeholder="e.g., 100" min="0" max="100" required />
             </div>
 
             <div class="col-12">
-              <label class="form-label">Description</label>
-              <textarea class="form-control" [(ngModel)]="examForm.description" name="description" 
-                        rows="3" placeholder="Enter exam description"></textarea>
+              <label class="form-label">Remarks</label>
+              <input type="text" class="form-control" [(ngModel)]="gradeScaleForm.remarks" name="remarks" 
+                     placeholder="e.g., Outstanding, Excellent" />
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="saveExam()">
+        <button type="button" class="btn btn-primary" (click)="saveGradeScale()">
           {{ isEditMode ? 'Update' : 'Save' }}
         </button>
       </div>
@@ -235,50 +218,39 @@
 </div>
 
 <!-- View Dialog -->
-<div *ngIf="showViewDialog && selectedExam" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+<div *ngIf="showViewDialog && selectedGradeScale" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Exam Details</h5>
+        <h5 class="modal-title">Grade Scale Details</h5>
         <button type="button" class="btn-close" (click)="closeDialog()"></button>
       </div>
       <div class="modal-body">
         <div class="row gy-3">
           <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">Exam Name</p>
-            <h6 class="mb-0">{{ selectedExam.examName }}</h6>
-          </div>
-          <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">Exam Type</p>
-            <h6 class="mb-0">{{ selectedExam.examType }}</h6>
-          </div>
-          <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">Class</p>
-            <h6 class="mb-0">{{ selectedExam.className || getClassName(selectedExam.classId) }}</h6>
-          </div>
-          <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">Section</p>
-            <h6 class="mb-0">{{ selectedExam.sectionName || getSectionName(selectedExam.sectionId) }}</h6>
-          </div>
-          <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">Start Date</p>
-            <h6 class="mb-0">{{ selectedExam.startDate | date: 'dd MMM yyyy' }}</h6>
-          </div>
-          <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">End Date</p>
-            <h6 class="mb-0">{{ selectedExam.endDate | date: 'dd MMM yyyy' }}</h6>
-          </div>
-          <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">Status</p>
+            <p class="mb-1 text-secondary-light">Grade</p>
             <h6 class="mb-0">
-              <span [class]="selectedExam.status === 'Active' ? 'badge bg-success' : 'badge bg-danger'">
-                {{ selectedExam.status }}
+              <span class="px-12 py-4 radius-4 fw-medium text-sm"
+                    [ngClass]="getGradeBadgeClass(selectedGradeScale.grade)">
+                {{ selectedGradeScale.grade }}
               </span>
             </h6>
           </div>
-          <div class="col-12" *ngIf="selectedExam.description">
-            <p class="mb-1 text-secondary-light">Description</p>
-            <p class="mb-0">{{ selectedExam.description }}</p>
+          <div class="col-md-6">
+            <p class="mb-1 text-secondary-light">Grade Point</p>
+            <h6 class="mb-0">{{ selectedGradeScale.gradePoint }}</h6>
+          </div>
+          <div class="col-md-6">
+            <p class="mb-1 text-secondary-light">Min Percentage</p>
+            <h6 class="mb-0">{{ selectedGradeScale.minPercentage }}%</h6>
+          </div>
+          <div class="col-md-6">
+            <p class="mb-1 text-secondary-light">Max Percentage</p>
+            <h6 class="mb-0">{{ selectedGradeScale.maxPercentage }}%</h6>
+          </div>
+          <div class="col-12">
+            <p class="mb-1 text-secondary-light">Remarks</p>
+            <p class="mb-0">{{ selectedGradeScale.remarks || 'No remarks' }}</p>
           </div>
         </div>
       </div>

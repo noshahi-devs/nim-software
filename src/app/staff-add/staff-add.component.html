@@ -23,14 +23,14 @@
               <input
                 type="text"
                 class="form-control radius-8"
-                name="name"
+                name="staffName"
                 placeholder="Enter Name"
-                [(ngModel)]="newStaff.name"
-                #name="ngModel"
+                [(ngModel)]="newStaff.staffName"
+                #staffName="ngModel"
                 required
-                [ngClass]="{ 'is-invalid': name.invalid && name.touched }"
+                [ngClass]="{ 'is-invalid': staffName.invalid && staffName.touched }"
               />
-              <small *ngIf="name.invalid && name.touched" class="text-danger">
+              <small *ngIf="staffName.invalid && staffName.touched" class="text-danger">
                 This field is required
               </small>
             </div>
@@ -42,18 +42,18 @@
               <input
                 type="text"
                 class="form-control radius-8"
-                name="phone"
+                name="contactNumber1"
                 placeholder="0300-1234567"
-                [(ngModel)]="newStaff.phone"
+                [(ngModel)]="newStaff.contactNumber1"
                 pattern="^03\d{2}-\d{7}$"
-                #phone="ngModel"
+                #contactNumber1="ngModel"
                 required
-                [ngClass]="{ 'is-invalid': phone.invalid && phone.touched }"
+                [ngClass]="{ 'is-invalid': contactNumber1.invalid && contactNumber1.touched }"
               />
-              <small *ngIf="phone.errors?.['required'] && phone.touched" class="text-danger">
+              <small *ngIf="contactNumber1.errors?.['required'] && contactNumber1.touched" class="text-danger">
                 This field is required
               </small>
-              <small *ngIf="phone.errors?.['pattern'] && phone.touched" class="text-danger">
+              <small *ngIf="contactNumber1.errors?.['pattern'] && contactNumber1.touched" class="text-danger">
                 Invalid format
               </small>
             </div>
@@ -111,19 +111,21 @@
               </label>
               <select
                 class="form-control radius-8 form-select"
-                name="role"
-                [(ngModel)]="newStaff.role"
-                #role="ngModel"
+                name="designation"
+                [(ngModel)]="newStaff.designation"
+                #designation="ngModel"
                 required
-                [ngClass]="{ 'is-invalid': role.invalid && role.touched }"
+                [ngClass]="{ 'is-invalid': designation.invalid && designation.touched }"
               >
                 <option value="">Select Role</option>
-                <option value="Teacher">Teacher</option>
+                <option value="Instructor">Teacher</option>
+                <option value="Professor">Professor</option>
                 <option value="Principal">Principal</option>
+                <option value="Counselor">Counselor</option>
                 <option value="Admin">Admin</option>
                 <option value="Accountant">Accountant</option>
               </select>
-              <small *ngIf="role.invalid && role.touched" class="text-danger">
+              <small *ngIf="designation.invalid && designation.touched" class="text-danger">
                 This field is required
               </small>
             </div>
@@ -244,12 +246,12 @@
   </label>
   <select
     class="form-control radius-8 form-select"
-    name="qualification"
-    [(ngModel)]="newStaff.qualification"
-    #qualification="ngModel"
+    name="qualifications"
+    [(ngModel)]="newStaff.qualifications"
+    #qualifications="ngModel"
     required
     [ngClass]="{
-      'is-invalid': qualification.invalid && qualification.touched
+      'is-invalid': qualifications.invalid && qualifications.touched
     }"
   >
     <option value="">Select Qualification</option>
@@ -264,7 +266,7 @@
     <option value="na">N/A</option>
   </select>
   <small
-    *ngIf="qualification.invalid && qualification.touched"
+    *ngIf="qualifications.invalid && qualifications.touched"
     class="text-danger"
   >
     This field is required
@@ -274,7 +276,7 @@
 <!-- Associate Degree Duration -->
 <div
   class="col-12 col-sm-6 col-md-4"
-  *ngIf="newStaff.qualification === 'associateDegree'"
+  *ngIf="newStaff.qualifications === 'associateDegree'"
 >
   <label class="form-label">
     Program Duration <span class="text-danger">*</span>
@@ -304,7 +306,7 @@
 <!-- Subject Dropdown (Associate/Bachelors) -->
 <div
   class="col-12 col-sm-6 col-md-4"
-  *ngIf="newStaff.qualification === 'bachelors' || newStaff.qualification === 'associateDegree'"
+  *ngIf="newStaff.qualifications === 'bachelors' || newStaff.qualifications === 'associateDegree'"
 >
   <label class="form-label">
     Subject <span class="text-danger">*</span>
@@ -322,7 +324,7 @@
     <option value="">Select Subject</option>
 
     <!-- Associate Degree Subjects -->
-    <ng-container *ngIf="newStaff.qualification === 'associateDegree'">
+    <ng-container *ngIf="newStaff.qualifications === 'associateDegree'">
       <option value="arts">Arts</option>
       <option value="science">Science</option>
       <option value="commerce">Commerce</option>
@@ -330,7 +332,7 @@
     </ng-container>
 
     <!-- Bachelors Subjects -->
-    <ng-container *ngIf="newStaff.qualification === 'bachelors'">
+    <ng-container *ngIf="newStaff.qualifications === 'bachelors'">
       <option value="bsComputerScience">BS Computer Science</option>
       <option value="bsEnglish">BS English</option>
       <option value="bsMath">BS Mathematics</option>
@@ -438,14 +440,14 @@
               <textarea
                 class="form-control radius-8"
                 rows="3"
-                name="address"
+                name="permanentAddress"
                 placeholder="Village 97 JB, Gojra, Toba Tek Singh"
-                [(ngModel)]="newStaff.address"
-                #address="ngModel"
+                [(ngModel)]="newStaff.permanentAddress"
+                #permanentAddress="ngModel"
                 required
-                [ngClass]="{ 'is-invalid': address.invalid && address.touched }"
+                [ngClass]="{ 'is-invalid': permanentAddress.invalid && permanentAddress.touched }"
               ></textarea>
-              <small *ngIf="address.invalid && address.touched" class="text-danger">
+              <small *ngIf="permanentAddress.invalid && permanentAddress.touched" class="text-danger">
                 This field is required
               </small>
             </div>

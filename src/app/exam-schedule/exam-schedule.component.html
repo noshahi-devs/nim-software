@@ -1,6 +1,28 @@
 <div class="dashboard-main-body">
   <app-breadcrumb [title]="title"></app-breadcrumb>
 
+  <!-- Filters -->
+  <div class="card radius-12 mb-24">
+    <div class="card-body p-24">
+      <div class="row gy-3">
+        <div class="col-md-4">
+          <label class="form-label">Select Exam</label>
+          <select class="form-select" [(ngModel)]="selectedExamId" (change)="onExamChange()">
+            <option [value]="0">All Exams</option>
+            <option *ngFor="let exam of exams" [value]="exam.examId">{{ exam.examName }}</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Select Class (Optional)</label>
+          <select class="form-select" [(ngModel)]="selectedClassId">
+            <option [value]="0">All Classes</option>
+            <option *ngFor="let cls of classes" [value]="cls.id">{{ cls.name }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toolbar -->
   <div class="card radius-12 mb-24">
     <div class="card-body p-24">
@@ -9,7 +31,7 @@
           <button type="button" (click)="openAddDialog()" 
                   class="btn btn-primary-600 radius-8 px-20 py-11 d-flex align-items-center gap-2">
             <iconify-icon icon="ic:baseline-plus" class="text-xl"></iconify-icon>
-            Add Exam
+            Add Schedule
           </button>
           
           <button type="button" (click)="refreshData()" 
@@ -23,8 +45,8 @@
           <input type="text" 
                  class="bg-base h-40-px" 
                  [(ngModel)]="searchTerm" 
-                 (input)="searchExams()" 
-                 placeholder="Search Exam..." />
+                 (input)="searchSchedules()" 
+                 placeholder="Search Schedule..." />
           <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
         </div>
       </div>
@@ -34,7 +56,7 @@
   <!-- Table Card -->
   <div class="card h-100 p-0 radius-12">
     <div class="card-header border-bottom bg-base py-16 px-24 d-flex align-items-center justify-content-between">
-      <h6 class="text-lg fw-semibold mb-0">All Exams</h6>
+      <h6 class="text-lg fw-semibold mb-0">Exam Schedules</h6>
       <div class="d-flex align-items-center gap-2">
         <span class="text-md fw-medium text-secondary-light">Show</span>
         <select class="form-select form-select-sm w-auto ps-12 py-6 radius-12 h-40-px" 
@@ -59,61 +81,48 @@
           <thead>
             <tr>
               <th scope="col">S.L</th>
-              <th scope="col">Exam Name</th>
-              <th scope="col">Type</th>
-              <th scope="col">Class</th>
-              <th scope="col">Section</th>
-              <th scope="col">Start Date</th>
-              <th scope="col">End Date</th>
-              <th scope="col" class="text-center">Status</th>
+              <th scope="col">Subject</th>
+              <th scope="col">Date</th>
+              <th scope="col">Time</th>
+              <th scope="col">Room</th>
+              <th scope="col">Invigilator</th>
               <th scope="col" class="text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let exam of paginatedExams; let i = index">
+            <tr *ngFor="let schedule of paginatedSchedules; let i = index">
               <td>{{ (currentPage - 1) * rowsPerPage + i + 1 }}</td>
               <td>
-                <span class="fw-semibold text-primary-600">{{ exam.examName }}</span>
+                <span class="fw-semibold text-primary-600">{{ schedule.subjectName || getSubjectName(schedule.subjectId) }}</span>
               </td>
+              <td>{{ schedule.examDate | date: 'dd MMM yyyy' }}</td>
               <td>
                 <span class="badge bg-info-50 text-info-600 px-12 py-4 radius-4 fw-medium text-sm">
-                  {{ exam.examType }}
+                  {{ schedule.startTime }} - {{ schedule.endTime }}
                 </span>
               </td>
-              <td>{{ exam.className || getClassName(exam.classId) }}</td>
-              <td>{{ exam.sectionName || getSectionName(exam.sectionId) }}</td>
-              <td>{{ exam.startDate | date: 'dd MMM yyyy' }}</td>
-              <td>{{ exam.endDate | date: 'dd MMM yyyy' }}</td>
-              <td class="text-center">
-                <span *ngIf="exam.status === 'Active'" 
-                      class="bg-success-focus text-success-600 border border-success-main px-24 py-4 radius-4 fw-medium text-sm">
-                  Active
-                </span>
-                <span *ngIf="exam.status === 'Inactive'" 
-                      class="bg-danger-focus text-danger-600 border border-danger-main px-24 py-4 radius-4 fw-medium text-sm">
-                  Inactive
-                </span>
-              </td>
+              <td>{{ schedule.room }}</td>
+              <td>{{ schedule.invigilatorName || getTeacherName(schedule.invigilatorId || 0) }}</td>
               <td class="text-center">
                 <div class="d-flex align-items-center gap-10 justify-content-center">
-                  <button type="button" (click)="openViewDialog(exam)"
+                  <button type="button" (click)="openViewDialog(schedule)"
                           class="bg-info-focus text-info-600 bg-hover-info-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
                     <iconify-icon icon="iconamoon:eye-light" class="icon text-xl"></iconify-icon>
                   </button>
-                  <button type="button" (click)="openEditDialog(exam)"
+                  <button type="button" (click)="openEditDialog(schedule)"
                           class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
                     <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
                   </button>
-                  <button type="button" (click)="deleteExam(exam)"
+                  <button type="button" (click)="deleteSchedule(schedule)"
                           class="bg-danger-focus text-danger-600 bg-hover-danger-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
                     <iconify-icon icon="mingcute:delete-2-line" class="menu-icon"></iconify-icon>
                   </button>
                 </div>
               </td>
             </tr>
-            <tr *ngIf="paginatedExams.length === 0">
-              <td colspan="9" class="text-center py-4">
-                <p class="text-secondary-light mb-0">No exams found</p>
+            <tr *ngIf="paginatedSchedules.length === 0">
+              <td colspan="7" class="text-center py-4">
+                <p class="text-secondary-light mb-0">No schedules found</p>
               </td>
             </tr>
           </tbody>
@@ -121,11 +130,11 @@
       </div>
 
       <!-- Pagination -->
-      <div *ngIf="!loading && filteredExams.length > 0" class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-24">
+      <div *ngIf="!loading && filteredSchedules.length > 0" class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-24">
         <span class="text-secondary-light text-sm">
           Showing {{ (currentPage - 1) * rowsPerPage + 1 }} to 
-          {{ Math.min(currentPage * rowsPerPage, filteredExams.length) }} of 
-          {{ filteredExams.length }} entries
+          {{ Math.min(currentPage * rowsPerPage, filteredSchedules.length) }} of 
+          {{ filteredSchedules.length }} entries
         </span>
         <ul class="pagination d-flex flex-wrap align-items-center gap-2 justify-content-center">
           <li class="page-item">
@@ -163,70 +172,62 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{ isEditMode ? 'Edit Exam' : 'Add New Exam' }}</h5>
+        <h5 class="modal-title">{{ isEditMode ? 'Edit Schedule' : 'Add New Schedule' }}</h5>
         <button type="button" class="btn-close" (click)="closeDialog()"></button>
       </div>
       <div class="modal-body">
         <form>
           <div class="row gy-3">
-            <div class="col-12">
-              <label class="form-label">Exam Name <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" [(ngModel)]="examForm.examName" name="examName" 
-                     placeholder="Enter exam name" required />
-            </div>
-            
             <div class="col-md-6">
-              <label class="form-label">Exam Type <span class="text-danger">*</span></label>
-              <select class="form-select" [(ngModel)]="examForm.examType" name="examType" required>
-                <option *ngFor="let type of examTypes" [value]="type.value">{{ type.label }}</option>
+              <label class="form-label">Exam <span class="text-danger">*</span></label>
+              <select class="form-select" [(ngModel)]="scheduleForm.examId" name="examId" required>
+                <option [value]="0" disabled>Select Exam</option>
+                <option *ngFor="let exam of exams" [value]="exam.examId">{{ exam.examName }}</option>
               </select>
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">Class <span class="text-danger">*</span></label>
-              <select class="form-select" [(ngModel)]="examForm.classId" name="classId" required>
-                <option [value]="0" disabled>Select Class</option>
-                <option *ngFor="let cls of classes" [value]="cls.id">{{ cls.name }}</option>
+              <label class="form-label">Subject <span class="text-danger">*</span></label>
+              <select class="form-select" [(ngModel)]="scheduleForm.subjectId" name="subjectId" required>
+                <option [value]="0" disabled>Select Subject</option>
+                <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
               </select>
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">Section <span class="text-danger">*</span></label>
-              <select class="form-select" [(ngModel)]="examForm.sectionId" name="sectionId" required>
-                <option [value]="0" disabled>Select Section</option>
-                <option *ngFor="let sec of sections" [value]="sec.id">{{ sec.name }}</option>
+              <label class="form-label">Exam Date <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" [(ngModel)]="scheduleForm.examDate" name="examDate" required />
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Start Time <span class="text-danger">*</span></label>
+              <input type="time" class="form-control" [(ngModel)]="scheduleForm.startTime" name="startTime" required />
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">End Time <span class="text-danger">*</span></label>
+              <input type="time" class="form-control" [(ngModel)]="scheduleForm.endTime" name="endTime" required />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Room</label>
+              <input type="text" class="form-control" [(ngModel)]="scheduleForm.room" name="room" 
+                     placeholder="e.g., Room 101, Lab 1" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Invigilator</label>
+              <select class="form-select" [(ngModel)]="scheduleForm.invigilatorId" name="invigilatorId">
+                <option [value]="0">Select Invigilator</option>
+                <option *ngFor="let teacher of teachers" [value]="teacher.id">{{ teacher.name }}</option>
               </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">Status</label>
-              <select class="form-select" [(ngModel)]="examForm.status" name="status">
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">Start Date <span class="text-danger">*</span></label>
-              <input type="date" class="form-control" [(ngModel)]="examForm.startDate" name="startDate" required />
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">End Date <span class="text-danger">*</span></label>
-              <input type="date" class="form-control" [(ngModel)]="examForm.endDate" name="endDate" required />
-            </div>
-
-            <div class="col-12">
-              <label class="form-label">Description</label>
-              <textarea class="form-control" [(ngModel)]="examForm.description" name="description" 
-                        rows="3" placeholder="Enter exam description"></textarea>
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="saveExam()">
+        <button type="button" class="btn btn-primary" (click)="saveSchedule()">
           {{ isEditMode ? 'Update' : 'Save' }}
         </button>
       </div>
@@ -235,50 +236,38 @@
 </div>
 
 <!-- View Dialog -->
-<div *ngIf="showViewDialog && selectedExam" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+<div *ngIf="showViewDialog && selectedSchedule" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Exam Details</h5>
+        <h5 class="modal-title">Schedule Details</h5>
         <button type="button" class="btn-close" (click)="closeDialog()"></button>
       </div>
       <div class="modal-body">
         <div class="row gy-3">
           <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">Exam Name</p>
-            <h6 class="mb-0">{{ selectedExam.examName }}</h6>
+            <p class="mb-1 text-secondary-light">Exam</p>
+            <h6 class="mb-0">{{ selectedSchedule.examName || getExamName(selectedSchedule.examId) }}</h6>
           </div>
           <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">Exam Type</p>
-            <h6 class="mb-0">{{ selectedExam.examType }}</h6>
+            <p class="mb-1 text-secondary-light">Subject</p>
+            <h6 class="mb-0">{{ selectedSchedule.subjectName || getSubjectName(selectedSchedule.subjectId) }}</h6>
           </div>
           <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">Class</p>
-            <h6 class="mb-0">{{ selectedExam.className || getClassName(selectedExam.classId) }}</h6>
+            <p class="mb-1 text-secondary-light">Date</p>
+            <h6 class="mb-0">{{ selectedSchedule.examDate | date: 'dd MMM yyyy' }}</h6>
           </div>
           <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">Section</p>
-            <h6 class="mb-0">{{ selectedExam.sectionName || getSectionName(selectedExam.sectionId) }}</h6>
+            <p class="mb-1 text-secondary-light">Time</p>
+            <h6 class="mb-0">{{ selectedSchedule.startTime }} - {{ selectedSchedule.endTime }}</h6>
           </div>
           <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">Start Date</p>
-            <h6 class="mb-0">{{ selectedExam.startDate | date: 'dd MMM yyyy' }}</h6>
+            <p class="mb-1 text-secondary-light">Room</p>
+            <h6 class="mb-0">{{ selectedSchedule.room || 'Not assigned' }}</h6>
           </div>
           <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">End Date</p>
-            <h6 class="mb-0">{{ selectedExam.endDate | date: 'dd MMM yyyy' }}</h6>
-          </div>
-          <div class="col-md-6">
-            <p class="mb-1 text-secondary-light">Status</p>
-            <h6 class="mb-0">
-              <span [class]="selectedExam.status === 'Active' ? 'badge bg-success' : 'badge bg-danger'">
-                {{ selectedExam.status }}
-              </span>
-            </h6>
-          </div>
-          <div class="col-12" *ngIf="selectedExam.description">
-            <p class="mb-1 text-secondary-light">Description</p>
-            <p class="mb-0">{{ selectedExam.description }}</p>
+            <p class="mb-1 text-secondary-light">Invigilator</p>
+            <h6 class="mb-0">{{ selectedSchedule.invigilatorName || getTeacherName(selectedSchedule.invigilatorId || 0) || 'Not assigned' }}</h6>
           </div>
         </div>
       </div>

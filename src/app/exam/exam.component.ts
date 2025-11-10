@@ -1,372 +1,302 @@
-import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-declare var $: any;
-import {
-  NgApexchartsModule,
-  ChartComponent
-} from 'ng-apexcharts';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
+import { ExamService, Exam } from '../services/exam.service';
+import { finalize } from 'rxjs';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-exam',
   standalone: true,
-  imports: [NgApexchartsModule, BreadcrumbComponent],
+  imports: [CommonModule, FormsModule, BreadcrumbComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './exam.component.html',
   styleUrl: './exam.component.css'
 })
-export class ExamComponent implements AfterViewInit {
-  title = 'Analytics';
-  userOverviewDonutChart;
-  revenueChart;
-  barChart;
-  constructor() {
+export class ExamComponent implements OnInit {
+  title = 'Exam Management';
 
-    this.revenueChart = this.createChartTwo('#CD20F9', '#6593FF');
+  // Main data lists
+  exams: Exam[] = [];
+  filteredExams: Exam[] = [];
+  paginatedExams: Exam[] = [];
 
-    this.barChart = {
-      series: [{
-        name: "Sales",
-        data: [{
-          x: 'Sun',
-          y: 15,
-        }, {
-          x: 'Mon',
-          y: 12,
-        }, {
-          x: 'Tue',
-          y: 18,
-        }, {
-          x: 'Wed',
-          y: 20,
-        }, {
-          x: 'Thu',
-          y: 13,
-        }, {
-          x: 'Fri',
-          y: 16,
-        }, {
-          x: 'Sat',
-          y: 6,
-        }]
-      }],
-      chart: {
-        type: 'bar',
-        height: 400,
-        toolbar: {
-          show: false
-        },
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 6,
-          horizontal: false,
-          columnWidth: 24,
-          endingShape: 'rounded',
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      fill: {
-        type: 'gradient',
-        colors: ['#dae5ff'], // Set the starting color (top color) here
-        gradient: {
-          shade: 'light', // Gradient shading type
-          type: 'vertical',  // Gradient direction (vertical)
-          shadeIntensity: 0.5, // Intensity of the gradient shading
-          gradientToColors: ['#dae5ff'], // Bottom gradient color (with transparency)
-          inverseColors: false, // Do not invert colors
-          opacityFrom: 1, // Starting opacity
-          opacityTo: 1,  // Ending opacity
-          stops: [0, 100],
-        },
-      },
-      grid: {
-        show: false,
-        borderColor: '#D1D5DB',
-        strokeDashArray: 4, // Use a number for dashed style
-        position: 'back',
-        padding: {
-          top: -10,
-          right: -10,
-          bottom: -10,
-          left: -10
-        }
-      },
-      xaxis: {
-        type: 'category',
-        categories: ['2hr', '4hr', '6hr', '8hr', '10hr', '12hr', '14hr']
-      },
-      yaxis: {
-        show: false,
-      },
-    };
+  // Pagination + Search
+  searchTerm = '';
+  rowsPerPage = 10;
+  currentPage = 1;
+  totalPages = 1;
+  loading = false;
 
-   this.userOverviewDonutChart = {
-      series: [500, 500, 500],
-      colors: ['#FF9F29', '#487FFF', '#45B369'],
-      labels: ['Active', 'New', 'Total'],
-      legend: {
-        show: false
-      },
-      chart: {
-        type: 'donut',
-        height: 270,
-        sparkline: {
-          enabled: true // Remove whitespace
-        },
-        margin: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        },
-        padding: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        }
-      },
-      stroke: {
-        width: 0,
-      },
-      dataLabels: {
-        enabled: false
-      },
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200
-          },
-          legend: {
-            position: 'bottom'
-          }
-        }
-      }],
-      tooltip: {
-        custom: ({ seriesIndex, series, dataPointIndex, w }) => {
-          const donutColor = w.globals.colors[seriesIndex];
-          const label = w.config.labels[seriesIndex];
-          return `
-            <div style="font-size: 12px; padding:5px 10px; background-color: ${donutColor}; color: white; ">
-              ${label}: ${series[seriesIndex]}
-            </div>
-          `;
-        }
-      }
-    };
+  // Dialog state
+  showAddEditDialog = false;
+  showViewDialog = false;
+  isEditMode = false;
+  selectedExam: Exam | null = null;
 
+  // Form model
+  examForm: Exam = {
+    examName: '',
+    examType: 'Term',
+    classId: 0,
+    sectionId: 0,
+    startDate: '',
+    endDate: '',
+    description: '',
+    status: 'Active'
+  };
+
+  // Dropdown data (Replace with actual API calls)
+  examTypes = [
+    { label: 'Term Exam', value: 'Term' },
+    { label: 'Monthly Test', value: 'Monthly' },
+    { label: 'Quiz', value: 'Quiz' }
+  ];
+
+  classes = [
+    { id: 1, name: 'Class 10' },
+    { id: 2, name: 'Class 9' },
+    { id: 3, name: 'Class 8' }
+  ];
+
+  sections = [
+    { id: 1, name: 'Section A' },
+    { id: 2, name: 'Section B' },
+    { id: 3, name: 'Section C' }
+  ];
+
+  Math = Math;
+
+  constructor(private examService: ExamService) {}
+
+  ngOnInit() {
+    this.loadExams();
   }
-  ngAfterViewInit(): void {
-    $('#world-map').vectorMap(
-      {
-        map: 'world_mill_en',
-        backgroundColor: 'transparent',
-        borderColor: '#fff',
-        borderOpacity: 0.25,
-        borderWidth: 0,
-        color: '#000000',
-        regionStyle: {
-          initial: {
-            fill: '#D1D5DB'
-          }
-        },
-        markerStyle: {
-          initial: {
-            r: 5,
-            'fill': '#fff',
-            'fill-opacity': 1,
-            'stroke': '#000',
-            'stroke-width': 1,
-            'stroke-opacity': 0.4
-          },
-        },
-        markers: [{
-          latLng: [35.8617, 104.1954],
-          name: 'China : 250'
-        },
 
-        {
-          latLng: [25.2744, 133.7751],
-          name: 'AustrCalia : 250'
+  loadExams() {
+    this.loading = true;
+    this.examService
+      .getAllExams()
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (res) => {
+          this.exams = res || [];
+          this.filteredExams = [...this.exams];
+          this.updatePagination();
         },
-
-        {
-          latLng: [36.77, -119.41],
-          name: 'USA : 82%'
-        },
-
-        {
-          latLng: [55.37, -3.41],
-          name: 'UK   : 250'
-        },
-
-        {
-          latLng: [25.20, 55.27],
-          name: 'UAE : 250'
-        }],
-
-        series: {
-          regions: [{
-            values: {
-              "US": '#487FFF ',
-              "SA": '#487FFF',
-              "AU": '#487FFF',
-              "CN": '#487FFF',
-              "GB": '#487FFF',
-            },
-            attribute: 'fill'
-          }]
-        },
-        hoverOpacity: null,
-        normalizeFunction: 'linear',
-        zoomOnScroll: false,
-        scaleColors: ['#000000', '#000000'],
-        selectedColor: '#000000',
-        selectedRegions: [],
-        enableZoom: false,
-        hoverColor: '#fff',
+        error: (err) => {
+          console.error('Error fetching exams:', err);
+          // Use mock data if API fails
+          this.loadMockData();
+        }
       });
   }
 
-  createChartTwo(color1, color2) {
-    return {
-      series: [{
-        name: 'series1',
-        data: [6, 20, 15, 48, 28, 55, 28, 52, 25, 32, 15, 25]
-      }, {
-        name: 'series2',
-        data: [0, 8, 4, 36, 16, 42, 16, 40, 12, 24, 4, 12]
-      }],
-      legend: {
-        show: false
+  loadMockData() {
+    this.exams = [
+      {
+        examId: 1,
+        examName: 'Mid Term Exam 2024',
+        examType: 'Term',
+        classId: 1,
+        className: 'Class 10',
+        sectionId: 1,
+        sectionName: 'Section A',
+        startDate: '2024-03-15',
+        endDate: '2024-03-25',
+        description: 'Mid term examination for all subjects',
+        status: 'Active'
       },
-      chart: {
-        type: 'area',
-        width: '100%',
-        height: 150,
-        toolbar: {
-          show: false
-        },
-        padding: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        curve: 'smooth',
-        width: 3,
-        colors: [color1, color2], // Use two colors for the lines
-        lineCap: 'round'
-      },
-      grid: {
-        show: true,
-        borderColor: '#D1D5DB',
-        strokeDashArray: 1,
-        position: 'back',
-        xaxis: {
-          lines: {
-            show: false
-          }
-        },
-        yaxis: {
-          lines: {
-            show: true
-          }
-        },
-        row: {
-          colors: undefined,
-          opacity: 0.5
-        },
-        column: {
-          colors: undefined,
-          opacity: 0.5
-        },
-        padding: {
-          top: -20,
-          right: 0,
-          bottom: -10,
-          left: 0
-        },
-      },
-      fill: {
-        type: 'gradient',
-        colors: [color1, color2], // Use two colors for the gradient
-        // gradient: {
-        //     shade: 'light',
-        //     type: 'vertical',
-        //     shadeIntensity: 0.5,
-        //     gradientToColors: [`${color1}`, `${color2}00`], // Bottom gradient colors with transparency
-        //     inverseColors: false,
-        //     opacityFrom: .6,
-        //     opacityTo: 0.3,
-        //     stops: [0, 100],
-        // },
-        gradient: {
-          shade: 'light',
-          type: 'vertical',
-          shadeIntensity: 0.5,
-          gradientToColors: [undefined, `${color2}00`], // Apply transparency to both colors
-          inverseColors: false,
-          opacityFrom: [0.4, 0.6], // Starting opacity for both colors
-          opacityTo: [0.3, 0.3], // Ending opacity for both colors
-          stops: [0, 100],
-        },
-      },
-      // markers: {
-      //     colors: [color1, color2], // Use two colors for the markers
-      //     strokeWidth: 3,
-      //     size: 0,
-      //     hover: {
-      //         size: 10
-      //     }
-      // },
-
-      markers: {
-        colors: [color1, color2],
-        strokeWidth: 2,
-        size: 0,
-        hover: {
-          size: 8
-        }
-      },
-
-      xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        tooltip: {
-          enabled: false
-        },
-        labels: {
-          formatter: function (value) {
-            return value;
-          },
-          style: {
-            fontSize: "14px"
-          }
-        }
-      },
-      yaxis: {
-        labels: {
-          formatter: function (value) {
-            return "$" + value + "k";
-          },
-          style: {
-            fontSize: "14px"
-          }
-        },
-      },
-      tooltip: {
-        x: {
-          format: 'dd/MM/yy HH:mm'
-        }
+      {
+        examId: 2,
+        examName: 'Monthly Test - January',
+        examType: 'Monthly',
+        classId: 2,
+        className: 'Class 9',
+        sectionId: 2,
+        sectionName: 'Section B',
+        startDate: '2024-01-20',
+        endDate: '2024-01-22',
+        description: 'Monthly assessment test',
+        status: 'Inactive'
       }
+    ];
+    this.filteredExams = [...this.exams];
+    this.updatePagination();
+  }
+
+  searchExams() {
+    const term = this.searchTerm.toLowerCase();
+    this.filteredExams = this.exams.filter(e =>
+      e.examName.toLowerCase().includes(term) ||
+      e.examType.toLowerCase().includes(term) ||
+      e.className?.toLowerCase().includes(term) ||
+      e.sectionName?.toLowerCase().includes(term)
+    );
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  updatePagination() {
+    this.totalPages = Math.ceil(this.filteredExams.length / this.rowsPerPage) || 1;
+    const start = (this.currentPage - 1) * this.rowsPerPage;
+    const end = start + this.rowsPerPage;
+    this.paginatedExams = this.filteredExams.slice(start, end);
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+    }
+  }
+
+  openAddDialog() {
+    this.resetForm();
+    this.isEditMode = false;
+    this.showAddEditDialog = true;
+  }
+
+  openEditDialog(exam: Exam) {
+    this.examForm = { ...exam };
+    this.isEditMode = true;
+    this.showAddEditDialog = true;
+  }
+
+  openViewDialog(exam: Exam) {
+    this.selectedExam = exam;
+    this.showViewDialog = true;
+  }
+
+  closeDialog() {
+    this.showAddEditDialog = false;
+    this.showViewDialog = false;
+    this.selectedExam = null;
+  }
+
+  saveExam() {
+    // Validation
+    if (!this.examForm.examName || !this.examForm.startDate || !this.examForm.endDate) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Please fill all required fields'
+      });
+      return;
+    }
+
+    if (this.isEditMode && this.examForm.examId) {
+      this.examService.updateExam(this.examForm.examId, this.examForm).subscribe({
+        next: (res) => {
+          const index = this.exams.findIndex(e => e.examId === this.examForm.examId);
+          if (index !== -1) {
+            this.exams[index] = { ...res };
+          }
+          this.filteredExams = [...this.exams];
+          this.updatePagination();
+          this.closeDialog();
+          Swal.fire({
+            icon: 'success',
+            title: 'Exam Updated Successfully!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        },
+        error: (err) => {
+          console.error('Update failed:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to Update Exam',
+            text: err.error?.message || 'Something went wrong!'
+          });
+        }
+      });
+    } else {
+      this.examService.addExam(this.examForm).subscribe({
+        next: (res) => {
+          this.exams.push(res);
+          this.filteredExams = [...this.exams];
+          this.updatePagination();
+          this.closeDialog();
+          Swal.fire({
+            icon: 'success',
+            title: 'Exam Added Successfully!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        },
+        error: (err) => {
+          console.error('Add failed:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to Add Exam',
+            text: err.error?.message || 'Something went wrong!'
+          });
+        }
+      });
+    }
+  }
+
+  deleteExam(exam: Exam) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete "${exam.examName}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed && exam.examId) {
+        this.examService.deleteExam(exam.examId).subscribe({
+          next: () => {
+            this.exams = this.exams.filter(e => e.examId !== exam.examId);
+            this.filteredExams = [...this.exams];
+            this.updatePagination();
+            Swal.fire({
+              icon: 'success',
+              title: 'Deleted!',
+              text: 'Exam has been deleted.',
+              showConfirmButton: false,
+              timer: 1500
+            });
+          },
+          error: (err) => {
+            console.error('Delete failed:', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Failed to Delete',
+              text: err.error?.message || 'Something went wrong!'
+            });
+          }
+        });
+      }
+    });
+  }
+
+  refreshData() {
+    this.loadExams();
+  }
+
+  resetForm() {
+    this.examForm = {
+      examName: '',
+      examType: 'Term',
+      classId: 0,
+      sectionId: 0,
+      startDate: '',
+      endDate: '',
+      description: '',
+      status: 'Active'
     };
   }
 
+  getClassName(classId: number): string {
+    return this.classes.find(c => c.id === classId)?.name || '';
+  }
+
+  getSectionName(sectionId: number): string {
+    return this.sections.find(s => s.id === sectionId)?.name || '';
+  }
 }
