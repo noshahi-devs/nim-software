@@ -125,6 +125,12 @@ import { ApplyLeavesComponent } from './apply-leaves/apply-leaves.component';
 import { MyLeavesComponent } from './my-leaves/my-leaves.component';
 import { LeaveManageComponent } from './leave-manage/leave-manage.component';
 import { LeaveTypeComponent } from './leave-type/leave-type.component';
+import { AccountsComponent } from './accounts/accounts.component';
+import { IncomeManageComponent } from './income-manage/income-manage.component';
+import { ProfitLossComponent } from './profit-loss/profit-loss.component';
+import { AccountsLedgerComponent } from './accounts-ledger/accounts-ledger.component';
+import { ExpenseManageComponent } from './expense-manage/expense-manage.component';
+import { BankCashComponent } from './bank-cash/bank-cash.component';
 export const routes: Routes = [
     {
         path: '',
@@ -256,11 +262,12 @@ export const routes: Routes = [
             { path: 'my-leaves', component: MyLeavesComponent},
             { path: 'manage-leaves', component: LeaveManageComponent},
             { path: 'leave-type', component: LeaveTypeComponent},
-
-
-
-
-            
+            { path: 'accounts', component: AccountsComponent},
+            { path: 'income-manage', component: IncomeManageComponent},
+            { path: 'expense-manage', component: ExpenseManageComponent},
+            { path: 'profit-loss', component: ProfitLossComponent},
+            { path: 'accounts-ledger', component: AccountsLedgerComponent},
+            { path: 'bank-cash', component: BankCashComponent }
         ]
     },  
     { path: 'coming-soon', component: ComingSoonComponent },
@@ -272,4 +279,3 @@ export const routes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: '**', redirectTo : 'error', pathMatch: 'full'}
 ];
-
